@@ -27,18 +27,19 @@ class LoginController extends GetxController {
         await UserRepository.getUserByEmail(email: user!.email!);
     // print(tempUser!.toJson());
     if (tempUser == null) {
-   
       UserModel userModel = UserModel();
       userModel.id = user.uid;
       userModel.name = user.displayName;
       userModel.email = user.email;
 
-      Get.toNamed(Routes.REGISTER_SCREEN, arguments: {'user_model': userModel});
+      Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
+      AuthController _authController = Get.find();
+      _authController.setUser(userModel);
     } else {
-    
       AuthController _authController = Get.find();
       _authController.setUser(tempUser);
-      Get.offAndToNamed(Routes.HOME_SCREEN, arguments: {'user_model': tempUser});
+      Get.offAndToNamed(Routes.HOME_SCREEN,
+          arguments: {'user_model': tempUser});
     }
   }
 }
