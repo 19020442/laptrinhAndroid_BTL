@@ -22,24 +22,41 @@ class LoginController extends GetxController {
         accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
 
     User? user = (await _auth.signInWithCredential(credential)).user;
+    UserModel? tempUser;
+    try {
+      tempUser = await UserRepository.getUserByEmail(email: user!.email!);
 
-    UserModel? tempUser =
-        await UserRepository.getUserByEmail(email: user!.email!);
-    // print(tempUser!.toJson());
-    if (tempUser == null) {
-      UserModel userModel = UserModel();
-      userModel.id = user.uid;
-      userModel.name = user.displayName;
-      userModel.email = user.email;
-
-      Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
-      AuthController _authController = Get.find();
-      _authController.setUser(userModel);
-    } else {
       AuthController _authController = Get.find();
       _authController.setUser(tempUser);
+      print('---- TEMP USER FOUND' + tempUser!.toJson().toString());
       Get.offAndToNamed(Routes.HOME_SCREEN,
           arguments: {'user_model': tempUser});
+    } catch (e) {
+      UserModel userModel = UserModel();
+      userModel.id = user!.uid;
+      userModel.name = user.displayName;
+      userModel.email = user.email;
+      print('---- TEMP USER NOT FOUND' + userModel.toJson().toString());
+      UserRepository.setUser(userModel).whenComplete(() {
+        AuthController _authController = Get.find();
+        _authController.userModel = userModel;
+        _authController.setUser(userModel);
+        update();
+        Get.offAndToNamed(Routes.HOME_SCREEN,
+            arguments: {'user_model': userModel});
+      });
+      // .then((value) {
+      //
+      //   Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
+      // });
     }
   }
 }
+
+// print('----' + tempUser!.toJson().toString());
+// if (tempUser == null) {
+
+//   });
+// } else {
+
+// }

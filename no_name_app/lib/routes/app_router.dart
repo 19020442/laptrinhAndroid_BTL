@@ -8,6 +8,7 @@ class Pages {
   static final pages = [
     GetPage(name: Routes.LOGIN_SCREEN, page: () => const AuthScreen()),
     GetPage(name: Routes.HOME_SCREEN, page: () => const HomeScreen()),
+    // GetPage(name: name, page: page)
     // GetPage(name: Routes.REGISTER_SCREEN, page: () => const RegisterScreen())
   ];
 }

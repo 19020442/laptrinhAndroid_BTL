@@ -16,24 +16,36 @@ class AccountScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Tài khoản', style: FontUtils.mainTextStyle.copyWith(
-                  fontSize: 30
-                ,
-                fontWeight: FontWeight.w700
-                ),),
+                Text(
+                  'Tài khoản',
+                  style: FontUtils.mainTextStyle
+                      .copyWith(fontSize: 30, fontWeight: FontWeight.w700),
+                ),
                 ListTile(
                   leading: const CircleAvatar(),
-                  title:  Text(_controller.userModel.name!, style: FontUtils.mainTextStyle.copyWith(
-                    fontSize: 16,
-                  ),),
-                  subtitle: Text(_controller.userModel.email!,style: FontUtils.mainTextStyle.copyWith(
-                    fontSize: 16,
-                  ),),
+                  title: Text(
+                    _controller.userModel.name!,
+                    style: FontUtils.mainTextStyle.copyWith(
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    _controller.userModel.email!,
+                    style: FontUtils.mainTextStyle.copyWith(
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-                const Divider(thickness: 1,),
-                IconButton(onPressed: (){
-                  _controller.logOut();
-                }, icon: const Icon(Icons.logout,))
+                const Divider(
+                  thickness: 1,
+                ),
+                IconButton(
+                    onPressed: () {
+                      _controller.logOut();
+                    },
+                    icon: const Icon(
+                      Icons.logout,
+                    ))
               ],
             ),
           );

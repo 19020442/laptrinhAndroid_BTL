@@ -6,6 +6,7 @@ import 'package:no_name_app/controller/home_controller.dart';
 import 'package:no_name_app/screens/account_screen.dart';
 import 'package:no_name_app/screens/friends_screen.dart';
 import 'package:no_name_app/screens/groups_screen.dart';
+import 'package:no_name_app/screens/activities_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-        init: HomeController(),
+        init: HomeController(), //
         builder: (HomeController _controller) {
           // print(_controller.userModel.name);
           return Scaffold(
@@ -49,16 +50,26 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   bottomSheetItem(
                     icon: const Icon(Icons.group),
-                    onTap: () { _controller.updateIndex(0);},
-                  ),
-                  bottomSheetItem(
-                    icon: const Icon(Icons.person),
-                    onTap: () { _controller.updateIndex(1);},
+                    onTap: () {
+                      _controller.updateIndex(0);
+                    },
                   ),
                   bottomSheetItem(
                     icon: const Icon(Icons.person),
                     onTap: () {
+                      _controller.updateIndex(1);
+                    },
+                  ),
+                  bottomSheetItem(
+                    icon: const Icon(Icons.class_),
+                    onTap: () {
                       _controller.updateIndex(2);
+                    },
+                  ),
+                  bottomSheetItem(
+                    icon: const Icon(Icons.account_box),
+                    onTap: () {
+                      _controller.updateIndex(3);
                     },
                   )
                 ],
