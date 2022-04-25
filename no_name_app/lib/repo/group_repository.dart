@@ -18,7 +18,7 @@ class GroupRepository {
         imageGroup: groupData['Image'],
         nameGroup: groupData['Name'],
         typeGroup: groupData['Type'],
-        members: groupData['Members']);
+        members: []);
   }
 
   static Future<void> setGroup(GroupModel groupModel) async {

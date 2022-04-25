@@ -75,6 +75,7 @@ class CreateNewGroupController extends GetxController {
         newGroup.imageGroup = imageGroup;
         newGroup.nameGroup = nameGroupController.text;
         newGroup.typeGroup = typeGroup == "" ? "Other" : typeGroup;
+        newGroup.members = [];
         GroupRepository.setGroup(newGroup);
         AuthController authController = Get.find();
         GroupRepository.addMember(
