@@ -125,7 +125,7 @@ class AddExpenseController extends GetxController {
       member[0]['user'] = currentUser;
       member[0]['amount'] = double.parse(valueController.text);
     }
-    
+
     for (var element in member) {
       if (element['amount'] < element['amountToPaid']) {
         owner.add({
@@ -196,40 +196,39 @@ class AddExpenseController extends GetxController {
     print('---- PAYERS' + payer.toString());
     print('---- OWNERS' + owner.toString());
 
-    // if (saveExpenseError().isNotEmpty) {
-    //   Get.snackbar('Cannot save expense', saveExpenseError().toString(),
-    //       backgroundColor: Colors.red,
-    //       snackPosition: SnackPosition.BOTTOM,
-    //       colorText: Colors.white);
-    // } else {
-    //   // else {
-    //   ExpenseRepository.getIdOfExpenseInGroup(groupId: groupModel!.id!)
-    //       .then((value) {
-    //     final newExpense = ExpenseModel(
-    //         id: value,
-    //         name: descriptionController.text,
-    //         dateCreate: DateTime.now(),
-    //         value: valueController.text,
-    //         members: membersOfExpense);
-    //     ExpenseRepository.setExpenseOnGroupCollection(
-    //             groupId: groupModel!.id!, expenseModel: newExpense)
-    //         .whenComplete(() async {
-    //       await ExpenseRepository.setPayerAndOwnerOfExpense(
-    //           groupId: groupModel!.id!,
-    //           expenseId: value,
-    //           payersData: payer,
-    //           ownersData: owner);
-    //       await GroupRepository.setStatusGroup(
-    //           groupId: groupModel!.id!, data: payer, isPayer: true);
-    //       await GroupRepository.setStatusGroup(
-    //           groupId: groupModel!.id!, data: owner, isPayer: false);
+    if (saveExpenseError().isNotEmpty) {
+      Get.snackbar('Cannot save expense', saveExpenseError().toString(),
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white);
+    } else {
+      // else {
+      ExpenseRepository.getIdOfExpenseInGroup(groupId: groupModel!.id!)
+          .then((value) {
+        final newExpense = ExpenseModel(
+            id: value,
+            name: descriptionController.text,
+            dateCreate: DateTime.now(),
+            value: valueController.text,
+            members: membersOfExpense);
+        ExpenseRepository.setExpenseOnGroupCollection(
+                groupId: groupModel!.id!, expenseModel: newExpense)
+            .whenComplete(() async {
+          await ExpenseRepository.setPayerAndOwnerOfExpense(
+              groupId: groupModel!.id!,
+              expenseId: value,
+              payersData: payer,
+              ownersData: owner);
+          await GroupRepository.setStatusGroup(
+              groupId: groupModel!.id!, data: payer, isPayer: true);
+          await GroupRepository.setStatusGroup(
+              groupId: groupModel!.id!, data: owner, isPayer: false);
 
-    //       groupController.onInit();
-    //       Get.back();
-    //     });
-    //   });
-    // }
-    // }
+          groupController.onInit();
+          Get.back();
+        });
+      });
+    }
   }
 
   onChoosePayer(UserModel memberTapped, int index) {

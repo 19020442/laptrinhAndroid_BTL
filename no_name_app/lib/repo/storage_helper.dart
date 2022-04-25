@@ -21,14 +21,25 @@ class StorageHelper {
   static Future<List<GroupModel>> getGroups() async {
     final result = await box.read(KEY_GROUPS);
     if (result != null) {
-      List<GroupModel> data = [];
+      List<GroupModel> dataGroups = [];
       final localGroupData = (json.decode(json.encode(result)).toList());
       localGroupData.forEach((value) {
-        
-        print(json.decode(value));
-        data.add(GroupModel.fromJson(value));
+        final convert = json.decode(value);
+        GroupModel data = GroupModel(
+          id: convert['Id'],
+          imageGroup: convert['Image'],
+          nameGroup: convert['Name'],
+          typeGroup: convert['Type'],
+        );
+        List<UserModel> x = [];
+        convert['Members'].toList().forEach((e) {
+          x.add(UserModel.fromJson(e));
+        });
+        data.members = x;
+      
+        dataGroups.add(data);
       });
-      return data;
+      return dataGroups;
     }
     return [];
   }
