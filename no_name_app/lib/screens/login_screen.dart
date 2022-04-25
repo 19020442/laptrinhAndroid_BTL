@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:no_name_app/controller/auth_controller.dart';
+
 import 'package:no_name_app/controller/login_controller.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
@@ -92,13 +92,7 @@ class LoginOptionItem extends StatelessWidget {
               right: BorderSide(width: 1,color: Colors.grey),
               ),
             
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: const Color(0xffA8D0DB).withOpacity(0.4),
-            //     offset: const Offset(0, 2),
-            //     blurRadius: 10,
-            //   ),
-            // ],
+        
             ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

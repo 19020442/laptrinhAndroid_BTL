@@ -5,4 +5,5 @@ class ImageUtils {
 
 class IconUtils {
   static String icGoogle = "assets/svg/ic_google.svg";
+  static String icSave = "assets/svg/save_icon.svg";
 }

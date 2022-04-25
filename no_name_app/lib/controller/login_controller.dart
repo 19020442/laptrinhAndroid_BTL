@@ -18,6 +18,7 @@ class LoginController extends GetxController {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
+
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
 
@@ -25,13 +26,14 @@ class LoginController extends GetxController {
 
     UserModel? tempUser =
         await UserRepository.getUserByEmail(email: user!.email!);
-    // print(tempUser!.toJson());
+
     if (tempUser == null) {
       UserModel userModel = UserModel();
       userModel.id = user.uid;
       userModel.name = user.displayName;
       userModel.email = user.email;
 
+      UserRepository.setUser(userModel);
       Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
       AuthController _authController = Get.find();
       _authController.setUser(userModel);

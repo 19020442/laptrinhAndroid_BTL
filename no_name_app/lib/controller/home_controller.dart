@@ -5,26 +5,30 @@ import 'package:no_name_app/controller/auth_controller.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/screens/account_screen.dart';
+import 'package:no_name_app/screens/activity_screen.dart';
 import 'package:no_name_app/screens/friends_screen.dart';
 import 'package:no_name_app/screens/groups_screen.dart';
 
-class HomeController extends GetxController{
+class HomeController extends GetxController {
   late UserModel userModel;
-  int currentIndex =0;
-  var listPages = [GroupScreen(),FriendScreen(),AccountScreen()];
+  int currentIndex = 0;
+  var listPages = [
+    GroupScreen(),
+    FriendScreen(),
+    ActivityScreen(),
+    AccountScreen()
+  ];
   @override
   void onInit() {
     AuthController _authController = Get.find();
-   
+
     userModel = _authController.userModel!;
- 
+
     super.onInit();
   }
-  
 
   void updateIndex(int value) {
     currentIndex = value;
     update();
   }
-  
 }

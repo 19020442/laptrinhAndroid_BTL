@@ -12,7 +12,7 @@ class CachedImageWidget extends StatelessWidget {
     this.width,
     this.height,
     this.borderRadius,
-    this.errorWidget,
+
     this.color,
     this.blendMode,
     this.backgroundColor,
@@ -28,7 +28,6 @@ class CachedImageWidget extends StatelessWidget {
 
   final double? height;
 
-  final Widget? errorWidget;
 
   final Color? color;
 
@@ -50,8 +49,7 @@ class CachedImageWidget extends StatelessWidget {
           colorBlendMode: blendMode,
           color: color,
           placeholder: (_, url) => const LoadingWidget(),
-          errorWidget: (_, __, ___) =>
-              errorWidget != null ? errorWidget! : Image.asset(ImageUtils.background_login),
+       
           fit: fit,
         ),
       ),

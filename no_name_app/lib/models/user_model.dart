@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:no_name_app/models/group_model.dart';
+
 class UserModel {
   String? id;
   String? name;
   String? email;
-
+  // List<GroupModel>? ownGroups;
   UserModel({this.id, this.name, this.email});
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class UserModel {
       id: map['id'],
       name: map['name'],
       email: map['email'],
+      // ownGroups: map['groups']
     );
   }
 

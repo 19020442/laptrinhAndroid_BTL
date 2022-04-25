@@ -15,28 +15,8 @@ class HomeScreen extends StatelessWidget {
     return GetBuilder(
         init: HomeController(),
         builder: (HomeController _controller) {
-          // print(_controller.userModel.name);
           return Scaffold(
-            appBar: AppBar(
-                // bottom: TabBar(tabs: [
-                //   Tab(text: 'Groups',),
-                //   Tab(text: 'Friends',),
-                //   Tab(text: 'Account',)
-                // ],),
-                // actions: [
-                //   IconButton(
-                //       onPressed: () {
-                //         _controller.logOut();
-                //       },
-                //       icon: const Icon(Icons.logout))
-                // ],
-
-                ),
-            // body: TabBarView(children: [
-            //   GroupScreen(),
-            //   FriendScreen(),
-            //   AccountScreen(),
-            // ],),
+            appBar: AppBar(),
             body: _controller.listPages[_controller.currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
@@ -48,17 +28,27 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   bottomSheetItem(
-                    icon: const Icon(Icons.group),
-                    onTap: () { _controller.updateIndex(0);},
+                    child: const Text('Groups'),
+                    onTap: () {
+                      _controller.updateIndex(0);
+                    },
                   ),
                   bottomSheetItem(
-                    icon: const Icon(Icons.person),
-                    onTap: () { _controller.updateIndex(1);},
+                    child: const Text('Friends'),
+                    onTap: () {
+                      _controller.updateIndex(1);
+                    },
                   ),
                   bottomSheetItem(
-                    icon: const Icon(Icons.person),
+                    child: const Text('Activity'),
                     onTap: () {
                       _controller.updateIndex(2);
+                    },
+                  ),
+                  bottomSheetItem(
+                    child: const Text('Account'),
+                    onTap: () {
+                      _controller.updateIndex(3);
                     },
                   )
                 ],
