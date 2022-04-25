@@ -22,9 +22,7 @@ class GroupRepository {
   }
 
   static Future<void> setGroup(GroupModel groupModel) async {
-    await groupCollection.doc(groupModel.id).set(groupModel.toMap())
-    
-    .onError(
+    await groupCollection.doc(groupModel.id).set(groupModel.toMap()).onError(
         (error, stackTrace) =>
             throw FirebaseException(plugin: 'error add new group'));
   }
@@ -87,12 +85,52 @@ class GroupRepository {
           .doc(groupId)
           .collection('state')
           .doc(data[i]['user'].id);
-      path.set({'name': data[i]['user'].name, 'amount': data[i]['amount']});
+      path.get().then((value) {
+        if (value.data() != null) {
+          if (isPayer) {
+            path.update(
+                {'amount': data[i]['amount'] + value.data()!['amount']});
+          } else {
+            path.update(
+                {'amount': value.data()!['amount'] - data[i]['amount']});
+          }
+        } else {
+          if (isPayer) {
+            path.set(
+                {'name': data[i]['user'].name, 'amount': data[i]['amount']});
+          } else {
+            path.set(
+                {'name': data[i]['user'].name, 'amount': -data[i]['amount']});
+          }
+        }
+      });
+
       final collect = isPayer ? "owner" : "payer";
       for (int j = 0; j < data[i][collect].length; j++) {
-        path.collection(collect).doc(data[i][collect][j]['user'].id).set({
-          'name': data[i][collect][j]['user'].name,
-          'amount': data[i][collect][j]['amount']
+        final path1 =
+            path.collection(collect).doc(data[i][collect][j]['user'].id);
+        path1.get().then((value) {
+          if (value.data() == null) {
+            if (isPayer) {
+              path1.set({
+                'name': data[i][collect][j]['user'].name,
+                'amount': data[i][collect][j]['amount']
+              });
+            } else {
+              path1.set({
+                'name': data[i][collect][j]['user'].name,
+                'amount': -data[i][collect][j]['amount']
+              });
+            }
+          } else {
+            if (isPayer) {
+              path1.update(
+                  {'amount': data[i]['amount'] + value.data()!['amount']});
+            } else {
+              path1.update(
+                  {'amount': value.data()!['amount'] - data[i]['amount']});
+            }
+          }
         });
       }
     }
