@@ -16,7 +16,11 @@ class ChooseWhoPaidScreen extends StatelessWidget {
               actions: [
                 IconButton(
                     onPressed: () {
-                      _controller.formKey.currentState!.save();
+                      if (_controller.isMultiChoiceMode) {
+                        _controller.formKey.currentState!.save();
+                      } else {
+                        Get.back();
+                      }
                     },
                     icon: Icon(Icons.save))
               ],
@@ -34,8 +38,8 @@ class ChooseWhoPaidScreen extends StatelessWidget {
                     if (!_controller.isMultiChoiceMode)
                       ListTile(
                         onTap: () {
-                          _controller
-                              .onChoosePayer(_controller.membersOfExpense[i]);
+                          _controller.onChoosePayer(
+                              _controller.membersOfExpense[i], i);
                         },
                         leading: Text('$i'),
                         title: Text(_controller.membersOfExpense[i].name!),

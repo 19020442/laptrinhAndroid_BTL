@@ -39,7 +39,7 @@ class AddExpenseController extends GetxController {
         membersOfExpense.length, TextEditingController());
 
     for (int i = 0; i < membersOfExpense.length; i++) {
-      member.add({});
+      member.add({'user': membersOfExpense[i], 'amount': 0});
       percentMemberController.add(TextEditingController());
     }
 
@@ -72,50 +72,60 @@ class AddExpenseController extends GetxController {
 
   onSaveSetAmountPerMember(
       int index, UserModel membersOfExpense, String? value) {
-    // if (!isOnSplitUnequallyMode) {
-    if (value == "") {
-      member[index] = {'user': membersOfExpense, 'amount': double.parse("0")};
-    } else {
-      member[index]['user'] = membersOfExpense;
-      member[index]['amount'] = double.parse(value!);
-    }
+    if (isMultiChoiceMode) {
+      if (value == "") {
+        member[index] = {'user': membersOfExpense, 'amount': double.parse("0")};
+      } else {
+        member[index]['user'] = membersOfExpense;
+        member[index]['amount'] = double.parse(value!);
+      }
 
-    update();
-    if (index.isEqual(member.length - 1)) {
+      update();
+      if (index.isEqual(member.length - 1)) {
+        Get.back();
+      }
+    } else {
       Get.back();
     }
   }
 
   getNeedToPayEachMember() {
-    if (totalPercentCurrently != 100.0) {
-      Get.dialog(AlertDialog(
-        title: const Text('ERROR'),
-        content: const Text('Total percent must be 100'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('OK'))
-        ],
-      ));
-    } else {
-      if (isOnSplitUnequallyMode) {
-        for (int i = 0; i < member.length; i++) {
-          member[i]['amountToPaid'] = double.parse(valueController.text) *
-              double.parse(percentMemberController[i].text);
-        }
+    if (isOnSplitUnequallyMode) {
+      if (totalPercentCurrently != 100.0) {
+        Get.dialog(AlertDialog(
+          title: const Text('ERROR'),
+          content: const Text('Total percent must be 100'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('OK'))
+          ],
+        ));
       } else {
         for (int i = 0; i < member.length; i++) {
-          member[i]['amountToPaid'] =
-              double.parse(valueController.text) / member.length;
+          member[i]['amountToPaid'] = double.parse(valueController.text) *
+              double.parse(percentMemberController[i].text) /
+              100;
         }
       }
+    } else {
+      for (int i = 0; i < member.length; i++) {
+        member[i]['amountToPaid'] =
+            double.parse(valueController.text) / member.length;
+      }
     }
+
     update();
   }
 
   lastStateOfExpense() {
+    if (member.every((element) => element['amount'] == 0)) {
+      member[0]['user'] = currentUser;
+      member[0]['amount'] = double.parse(valueController.text);
+    }
+    
     for (var element in member) {
       if (element['amount'] < element['amountToPaid']) {
         owner.add({
@@ -179,10 +189,10 @@ class AddExpenseController extends GetxController {
 
   onSave() {
     getNeedToPayEachMember();
-    // lastStateOfExpense();
-    // setRelationBetweenMembers();
+    lastStateOfExpense();
+    setRelationBetweenMembers();
 
-    // setRelationBetweenMembers();
+    setRelationBetweenMembers();
     print('---- PAYERS' + payer.toString());
     print('---- OWNERS' + owner.toString());
 
@@ -222,11 +232,10 @@ class AddExpenseController extends GetxController {
     // }
   }
 
-  onChoosePayer(UserModel member) {
+  onChoosePayer(UserModel memberTapped, int index) {
     if (!isMultiChoiceMode) {
-      payer = [
-        ({'user': member, 'amount': valueController.text})
-      ];
+      member[index]['user'] = memberTapped;
+      member[index]['amount'] = double.parse(valueController.text);
     }
 
     update();

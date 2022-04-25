@@ -41,8 +41,9 @@ class AddExpenseScreen extends StatelessWidget {
                 Container(
                     width: 200,
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: _controller.valueController,
-                      decoration: InputDecoration(hintText: 'Enter the value'),
+                      decoration: InputDecoration(hintText: '0.00',),
                     )),
                 Container(
                   width: 200,

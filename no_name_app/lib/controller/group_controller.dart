@@ -15,7 +15,7 @@ class GroupController extends GetxController {
   void onInit() async {
     AuthController _authController = Get.find();
     userModel = _authController.userModel!;
-    listGroups = (await StorageHelper.getGroups())!;
+    listGroups = (await StorageHelper.getGroups());
 
     update();
     UserRepository.getGroups(uid: userModel.id!).then((value) async {
@@ -34,12 +34,9 @@ class GroupController extends GetxController {
 
         if (!compare(listGroups, temp)) {
           listGroups = temp;
-          StorageHelper.setGroup(temp); 
+          StorageHelper.setGroup(temp);
           update();
         }
-        // userModel.ownGroups = temp;
-
-        // update();
       }
     });
 
