@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
 import 'package:no_name_app/controller/my_group_controller.dart';
+
 import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/group_repository.dart';
@@ -11,6 +12,8 @@ class AddMemberController extends GetxController {
   List<UserModel> friendsAreChosen = [];
 
   List<UserModel> yourFriends = [];
+
+  List<UserModel> listMember = [];
 
   late UserModel userModel;
 
@@ -24,10 +27,15 @@ class AddMemberController extends GetxController {
     Get.dialog(const LoadingWidget());
     await GroupRepository.addMember(
         group: currentGroup, listMemberAdd: friendsAreChosen);
-    // MyGroupController myGroupController = Get.find();
-    // myGroupController.onInit();
+    MyGroupController myGroupController = Get.find();
+    myGroupController.addMember(friendsAreChosen);
+
     Get.back();
     Get.back();
+  }
+
+  bool isJoined(UserModel fr) {
+    return listMember.indexWhere((e) => e.id == yourFriends[0].id) != -1;
   }
 
   @override
@@ -36,6 +44,8 @@ class AddMemberController extends GetxController {
     userModel = _authController.userModel!;
     currentGroup = Get.arguments['group-model'];
     yourFriends = await StorageHelper.getFriends();
+    listMember = Get.arguments['list-member'];
+
     update();
     super.onInit();
   }

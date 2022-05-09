@@ -9,4 +9,6 @@ class Routes {
   static const String ADD_MEMBER_OF_GROUPS = '/add_member';
   static const String CHOOSE_WHO_PAID = '/who_paid';
   static const String CHOOSE_OPTION_SPLIT ='/split_option';
+
+  static const String GROUP_SETTING ='/group_setting';
 }

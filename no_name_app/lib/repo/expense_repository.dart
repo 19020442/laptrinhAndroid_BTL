@@ -31,7 +31,7 @@ class ExpenseRepository {
           .doc(payersData[i]['user'].id);
       // payerData.collection('owners').
       payerData.set({
-        'name' : payersData[i]['user'].name,
+        'name': payersData[i]['user'].name,
         'amount': payersData[i]['amount']
       });
       for (int j = 0; j < payersData[i]['owner'].length; j++) {
@@ -53,7 +53,7 @@ class ExpenseRepository {
           .doc(ownersData[i]['user'].id);
       // payerData.collection('owners').
       ownerData.set({
-        'name' : ownersData[i]['user'].name,
+        'name': ownersData[i]['user'].name,
         'amount': ownersData[i]['amount']
       });
       for (int j = 0; j < ownersData[i]['payer'].length; j++) {
@@ -117,5 +117,46 @@ class ExpenseRepository {
         .doc(expenseModel.id)
         .delete();
     print('---- EXPENSE ' + expenseModel.id + ' DELETED');
+  }
+
+  static Future<double> getYourStatusOnExpense(
+      {required String groupId,
+      required ExpenseModel currentExpense,
+      required String userId}) async {
+    final ownerData = await groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id)
+        .collection('owners')
+        .get();
+    final payerData = await groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id)
+        .collection('payers')
+        .get();
+
+    if (!ownerData.docs.any((element) => element.id != userId)) {
+      final data = await groupCollection
+          .doc(groupId)
+          .collection('expenses')
+          .doc(currentExpense.id)
+          .collection('owners')
+          .doc(userId)
+          .get();
+      return -data.data()!['amount'];
+    }
+
+    if (!payerData.docs.any((element) => element.id != userId)) {
+      final data = await groupCollection
+          .doc(groupId)
+          .collection('expenses')
+          .doc(currentExpense.id)
+          .collection('payers')
+          .doc(userId)
+          .get();
+      return data.data()!['amount'];
+    }
+    return 0;
   }
 }

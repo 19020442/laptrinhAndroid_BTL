@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/create_new_group_controller.dart';
+import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/widgets/cached_image.dart';
 import 'package:no_name_app/widgets/type_of_group_widget.dart';
 
@@ -19,14 +20,11 @@ class CreateNewGroupScreen extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Create a group'),
               actions: [
-                GestureDetector(
-                  onTap: () {
-                    _controller.onSave();
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: const Center(child: Text('Save'))),
-                )
+                IconButton(
+                    onPressed: () {
+                      _controller.onSave();
+                    },
+                    icon: const Icon(Icons.check))
               ],
             ),
             body: Padding(
@@ -44,8 +42,8 @@ class CreateNewGroupScreen extends StatelessWidget {
                             child: Center(
                               child: _controller.imageGroup != ""
                                   ? CachedImageWidget(
-                                    height: 50,
-                                    width: 50,
+                                      height: 50,
+                                      width: 50,
                                       url: _controller.imageGroup)
                                   : Icon(Icons.add_a_photo),
                             ),
@@ -59,15 +57,19 @@ class CreateNewGroupScreen extends StatelessWidget {
                       Expanded(
                           child: TextField(
                         controller: _controller.nameGroupController,
-                        decoration:
-                            const InputDecoration(labelText: 'Group name'),
+                        decoration: InputDecoration(
+                            labelText: 'Group name',
+                            labelStyle: FontUtils.mainTextStyle.copyWith()),
                       ))
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text('Type'),
+                  Text(
+                    'Type',
+                    style: FontUtils.mainTextStyle.copyWith(),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -76,9 +78,18 @@ class CreateNewGroupScreen extends StatelessWidget {
                     child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (ctx, index) {
-                          return TypeOfGroup(
+                          return GestureDetector(
+                            onTap: () {
+                              _controller.onSelectTypeGroup(index);
+                            },
+                            child: TypeOfGroup(
+                              
                               icon: _controller.listIconTypeOfGroup[index],
-                              title: _controller.titleEachGroup[index]);
+                              title: _controller.titleEachGroup[index],
+                              isChoosen:
+                                  _controller.typeOfGroupIndexChoosen == index,
+                            ),
+                          );
                         },
                         separatorBuilder: (ctx, index) {
                           return const SizedBox(

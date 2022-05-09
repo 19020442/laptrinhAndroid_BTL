@@ -68,6 +68,7 @@ class GroupRepository {
   static Future<void> leaveGroup(
       {required String uid, required String gid}) async {
     await groupCollection.doc(gid).collection('members').doc(uid).delete();
+    await UserRepository.userCollection.doc(uid).collection('groups').doc(gid).delete();
     print('--- USER ' + uid + ' HAS LEFT GROUP ' + gid);
   }
 
@@ -161,6 +162,18 @@ class GroupRepository {
       }
     }
 
-    return status;
+    List<Map<String, dynamic>> statusFinal = [];
+    for (int i = 0; i < status.length - 1; i++) {
+      for (int j = i + 1; j < status.length; j++) {
+        if (status[i]['id'] == status[j]['id']) {
+          status[i]['amount'] += status[j]['amount'];
+          status.removeAt(j);
+          j--;
+        }
+      }
+      statusFinal.add(status[i]);
+    }
+
+    return statusFinal;
   }
 }

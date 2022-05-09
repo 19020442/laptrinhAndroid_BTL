@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:no_name_app/models/user_model.dart';
 
-
 class ExpenseModel {
   String id;
   String name;
@@ -10,13 +9,13 @@ class ExpenseModel {
   String value;
   List<UserModel> members;
 
-  ExpenseModel(
-      {required this.id,
-      required this.name,
-      required this.dateCreate,
-      required this.value,
-      required this.members,
-      });
+  ExpenseModel({
+    required this.id,
+    required this.name,
+    required this.dateCreate,
+    required this.value,
+    required this.members,
+  });
 
   Map<String, dynamic> toMap() {
     return {'Id': id, 'Name': name, 'Datetime': dateCreate, 'Value': value};

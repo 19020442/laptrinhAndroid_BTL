@@ -21,6 +21,7 @@ class AddExpenseController extends GetxController {
   List<Map<String, dynamic>> owner = [];
   List<TextEditingController> amountPerPayer = [];
   List<Map<String, dynamic>> temp = [];
+  late UserModel memberTapped;
   final formKey = GlobalKey<FormState>();
 
   // slpit unqually var
@@ -31,8 +32,10 @@ class AddExpenseController extends GetxController {
   final formKeySplitPercent = GlobalKey<FormState>();
   @override
   void onInit() {
+
     groupModel = Get.arguments['group-model'];
     currentUser = Get.arguments['user-model'];
+    memberTapped = currentUser;
     groupModel!.members = groupController.listMember;
     membersOfExpense = groupModel!.members!;
     amountPerPayer = List<TextEditingController>.filled(
@@ -188,20 +191,21 @@ class AddExpenseController extends GetxController {
   }
 
   onSave() {
-    getNeedToPayEachMember();
-    lastStateOfExpense();
-    setRelationBetweenMembers();
+    // print(valueController.text == "");
 
-    setRelationBetweenMembers();
-    print('---- PAYERS' + payer.toString());
-    print('---- OWNERS' + owner.toString());
+    // print('---- PAYERS' + payer.toString());
+    // print('---- OWNERS' + owner.toString());
 
     if (saveExpenseError().isNotEmpty) {
-      Get.snackbar('Cannot save expense', saveExpenseError().toString(),
-          backgroundColor: Colors.red,
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white);
+      Get.defaultDialog(
+          title: 'Cannot save expense',
+          middleText: 'You must fill all information',
+          radius: 15);
     } else {
+      getNeedToPayEachMember();
+      lastStateOfExpense();
+      setRelationBetweenMembers();
+      setRelationBetweenMembers();
       // else {
       ExpenseRepository.getIdOfExpenseInGroup(groupId: groupModel!.id!)
           .then((value) {
@@ -231,13 +235,18 @@ class AddExpenseController extends GetxController {
     }
   }
 
-  onChoosePayer(UserModel memberTapped, int index) {
+  onChoosePayer(UserModel memberTapped1, int index) {
     if (!isMultiChoiceMode) {
-      member[index]['user'] = memberTapped;
+      member[index]['user'] = memberTapped1;
       member[index]['amount'] = double.parse(valueController.text);
+      memberTapped = memberTapped1;
     }
 
     update();
+  }
+
+  bool isTapped(UserModel thisMember) {
+    return memberTapped.id == thisMember.id; 
   }
 
   switchMultiChoiceMode() {

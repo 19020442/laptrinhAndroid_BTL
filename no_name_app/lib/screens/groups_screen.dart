@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/group_controller.dart';
 import 'package:no_name_app/routes/routes.dart';
@@ -17,26 +18,60 @@ class GroupScreen extends StatelessWidget {
       builder: (GroupController _controller) {
         return Center(
           // padding: const EdgeInsets.all(15),
-          child: _controller.listGroups.isEmpty
-              ? Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  Image.asset(
-                    ImageUtils.noGroupImage,
-                    height: 200,
-                    width: 200,
-                  ),
-                  Text(
-                    'Bạn chưa có nhóm để hiển thị',
-                    style: FontUtils.mainTextStyle.copyWith(),
-                  ),
-                  GestureDetector(
-                      onTap: _controller.startCreateNewGroup,
-                      child: AddButton(
-                        icon: Icon(Icons.group_add),
-                        title: 'Start new group',
-                      ))
-                ])
-              : Column(
+          child:
+          //  _controller.listGroups.isEmpty
+          //     ? Column(children: [
+          //         SizedBox(
+          //           height: 75,
+          //           child: Row(
+          //             crossAxisAlignment: CrossAxisAlignment.end,
+          //             mainAxisAlignment: MainAxisAlignment.end,
+          //             children: [
+          //               GestureDetector(
+          //                 child: SvgPicture.asset(IconUtils.icSearch),
+          //               ),
+          //               SizedBox(
+          //                 width: 15,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         Divider(),
+          //         Image.asset(
+          //           ImageUtils.noGroupImage,
+          //           height: 200,
+          //           width: 200,
+          //         ),
+          //         Text(
+          //           'Bạn chưa có nhóm để hiển thị',
+          //           style: FontUtils.mainTextStyle.copyWith(),
+          //         ),
+          //         GestureDetector(
+          //             onTap: _controller.startCreateNewGroup,
+          //             child: AddButton(
+          //               icon: Icon(Icons.group_add),
+          //               title: 'Start new group',
+          //             ))
+          //       ])
+              // :
+               Column(
                   children: [
+                    SizedBox(
+                      height: 75,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            child: SvgPicture.asset(IconUtils.icSearch),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(),
                     for (int i = 0; i < _controller.listGroups.length; i++)
                       GestureDetector(
                         onTap: () {
@@ -51,7 +86,10 @@ class GroupScreen extends StatelessWidget {
                     GestureDetector(
                         onTap: _controller.startCreateNewGroup,
                         child: AddButton(
-                          icon: Icon(Icons.group_add),
+                          icon: Icon(
+                            Icons.group_add,
+                            color: Colors.white,
+                          ),
                           title: 'Start new group',
                         ))
                   ],

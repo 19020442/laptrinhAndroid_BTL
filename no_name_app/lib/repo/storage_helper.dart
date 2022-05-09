@@ -20,6 +20,7 @@ class StorageHelper {
 
   static Future<List<GroupModel>> getGroups() async {
     final result = await box.read(KEY_GROUPS);
+  
     if (result != null) {
       List<GroupModel> dataGroups = [];
       final localGroupData = (json.decode(json.encode(result)).toList());

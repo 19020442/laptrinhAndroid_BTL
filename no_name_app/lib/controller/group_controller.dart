@@ -33,6 +33,7 @@ class GroupController extends GetxController {
         }
 
         if (!compare(listGroups, temp)) {
+          // print('GROUP DATA HAS CHANGED');
           listGroups = temp;
           StorageHelper.setGroup(temp);
           update();

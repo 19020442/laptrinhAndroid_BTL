@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
+import 'package:no_name_app/controller/group_controller.dart';
 import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/upload_repository.dart';
@@ -14,19 +15,17 @@ class CreateNewGroupController extends GetxController {
   TextEditingController nameGroupController = TextEditingController();
   late String imageGroup = "";
   late String typeGroup = "";
-  List<Icon> listIconTypeOfGroup = [
-    const Icon(
-      Icons.airplanemode_active,
-      color: Colors.blue,
-    ),
-    const Icon(Icons.home, color: Colors.blue),
-    const Icon(Icons.list_alt, color: Colors.blue),
+  List<IconData> listIconTypeOfGroup = [
+    Icons.airplanemode_active,
+    Icons.home,
+    Icons.list_alt,
   ];
   List<String> titleEachGroup = [
     'Trip',
     'Home',
     'Other',
   ];
+  int typeOfGroupIndexChoosen = 2;
 
   pickImage() async {
     Get.dialog(const LoadingWidget());
@@ -51,6 +50,7 @@ class CreateNewGroupController extends GetxController {
 
   onSelectTypeGroup(int index) {
     typeGroup = titleEachGroup[index];
+    typeOfGroupIndexChoosen = index;
     update();
   }
 
@@ -86,7 +86,9 @@ class CreateNewGroupController extends GetxController {
             .then((value) {
           update();
           Get.back();
-
+          print(newGroup.toJson());
+          GroupController groupController = Get.find();
+          groupController.onInit();
           Get.offAndToNamed(Routes.MY_GROUP_SCREEN, arguments: {
             'group-model': newGroup,
             'user-model': authController.userModel

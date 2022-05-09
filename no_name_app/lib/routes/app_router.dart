@@ -4,10 +4,11 @@ import 'package:no_name_app/screens/add_friend_screen.dart';
 import 'package:no_name_app/screens/add_member_screen.dart';
 import 'package:no_name_app/screens/choose_who_paid_screen.dart';
 import 'package:no_name_app/screens/create_new_group_screen.dart';
+import 'package:no_name_app/screens/group/group_setting_screen.dart';
 import 'package:no_name_app/screens/login_screen.dart';
 import 'package:no_name_app/screens/home_screen.dart';
 import 'package:no_name_app/routes/routes.dart';
-import 'package:no_name_app/screens/my_group_screen.dart';
+import 'package:no_name_app/screens/group/my_group_screen.dart';
 import 'package:no_name_app/screens/option_split_screen.dart';
 import 'package:no_name_app/screens/register_screen.dart';
 
@@ -28,6 +29,8 @@ class Pages {
     GetPage(
         name: Routes.CHOOSE_WHO_PAID, page: () => const ChooseWhoPaidScreen()),
     GetPage(
-        name: Routes.CHOOSE_OPTION_SPLIT, page: () => const SplitOptionScreen())
+        name: Routes.CHOOSE_OPTION_SPLIT, page: () => const SplitOptionScreen()),
+
+        GetPage(name: Routes.GROUP_SETTING, page:()=> const GroupSettingScreen())
   ];
 }

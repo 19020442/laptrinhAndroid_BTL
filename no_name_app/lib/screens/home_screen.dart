@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:get/get.dart';
-import 'package:no_name_app/controller/auth_controller.dart';
+
 import 'package:no_name_app/controller/home_controller.dart';
-import 'package:no_name_app/screens/account_screen.dart';
-import 'package:no_name_app/screens/friends_screen.dart';
-import 'package:no_name_app/screens/groups_screen.dart';
+import 'package:no_name_app/utils/fonts.dart';
+import 'package:no_name_app/utils/image.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
         init: HomeController(),
         builder: (HomeController _controller) {
           return Scaffold(
-            appBar: AppBar(),
             body: _controller.listPages[_controller.currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
@@ -28,25 +27,75 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   bottomSheetItem(
-                    child: const Text('Groups'),
+                    icon: SvgPicture.asset(
+                      _controller.currentIndex == 0
+                          ? IconUtils.icGroupSelected
+                          : IconUtils.icGroup,
+                    ),
+                    child: Text(
+                      'Groups',
+                      style: FontUtils.mainTextStyle.copyWith(
+                          color: _controller.currentIndex == 0
+                              ? Colors.blue
+                              : Colors.black,
+                          fontWeight: _controller.currentIndex == 0
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
                     onTap: () {
                       _controller.updateIndex(0);
                     },
                   ),
                   bottomSheetItem(
-                    child: const Text('Friends'),
+                    child: Text(
+                      'Friends',
+                      style: FontUtils.mainTextStyle.copyWith(
+                          color: _controller.currentIndex == 1
+                              ? Colors.blue
+                              : Colors.black,
+                          fontWeight: _controller.currentIndex == 1
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                    icon: SvgPicture.asset(_controller.currentIndex == 1
+                        ? IconUtils.icFriendSelected
+                        : IconUtils.icFriend),
                     onTap: () {
                       _controller.updateIndex(1);
                     },
                   ),
                   bottomSheetItem(
-                    child: const Text('Activity'),
+                    child: Text(
+                      'Activity',
+                      style: FontUtils.mainTextStyle.copyWith(
+                          color: _controller.currentIndex == 2
+                              ? Colors.blue
+                              : Colors.black,
+                          fontWeight: _controller.currentIndex == 2
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                    icon: SvgPicture.asset(_controller.currentIndex == 2
+                        ? IconUtils.icActivityListSelected
+                        : IconUtils.icActivityList),
                     onTap: () {
                       _controller.updateIndex(2);
                     },
                   ),
                   bottomSheetItem(
-                    child: const Text('Account'),
+                    child: Text(
+                      'Account',
+                      style: FontUtils.mainTextStyle.copyWith(
+                          color: _controller.currentIndex == 3
+                              ? Colors.blue
+                              : Colors.black,
+                          fontWeight: _controller.currentIndex == 3
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                    icon: SvgPicture.asset(_controller.currentIndex == 3
+                        ? IconUtils.icProfileSelected
+                        : IconUtils.icProfile),
                     onTap: () {
                       _controller.updateIndex(3);
                     },
@@ -60,7 +109,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 Widget bottomSheetItem({
-  Icon? icon,
+  Widget? icon,
   Function()? onTap,
   int? index,
   int? currentIndex,
@@ -69,11 +118,14 @@ Widget bottomSheetItem({
   return GestureDetector(
     onTap: onTap,
     behavior: HitTestBehavior.opaque,
-    child: Stack(
-      children: [
-        Container(height: 50, width: 50, child: icon),
-        if (child != null) child
-      ],
+    child: Container(
+      height: 50,
+      child: Column(
+        children: [
+          SizedBox(height: 30, width: 30, child: icon),
+          if (child != null) child
+        ],
+      ),
     ),
   );
 }

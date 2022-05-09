@@ -18,7 +18,6 @@ class AddFriendController extends GetxController {
     userModel = Get.arguments['user-model'];
     update();
 
-    // TODO: implement onInit
     super.onInit();
   }
 

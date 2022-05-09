@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 class AddButton extends StatelessWidget {
   final String title;
@@ -11,12 +12,14 @@ class AddButton extends StatelessWidget {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [icon, Text(title)],
+        children: [icon, Text(title, style: FontUtils.mainTextStyle.copyWith(
+          color: Colors.white
+        ),)],
       ),
       height: 30,
       width: 200,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.green, width: 2),
+          color: Colors.blue,
           borderRadius: BorderRadius.circular(5)),
     );
   }

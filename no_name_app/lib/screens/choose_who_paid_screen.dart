@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/add_expense_controller.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 class ChooseWhoPaidScreen extends StatelessWidget {
   const ChooseWhoPaidScreen({Key? key}) : super(key: key);
@@ -22,27 +23,51 @@ class ChooseWhoPaidScreen extends StatelessWidget {
                         Get.back();
                       }
                     },
-                    icon: Icon(Icons.save))
+                    icon: const Icon(Icons.check))
               ],
             ),
             body: Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FlatButton(
-                      onPressed: () {
+                  GestureDetector(
+                      onTap: () {
                         _controller.switchMultiChoiceMode();
                       },
-                      child: const Text('Multi choice')),
+                      child: Container(
+                        height: 40,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                            color: _controller.isMultiChoiceMode
+                                ? Colors.blue
+                                : Colors.white),
+                        child: Center(
+                          child: Text(
+                            'Multi choice',
+                            style: FontUtils.mainTextStyle.copyWith(
+                                color: _controller.isMultiChoiceMode
+                                    ? Colors.white
+                                    : Colors.blue),
+                          ),
+                        ),
+                      )),
                   for (int i = 0; i < _controller.membersOfExpense.length; i++)
                     if (!_controller.isMultiChoiceMode)
-                      ListTile(
-                        onTap: () {
-                          _controller.onChoosePayer(
-                              _controller.membersOfExpense[i], i);
-                        },
-                        leading: Text('$i'),
-                        title: Text(_controller.membersOfExpense[i].name!),
+                      Container(
+                        width: 400,
+                        height: 50,
+                        child: ListTile(
+                          onTap: () {
+                            _controller.onChoosePayer(
+                                _controller.membersOfExpense[i], i);
+                          },
+                          trailing: _controller.isTapped(_controller.membersOfExpense[i]) ? Icon(Icons.check): Text(''),
+                          leading: const CircleAvatar(),
+                          title: Text(_controller.membersOfExpense[i].name!),
+                        ),
                       ),
                   if (_controller.isMultiChoiceMode)
                     Form(
@@ -62,7 +87,7 @@ class ChooseWhoPaidScreen extends StatelessWidget {
                                         height: 50,
                                         child: ListTile(
                                           onTap: () {},
-                                          leading: Text('$i'),
+                                          leading: const CircleAvatar(),
                                           title: Text(_controller
                                               .membersOfExpense[i].name!),
                                         ),

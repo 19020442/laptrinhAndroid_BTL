@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:no_name_app/controller/add_expense_controller.dart';
 import 'package:no_name_app/routes/app_router.dart';
 import 'package:no_name_app/routes/routes.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 class AddExpenseScreen extends StatelessWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class AddExpenseScreen extends StatelessWidget {
                   onPressed: () {
                     _controller.onSave();
                   },
-                  icon: const Icon(Icons.save))
+                  icon: const Icon(Icons.check))
             ],
           ),
           body: Center(
@@ -36,25 +37,29 @@ class AddExpenseScreen extends StatelessWidget {
                     child: TextFormField(
                       controller: _controller.descriptionController,
                       decoration:
-                          InputDecoration(hintText: 'Enter a description'),
+                          InputDecoration(hintText: 'Enter a description',hintStyle: FontUtils.mainTextStyle.copyWith()),
                     )),
                 Container(
                     width: 200,
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: _controller.valueController,
-                      decoration: InputDecoration(hintText: '0.00',),
+                      decoration: InputDecoration(
+                          hintText: '0.00',
+                          hintStyle: FontUtils.mainTextStyle.copyWith()),
                     )),
                 Container(
                   width: 200,
                   child: Row(
                     children: [
-                      Text('Paid by'),
+                      Text('Paid by',
+                          style: FontUtils.mainTextStyle.copyWith()),
                       TextButton(
                           onPressed: () {
                             Get.toNamed(Routes.CHOOSE_WHO_PAID);
                           },
-                          child: Text('You')),
+                          child: Text('You',
+                              style: FontUtils.mainTextStyle.copyWith())),
                     ],
                   ),
                 ),
@@ -62,12 +67,23 @@ class AddExpenseScreen extends StatelessWidget {
                   width: 200,
                   child: Row(
                     children: [
-                      Text('Split'),
+                      Text(
+                        'Split',
+                        style: FontUtils.mainTextStyle.copyWith(),
+                      ),
                       TextButton(
                           onPressed: () {
-                            Get.toNamed(Routes.CHOOSE_OPTION_SPLIT);
+                            if (_controller.valueController.text != "") {
+                              Get.toNamed(Routes.CHOOSE_OPTION_SPLIT);
+                            } else {
+                              Get.defaultDialog(
+                                  title: "",
+                                  middleText:
+                                      "You must have enter value of this expenses first");
+                            }
                           },
-                          child: Text('equally')),
+                          child: Text('equally',
+                              style: FontUtils.mainTextStyle.copyWith())),
                     ],
                   ),
                 )
