@@ -13,10 +13,12 @@ class AddButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [icon, Text(title, style: FontUtils.mainTextStyle.copyWith(
-          color: Colors.white
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold
         ),)],
       ),
-      height: 30,
+      height: 50,
       width: 200,
       decoration: BoxDecoration(
           color: Colors.blue,

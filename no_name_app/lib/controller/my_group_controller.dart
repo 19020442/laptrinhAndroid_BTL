@@ -47,12 +47,17 @@ class MyGroupController extends GetxController {
 
     GroupRepository.getMemebers(groupId: currentGroup.id!).then((value) {
       listMember = value;
+     listMember.forEach((e) {
+        print(e.name);
+     });
+      
       update();
     });
     GroupRepository.getStatusGroupByUserId(
             groupId: currentGroup.id!, userId: userModel.id!)
         .then((value) {
       status = value;
+      print(value);
       update();
     });
 
@@ -60,7 +65,7 @@ class MyGroupController extends GetxController {
   }
 
   deleteGroup() {
-    Get.dialog(LoadingWidget());
+    Get.dialog(const LoadingWidget());
 
     GroupRepository.leaveGroup(uid: userModel.id!, gid: currentGroup.id!).then(
         (value) =>
@@ -75,7 +80,7 @@ class MyGroupController extends GetxController {
   }
 
   leaveGroup() {
-    Get.dialog(LoadingWidget());
+    Get.dialog(const LoadingWidget());
 
     GroupRepository.leaveGroup(uid: userModel.id!, gid: currentGroup.id!)
         .then((value) {

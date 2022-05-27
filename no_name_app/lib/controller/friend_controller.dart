@@ -9,7 +9,7 @@ import 'package:no_name_app/routes/routes.dart';
 class FriendController extends GetxController {
   late UserModel userModel = UserModel();
   List<UserModel> listFriends = [];
-
+  bool isLoadingFriend = true;
   @override
   void onInit() async {
     AuthController authController = Get.find();
@@ -22,6 +22,7 @@ class FriendController extends GetxController {
       if (!compare(value, listFriends)) {
         listFriends = value;
         StorageHelper.setFriends(value);
+        isLoadingFriend = false;
         update();
       }
     });

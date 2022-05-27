@@ -16,48 +16,303 @@ class AuthScreen extends StatelessWidget {
         init: LoginController(),
         builder: (LoginController _controller) {
           return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Stack(
-                children: [
-                  Container(
-                    width: deviceSize.width,
-                    height: deviceSize.height,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      // image: DecorationImage(
-                      //     fit: BoxFit.fitHeight,
-                      //     image: ExactAssetImage(ImageUtils.background_login))
-                    ),
-                  ),
-                  Center(
-                    child: LoginOptionItem(
-                        title: 'Login with Google',
-                        image: IconUtils.icGoogle,
-                        onTap: () {
-                          _controller.loginWithGoogle();
-                        }),
-                    // child: Container(
-                    //   padding: const EdgeInsets.all(10),
-                    //   height: 400,
-                    //   width: 300,
-                    //   decoration: BoxDecoration(
-                    //       color: Colors.blueGrey[800],
-                    //       borderRadius: BorderRadius.circular(15)),
-                    //   child: Column(
-                    //     children: [
-                    //       LoginOptionItem(
-                    //           title: 'Login with Google',
-                    //           image: IconUtils.icGoogle,
-                    //           onTap: () {})
-                    //     ],
-                    //   ),
-                    // ),
-                  )
-                ],
-              ),
-            ),
-          );
+              body: _controller.currentMode == AuthMode.StartPageMode
+                  ? Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: deviceSize.width,
+                            height: deviceSize.height,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              image: DecorationImage(
+                                image: AssetImage(ImageUtils.background_login),
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Column(
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: deviceSize.width,
+                                  height: 600,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          ImageUtils.background_login),
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ),
+                                ),
+                                LoginOptionItem(
+                                    color: Colors.blue,
+                                    title: 'Đăng ký',
+                                    image: '',
+                                    onTap: () {
+                                      _controller.switchToSignUp();
+                                    }),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                LoginOptionItem(
+                                    color: Colors.white,
+                                    title: 'Đăng nhập',
+                                    image: '',
+                                    onTap: () {
+                                      _controller.switchToLogin();
+                                    }),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                LoginOptionItem(
+                                    color: Colors.white,
+                                    title: 'Đăng nhập bằng Google',
+                                    image: IconUtils.icGoogle,
+                                    onTap: () {
+                                      _controller.loginWithGoogle();
+                                    }),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : _controller.currentMode == AuthMode.SignUpMode
+                      ? Stack(
+                          children: [
+                            Container(
+                              width: deviceSize.width,
+                              height: deviceSize.height,
+                              color: Colors.white,
+                            ),
+                            Positioned(
+                              bottom: -60,
+                              left: -40,
+                              child: Container(
+                                width: 300,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      ImageUtils.background_sign_up,
+                                    ),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  TextFormField(
+                                    style: FontUtils.mainTextStyle.copyWith() ,
+                                    controller: _controller.userNameController,
+                                    decoration: InputDecoration(
+                                        labelStyle:
+                                            FontUtils.mainTextStyle.copyWith(),
+                                        hintText: 'Tên người dùng',
+                                        hintStyle:
+                                            FontUtils.mainTextStyle.copyWith()),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            _controller.pickAvatar();
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage(_controller
+                                                              .avatarSelected !=
+                                                          ""
+                                                      ? _controller
+                                                          .avatarSelected
+                                                      : ""),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                                border: Border.all(
+                                                    color: Color(0xff546d94),
+                                                    width: 3)),
+                                            height: 150,
+                                            width: 150,
+                                            child:
+                                                _controller.avatarSelected == ""
+                                                    ? const Center(
+                                                        child: Icon(Icons
+                                                            .camera_alt_outlined),
+                                                      )
+                                                    : Container(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              TextFormField(
+                                                style: FontUtils.mainTextStyle.copyWith() ,
+                                                controller:
+                                                    _controller.emailController,
+                                                decoration: InputDecoration(
+                                                    labelStyle: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith(),
+                                                    hintText:
+                                                        'Nhập địa chỉ email',
+                                                    hintStyle: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith()),
+                                              ),
+                                              TextFormField(
+                                                style: FontUtils.mainTextStyle.copyWith() ,
+                                                controller: _controller
+                                                    .passwordController,
+                                                decoration: InputDecoration(
+                                                    labelStyle: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith(),
+                                                    hintText: 'Nhập mật khẩu',
+                                                    hintStyle: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith()),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                 const SizedBox(
+                                    height: 50,
+                                  ),
+                                  Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        flex: 4,
+                                        child: ButtonWidget(
+                                            color: Colors.white,
+                                            title: 'Quay lại',
+                                            // image: '',
+                                            onTap: () {
+                                              _controller.backToStartPage();
+                                            }),
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Container(),
+                                      ),
+                                      Flexible(
+                                        flex: 4,
+                                        child: ButtonWidget(
+                                            color: const Color(0xff876967),
+                                            title: 'Xong',
+                                            // image: '',
+                                            onTap: () {
+                                              _controller.signUp();
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : Stack(children: [
+                          Container(
+                            width: deviceSize.width,
+                            height: deviceSize.height,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Text(
+                                  'Chào mừng quay trở lại',
+                                  style: FontUtils.mainTextStyle.copyWith(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Text(
+                                  'Địa chỉ email',
+                                  style: FontUtils.mainTextStyle
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                TextFormField(
+                                  style: FontUtils.mainTextStyle.copyWith() ,
+                                  controller: _controller.emailController,
+                                  decoration: InputDecoration(
+                                    labelStyle:
+                                        FontUtils.mainTextStyle.copyWith(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Mật khẩu',
+                                  style: FontUtils.mainTextStyle
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                TextFormField(
+                                  style: FontUtils.mainTextStyle.copyWith() ,
+                                  controller: _controller.passwordController,
+                                  decoration: InputDecoration(
+                                    labelStyle:
+                                        FontUtils.mainTextStyle.copyWith(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ButtonWidget(
+                                    title: 'Đăng nhập',
+                                    onTap: () {
+                                      _controller.loginByEmailAndPassword();
+                                    },
+                                    color: Colors.green),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ButtonWidget(
+                                    title: 'Quay lại',
+                                    onTap: () {
+                                      _controller.backToStartPage();
+                                    },
+                                    color: Colors.white),
+                              ],
+                            ),
+                          )
+                        ]));
         });
   }
 }
@@ -68,11 +323,13 @@ class LoginOptionItem extends StatelessWidget {
     required this.title,
     required this.image,
     required this.onTap,
+    required this.color,
   }) : super(key: key);
 
   final String title;
   final String image;
   final Function() onTap;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -81,33 +338,89 @@ class LoginOptionItem extends StatelessWidget {
       child: Container(
         // padding: const EdgeInsets.only(left: 10, right: 10),
         height: 50,
-        // width: 300,
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            // borderRadius: BorderRadius.circular(5),
-            border: Border(
-              bottom: BorderSide(width: 4,color: Colors.grey),
-              left: BorderSide(width: 1,color: Colors.grey),
-              top: BorderSide(width: 1,color: Colors.grey),
-              right: BorderSide(width: 1,color: Colors.grey),
-              ),
-            
-        
-            ),
+        width: 250,
+        decoration: BoxDecoration(
+          color: color,
+          // borderRadius: BorderRadius.circular(5),
+          border: const Border(
+            bottom: BorderSide(width: 4, color: Colors.grey),
+            left: BorderSide(width: 1, color: Colors.grey),
+            top: BorderSide(width: 1, color: Colors.grey),
+            right: BorderSide(width: 1, color: Colors.grey),
+          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              image,
-              height: 30,
-              width: 30,
-            ),
+            if (image != "")
+              SvgPicture.asset(
+                image,
+                height: 30,
+                width: 30,
+              ),
             const SizedBox(
               width: 10,
             ),
             Text(
               title,
-              style: FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700),
+              style:
+                  FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonWidget extends StatelessWidget {
+  const ButtonWidget({
+    Key? key,
+    required this.title,
+    // required this.image,
+    required this.onTap,
+    required this.color,
+  }) : super(key: key);
+
+  final String title;
+  // final String image;
+  final Function() onTap;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        // padding: const EdgeInsets.only(left: 10, right: 10),
+        height: 50,
+        // width: 250,
+        decoration: BoxDecoration(
+          color: color,
+          // borderRadius: BorderRadius.circular(5),
+          border: const Border(
+            bottom: BorderSide(width: 4, color: Colors.grey),
+            left: BorderSide(width: 1, color: Colors.grey),
+            top: BorderSide(width: 1, color: Colors.grey),
+            right: BorderSide(width: 1, color: Colors.grey),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // if (image != "")
+            //   SvgPicture.asset(
+            //     image,
+            //     height: 30,
+            //     width: 30,
+            //   ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              title,
+              style:
+                  FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700),
             )
           ],
         ),

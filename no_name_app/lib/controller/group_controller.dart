@@ -11,6 +11,14 @@ import 'package:no_name_app/routes/routes.dart';
 class GroupController extends GetxController {
   late UserModel userModel;
   List<GroupModel> listGroups = [];
+  bool isShowFilterTable = false;
+  Map<String, bool> filterTable = {
+    'all': true,
+    'own': false,
+    'owned': false,
+  };
+
+  bool isLoadingGroup = true;
   @override
   void onInit() async {
     AuthController _authController = Get.find();
@@ -24,6 +32,7 @@ class GroupController extends GetxController {
 
       if (value == null) {
         listGroups = [];
+        isLoadingGroup = false;
         update();
       } else {
         for (int i = 0; i < value.length; i++) {
@@ -35,7 +44,9 @@ class GroupController extends GetxController {
         if (!compare(listGroups, temp)) {
           // print('GROUP DATA HAS CHANGED');
           listGroups = temp;
+
           StorageHelper.setGroup(temp);
+          isLoadingGroup = false;
           update();
         }
       }
@@ -46,5 +57,25 @@ class GroupController extends GetxController {
 
   void startCreateNewGroup() {
     Get.toNamed(Routes.CREATE_NEW_GROUP);
+  }
+
+  void openFilterTable() {
+    isShowFilterTable = !isShowFilterTable;
+    update();
+  }
+
+  onSelectFilter(String type) {
+    filterTable[type] = true;
+    if (type == 'all') {
+      filterTable['own'] = false;
+      filterTable['owned'] = false;
+    } else if (type == 'own') {
+      filterTable['all'] = false;
+      filterTable['owned'] = false;
+    } else {
+      filterTable['all'] = false;
+      filterTable['own'] = false;
+    }
+    update();
   }
 }

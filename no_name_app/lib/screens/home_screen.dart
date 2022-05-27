@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                           : IconUtils.icGroup,
                     ),
                     child: Text(
-                      'Groups',
+                      'Nhóm',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 0
                               ? Colors.blue
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   bottomSheetItem(
                     child: Text(
-                      'Friends',
+                      'Bạn bè',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 1
                               ? Colors.blue
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   bottomSheetItem(
                     child: Text(
-                      'Activity',
+                      'Hoạt động',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 2
                               ? Colors.blue
@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   bottomSheetItem(
                     child: Text(
-                      'Account',
+                      'Tài khoản',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 3
                               ? Colors.blue
@@ -118,11 +118,11 @@ Widget bottomSheetItem({
   return GestureDetector(
     onTap: onTap,
     behavior: HitTestBehavior.opaque,
-    child: Container(
+    child: SizedBox(
       height: 50,
       child: Column(
         children: [
-          SizedBox(height: 30, width: 30, child: icon),
+          SizedBox(height: 20, width: 20, child: icon),
           if (child != null) child
         ],
       ),

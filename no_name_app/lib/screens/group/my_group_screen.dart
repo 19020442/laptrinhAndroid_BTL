@@ -103,17 +103,25 @@ class MyGroupScreen extends StatelessWidget {
                                                   BorderRadius.circular(15.0),
                                             ),
                                             elevation: 5,
-                                            child: Container(
-                                              // color: Colors.blue,
-                                              width: 150,
-                                              child: Center(
-                                                child: Text(
-                                                  'Selt up',
-                                                  style: FontUtils.mainTextStyle
-                                                      .copyWith(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes.SETTLE_UP_SCREEN);
+                                              },
+                                              child: Container(
+                                                // color: Colors.blue,
+                                                width: 150,
+                                                child: Center(
+                                                  child: Text(
+                                                    'Selt up',
+                                                    style: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -167,18 +175,21 @@ class MyGroupScreen extends StatelessWidget {
                                       for (int i = 0;
                                           i < _controller.status.length;
                                           i++)
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Text(_controller.status[i]
-                                                  ['name'] +
-                                              " ownes you " +
-                                              _controller.status[i]['amount']
-                                                  .toString() +
-                                              " VND"),
-                                        )
+                                        if (_controller.status[i]['amount']
+                                                .toString() !=
+                                            "0.0")
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Text(_controller.status[i]
+                                                    ['name'] +
+                                                " ownes you " +
+                                                _controller.status[i]['amount']
+                                                    .toString() +
+                                                " VND"),
+                                          )
                                     ],
                                   ),
-                                  const Text('Expenses'),
+                                  // const Text('Expenses'),
                                   _controller.isLoading
                                       ? CircularProgressIndicator()
                                       : Padding(
@@ -257,6 +268,7 @@ class MyGroupScreen extends StatelessWidget {
 
                       image: _controller.currentGroup.imageGroup == ""
                           ? DecorationImage(
+                              fit: BoxFit.cover,
                               image: ExactAssetImage(_controller
                                           .currentGroup.typeGroup ==
                                       'Trip'
@@ -265,6 +277,7 @@ class MyGroupScreen extends StatelessWidget {
                                       ? ImageUtils.deafaultGroupHomeImage
                                       : ImageUtils.deafaultGroupOtherImage))
                           : DecorationImage(
+                              fit: BoxFit.cover,
                               image: NetworkImage(
                                   _controller.currentGroup.imageGroup!)),
                       // DecorationImage(

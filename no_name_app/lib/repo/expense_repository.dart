@@ -144,7 +144,7 @@ class ExpenseRepository {
           .collection('owners')
           .doc(userId)
           .get();
-      return -data.data()!['amount'];
+      return - data.data()!['amount'];
     }
 
     if (!payerData.docs.any((element) => element.id != userId)) {

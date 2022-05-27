@@ -38,12 +38,15 @@ class GroupSettingScreen extends StatelessWidget {
                         height: 60,
                         width: 60,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ExactAssetImage(
-                                    _controller.currentGroup.imageGroup == ""
-                                        ? ImageUtils.defaultGroupImage
-                                        : _controller
-                                            .currentGroup.imageGroup!)),
+                            image: _controller.currentGroup.imageGroup == ""
+                                ? DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: ExactAssetImage(
+                                        ImageUtils.defaultGroupImage))
+                                : DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        _controller.currentGroup.imageGroup!)),
                             borderRadius: BorderRadius.circular(15)),
                       ),
                       Text(

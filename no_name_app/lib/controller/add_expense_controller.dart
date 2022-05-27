@@ -32,12 +32,13 @@ class AddExpenseController extends GetxController {
   final formKeySplitPercent = GlobalKey<FormState>();
   @override
   void onInit() {
-
     groupModel = Get.arguments['group-model'];
     currentUser = Get.arguments['user-model'];
     memberTapped = currentUser;
     groupModel!.members = groupController.listMember;
+
     membersOfExpense = groupModel!.members!;
+
     amountPerPayer = List<TextEditingController>.filled(
         membersOfExpense.length, TextEditingController());
 
@@ -125,8 +126,11 @@ class AddExpenseController extends GetxController {
 
   lastStateOfExpense() {
     if (member.every((element) => element['amount'] == 0)) {
-      member[0]['user'] = currentUser;
-      member[0]['amount'] = double.parse(valueController.text);
+      // member[0]['user'] = currentUser;
+      // member[0]['amount'] = double.parse(valueController.text);
+      member[member
+              .indexWhere((element) => element['user'].id == currentUser.id)]
+          ['amount'] = double.parse(valueController.text);
     }
 
     for (var element in member) {
@@ -171,7 +175,7 @@ class AddExpenseController extends GetxController {
 
           amount -= owner[j]['amount'];
 
-          owner[j]['amount'] = 0;
+          // owner[j]['amount'] = 0;
         } else {
           payer[i]['owner'].add({
             'user': owner[j]['user'],
@@ -205,7 +209,7 @@ class AddExpenseController extends GetxController {
       getNeedToPayEachMember();
       lastStateOfExpense();
       setRelationBetweenMembers();
-      setRelationBetweenMembers();
+
       // else {
       ExpenseRepository.getIdOfExpenseInGroup(groupId: groupModel!.id!)
           .then((value) {
@@ -246,7 +250,7 @@ class AddExpenseController extends GetxController {
   }
 
   bool isTapped(UserModel thisMember) {
-    return memberTapped.id == thisMember.id; 
+    return memberTapped.id == thisMember.id;
   }
 
   switchMultiChoiceMode() {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
+import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/routes/app_router.dart';
 import 'package:no_name_app/routes/routes.dart';
 
@@ -32,8 +33,11 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute:
-          _authController.isLogin ? Routes.HOME_SCREEN : Routes.LOGIN_SCREEN,
+      initialRoute: _authController.isLogin
+          ? (_authController.userModel!.passCode == ''
+              ? Routes.HOME_SCREEN
+              : Routes.PASSCODE_SCREEN)
+          : Routes.LOGIN_SCREEN,
       getPages: Pages.pages,
     );
   }
