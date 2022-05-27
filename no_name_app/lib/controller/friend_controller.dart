@@ -15,6 +15,7 @@ class FriendController extends GetxController {
     AuthController authController = Get.find();
     userModel = authController.userModel!;
     listFriends = (await StorageHelper.getFriends());
+    isLoadingFriend = false;
     update();
     FriendRepository.getFriends(userId: userModel.id!).then((value) {
       Function compare = const ListEquality().equals;
