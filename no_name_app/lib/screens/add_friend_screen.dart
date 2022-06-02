@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/add_friend_controller.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 class AddFriendScreen extends StatelessWidget {
   const AddFriendScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class AddFriendScreen extends StatelessWidget {
         builder: (AddFriendController _controller) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Add a new contact'),
+              title: Text('Thêm bạn mới', style: FontUtils.mainTextStyle.copyWith(),),
               actions: [
                 IconButton(
                     onPressed: () {
@@ -26,13 +27,14 @@ class AddFriendScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Name'),
-                  TextFormField(
-                    controller: _controller.nameFriendController,
-                  ),
-                  Text('Phone number or email address'),
+                  
+                  Text('Địa chỉ email', style: FontUtils.mainTextStyle.copyWith(
+                    fontWeight:FontWeight.bold,
+                    fontSize:  17
+                  ),),
                   TextFormField(
                     controller: _controller.emailOrPhoneController,
+                    style: FontUtils.mainTextStyle.copyWith(),
                   ),
                 ],
               ),

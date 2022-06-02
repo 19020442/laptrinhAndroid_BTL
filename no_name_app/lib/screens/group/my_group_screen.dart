@@ -191,7 +191,7 @@ class MyGroupScreen extends StatelessWidget {
                                   ),
                                   // const Text('Expenses'),
                                   _controller.isLoading
-                                      ? CircularProgressIndicator()
+                                      ? const CircularProgressIndicator()
                                       : Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 12),
@@ -202,12 +202,26 @@ class MyGroupScreen extends StatelessWidget {
                                                       _controller
                                                           .listExpenses.length;
                                                   i++)
-                                                ExpenseWidget(
-                                                  expense: _controller
-                                                      .listExpenses[i],
-                                                  amount: _controller
-                                                      .listState[i]
-                                                      .toString(),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.toNamed(
+                                                        Routes.EXPENSE_SCREEN,
+                                                        arguments: {
+                                                          'expense-model':
+                                                              _controller
+                                                                  .listExpenses[i],
+                                                          'group-model':
+                                                              _controller
+                                                                  .currentGroup
+                                                        });
+                                                  },
+                                                  child: ExpenseWidget(
+                                                    expense: _controller
+                                                        .listExpenses[i],
+                                                    amount: _controller
+                                                        .listState[i]
+                                                        .toString(),
+                                                  ),
                                                 )
                                             ],
                                           ),
@@ -265,7 +279,6 @@ class MyGroupScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(width: 5, color: Colors.white),
                       borderRadius: BorderRadius.circular(15),
-
                       image: _controller.currentGroup.imageGroup == ""
                           ? DecorationImage(
                               fit: BoxFit.cover,
@@ -280,11 +293,6 @@ class MyGroupScreen extends StatelessWidget {
                               fit: BoxFit.cover,
                               image: NetworkImage(
                                   _controller.currentGroup.imageGroup!)),
-                      // DecorationImage(
-                      //     image:
-                      //         ExactAssetImage(ImageUtils.defaultGroupImage)
-
-                      //         )
                     ),
                   ))
             ],

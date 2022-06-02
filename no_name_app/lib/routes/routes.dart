@@ -15,4 +15,6 @@ class Routes {
   static const String RECORD_PAYMENT_SCREEN = '/record_payment';
 
   static const String PASSCODE_SCREEN = '/passcode';
+
+  static const String EXPENSE_SCREEN = '/expense_detail';
 }

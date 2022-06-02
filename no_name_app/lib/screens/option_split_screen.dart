@@ -16,7 +16,7 @@ class SplitOptionScreen extends StatelessWidget {
               length: 2,
               child: Scaffold(
                 bottomSheet: _controller.isOnSplitUnequallyMode
-                    ? Container(
+                    ? SizedBox(
                         height: 50,
                         width: double.infinity,
                         child: Column(

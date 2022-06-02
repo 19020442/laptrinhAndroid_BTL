@@ -9,6 +9,7 @@ import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/upload_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/routes/routes.dart';
+import 'package:no_name_app/utils/image.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';
 
 class CreateNewGroupController extends GetxController {
@@ -72,7 +73,7 @@ class CreateNewGroupController extends GetxController {
 
       GroupRepository.getIdGroup().then((value) {
         newGroup.id = value;
-        newGroup.imageGroup = imageGroup;
+        newGroup.imageGroup =imageGroup;
         newGroup.nameGroup = nameGroupController.text;
         newGroup.typeGroup = typeGroup == "" ? "Other" : typeGroup;
         newGroup.members = [];

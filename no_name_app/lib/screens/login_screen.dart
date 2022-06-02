@@ -26,56 +26,72 @@ class AuthScreen extends StatelessWidget {
                             height: deviceSize.height,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              image: DecorationImage(
-                                image: AssetImage(ImageUtils.background_login),
-                                fit: BoxFit.fitWidth,
-                              ),
                             ),
                           ),
                           Center(
                             child: Column(
                               // crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
+
                               children: [
-                                Container(
-                                  width: deviceSize.width,
-                                  height: 600,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          ImageUtils.background_login),
-                                      fit: BoxFit.fitWidth,
+                                Flexible(
+                                  flex: 20,
+                                  child: Container(
+                                    width: deviceSize.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            ImageUtils.background_login),
+                                        fit: BoxFit.fitWidth,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                LoginOptionItem(
-                                    color: Colors.blue,
-                                    title: 'Đăng ký',
-                                    image: '',
-                                    onTap: () {
-                                      _controller.switchToSignUp();
-                                    }),
-                                SizedBox(
-                                  height: 20,
+                                Flexible(
+                                  child: Container(),
+                                  flex: 1,
                                 ),
-                                LoginOptionItem(
-                                    color: Colors.white,
-                                    title: 'Đăng nhập',
-                                    image: '',
-                                    onTap: () {
-                                      _controller.switchToLogin();
-                                    }),
-                                SizedBox(
-                                  height: 20,
+                                Flexible(
+                                  flex: 3,
+                                  child: LoginOptionItem(
+                                      color: Colors.blue,
+                                      title: 'Đăng ký',
+                                      image: '',
+                                      onTap: () {
+                                        _controller.switchToSignUp();
+                                      }),
                                 ),
-                                LoginOptionItem(
-                                    color: Colors.white,
-                                    title: 'Đăng nhập bằng Google',
-                                    image: IconUtils.icGoogle,
-                                    onTap: () {
-                                      _controller.loginWithGoogle();
-                                    }),
+                                Flexible(
+                                  child: Container(),
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                    flex: 3,
+                                    child: LoginOptionItem(
+                                        color: Colors.white,
+                                        title: 'Đăng nhập',
+                                        image: '',
+                                        onTap: () {
+                                          _controller.switchToLogin();
+                                        })),
+                                // SizedBox(
+                                //   height: 20,
+                                // ),
+
+                                Flexible(
+                                  child: Container(),
+                                  flex: 1,
+                                ),
+                                Flexible(
+                                    flex: 3,
+                                    child: LoginOptionItem(
+                                        color: Colors.white,
+                                        title: 'Đăng nhập bằng Google',
+                                        image: IconUtils.icGoogle,
+                                        onTap: () {
+                                          _controller.loginWithGoogle();
+                                        })),
                               ],
                             ),
                           )
@@ -116,7 +132,7 @@ class AuthScreen extends StatelessWidget {
                                     height: 30,
                                   ),
                                   TextFormField(
-                                    style: FontUtils.mainTextStyle.copyWith() ,
+                                    style: FontUtils.mainTextStyle.copyWith(),
                                     controller: _controller.userNameController,
                                     decoration: InputDecoration(
                                         labelStyle:
@@ -125,10 +141,10 @@ class AuthScreen extends StatelessWidget {
                                         hintStyle:
                                             FontUtils.mainTextStyle.copyWith()),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
-                                  Container(
+                                  SizedBox(
                                     height: 150,
                                     width: double.infinity,
                                     child: Row(
@@ -170,7 +186,8 @@ class AuthScreen extends StatelessWidget {
                                                 MainAxisAlignment.center,
                                             children: [
                                               TextFormField(
-                                                style: FontUtils.mainTextStyle.copyWith() ,
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
                                                 controller:
                                                     _controller.emailController,
                                                 decoration: InputDecoration(
@@ -184,7 +201,8 @@ class AuthScreen extends StatelessWidget {
                                                         .copyWith()),
                                               ),
                                               TextFormField(
-                                                style: FontUtils.mainTextStyle.copyWith() ,
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
                                                 controller: _controller
                                                     .passwordController,
                                                 decoration: InputDecoration(
@@ -202,7 +220,7 @@ class AuthScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                 const SizedBox(
+                                  const SizedBox(
                                     height: 50,
                                   ),
                                   Row(
@@ -268,7 +286,7 @@ class AuthScreen extends StatelessWidget {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextFormField(
-                                  style: FontUtils.mainTextStyle.copyWith() ,
+                                  style: FontUtils.mainTextStyle.copyWith(),
                                   controller: _controller.emailController,
                                   decoration: InputDecoration(
                                     labelStyle:
@@ -284,7 +302,7 @@ class AuthScreen extends StatelessWidget {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextFormField(
-                                  style: FontUtils.mainTextStyle.copyWith() ,
+                                  style: FontUtils.mainTextStyle.copyWith(),
                                   controller: _controller.passwordController,
                                   decoration: InputDecoration(
                                     labelStyle:

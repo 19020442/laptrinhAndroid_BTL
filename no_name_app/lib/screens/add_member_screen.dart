@@ -29,7 +29,7 @@ class AddMemberScreen extends StatelessWidget {
                     enabledBorder: InputBorder.none,
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
-                    hintText: "Enter name",
+                    hintText: "Nhập tên",
                     hintStyle: FontUtils.mainTextStyle.copyWith()),
               ),
               leading: IconButton(
@@ -46,7 +46,9 @@ class AddMemberScreen extends StatelessWidget {
               onPressed: () {
                 _controller.onSave();
               },
-              child: const Text("SAVE"),
+              child:  Text("HOÀN TẤT", style: FontUtils.mainTextStyle.copyWith(
+                fontWeight: FontWeight.bold
+              ),textAlign: TextAlign.center,),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -72,7 +74,7 @@ class AddMemberScreen extends StatelessWidget {
                       ),
                     ),
                   Text(
-                    'Your friends',
+                    'Danh sách bạn bè',
                     style: FontUtils.mainTextStyle
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
@@ -84,7 +86,7 @@ class AddMemberScreen extends StatelessWidget {
                             onTap: _controller
                                     .isJoined(_controller.yourFriends[i])
                                 ? () => Toast.show(
-                                    '${_controller.yourFriends[i].name} joined',
+                                    '${_controller.yourFriends[i].name} đã tham gia rồi!',
                                     duration: Toast.lengthShort,
                                     gravity: Toast.bottom,
                                     backgroundColor: Colors.blue,
@@ -96,7 +98,7 @@ class AddMemberScreen extends StatelessWidget {
                                   },
                             trailing: Text(
                               _controller.isJoined(_controller.yourFriends[i])
-                                  ? 'Joined'
+                                  ? 'Đã tham gia'
                                   : '',
                               style: FontUtils.mainTextStyle.copyWith(),
                             ),

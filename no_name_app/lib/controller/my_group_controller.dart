@@ -23,6 +23,7 @@ class MyGroupController extends GetxController {
   @override
   void onInit() {
     currentGroup = Get.arguments['group-model'];
+   
     userModel = Get.arguments['user-model'];
     ExpenseRepository.getExpenses(groupId: currentGroup.id!).then((value) {
       listExpenses = value;

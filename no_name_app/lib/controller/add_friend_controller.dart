@@ -6,6 +6,7 @@ import 'package:no_name_app/controller/friend_controller.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/friend_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 // font chu thi dc co
 
@@ -46,6 +47,7 @@ class AddFriendController extends GetxController {
         ],
       ));
     } else {
+      // FriendRepository.alreadyIsFriend(userId: userId, friendId: friendId)
       UserRepository.getUserByEmail(email: emailOrPhoneController.text)
           .then((value) {
         if (value == null) {
@@ -61,37 +63,59 @@ class AddFriendController extends GetxController {
                 'Your friend\'s email or phone number is not exsist'),
           ));
         } else {
-          Get.dialog(AlertDialog(
-            content: const Text('Add friend successfully!'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    FriendRepository.addFriend(
-                        userId: userModel.id!,
-                        newFriend: UserModel(
-                          email: value.email,
-                          name: value.name,
-                          id: value.id,
-                        )).then((value) {
-                      FriendController friendController = Get.find();
-                      friendController.onInit();
-                      Get.back();
-                      Get.back();
-                    });
+          FriendRepository.alreadyIsFriend(
+                  userId: userModel.id!, friendId: value.id!)
+              .then((value1) {
+            if (value1) {
+              Get.dialog(AlertDialog(
+                content: Text(
+                  'Add friend successfully!',
+                  style: FontUtils.mainTextStyle.copyWith(),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        FriendRepository.addFriend(
+                            user: userModel,
+                            newFriend: UserModel(
+                              email: value.email,
+                              name: value.name,
+                              id: value.id,
+                            )).then((value) {
+                          FriendController friendController = Get.find();
+                          friendController.onInit();
+                          Get.back();
+                          Get.back();
+                        });
 
-                    // Get.back();
-                    // Get.back(canPop: false);
-                  },
-                  child: const Text('Ok, back to my friends screen')),
-              TextButton(
-                  onPressed: () {
-                    nameFriendController.clear();
-                    emailOrPhoneController.clear();
-                    Get.back();
-                  },
-                  child: const Text('Ok, I want add more!'))
-            ],
-          ));
+                        // Get.back();
+                        // Get.back(canPop: false);
+                      },
+                      child: Text(
+                        'Ok, back to my friends screen',
+                        style: FontUtils.mainTextStyle.copyWith(),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        nameFriendController.clear();
+                        emailOrPhoneController.clear();
+                        Get.back();
+                      },
+                      child: Text(
+                        'Ok, I want add more!',
+                        style: FontUtils.mainTextStyle.copyWith(),
+                      ))
+                ],
+              ));
+            } else {
+              Get.dialog(AlertDialog(
+                content: Text(
+                  '${value.name} đã có sẵn trong danh sách bạn bè',
+                  style: FontUtils.mainTextStyle.copyWith(),
+                ),
+              ));
+            }
+          });
         }
       });
     }

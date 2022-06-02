@@ -6,12 +6,17 @@ class FriendRepository {
       FirebaseFirestore.instance.collection('users');
 
   static Future<void> addFriend(
-      {required String userId, required UserModel newFriend}) async {
+      {required UserModel user, required UserModel newFriend}) async {
     userCollection
-        .doc(userId)
+        .doc(user.id)
         .collection('friends')
         .doc(newFriend.id)
         .set(newFriend.toMap());
+    userCollection
+        .doc(newFriend.id)
+        .collection('friends')
+        .doc(user.id)
+        .set(user.toMap());
   }
 
   static Future<List<UserModel>> getFriends({required String userId}) async {
@@ -25,5 +30,14 @@ class FriendRepository {
           name: friendData.docs[i]['name']));
     }
     return res;
+  }
+
+  static Future<bool> alreadyIsFriend(
+      {required String userId, required String friendId}) async {
+    await userCollection.doc(userId).collection('friends').get().then((value) {
+      int index = value.docs.indexWhere((element) => element.id == friendId);
+      if (index == -1) return true;
+    });
+    return false;
   }
 }

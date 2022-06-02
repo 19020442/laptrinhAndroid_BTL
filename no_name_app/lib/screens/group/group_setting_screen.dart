@@ -41,8 +41,15 @@ class GroupSettingScreen extends StatelessWidget {
                             image: _controller.currentGroup.imageGroup == ""
                                 ? DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: ExactAssetImage(
-                                        ImageUtils.defaultGroupImage))
+                                    image: ExactAssetImage((_controller
+                                                .currentGroup.typeGroup ==
+                                            "Trip"
+                                        ? ImageUtils.deafaultGroupTripImage
+                                        : _controller.currentGroup.typeGroup ==
+                                                "Other"
+                                            ? ImageUtils.deafaultGroupOtherImage
+                                            : ImageUtils
+                                                .deafaultGroupHomeImage)))
                                 : DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
@@ -61,13 +68,13 @@ class GroupSettingScreen extends StatelessWidget {
                 ),
                 const Divider(),
                 Text(
-                  'Group members',
+                  'Thành viên trong nhóm',
                   style: FontUtils.mainTextStyle.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
+                TextButton(
+                  onPressed: () {
                     Get.toNamed(Routes.ADD_MEMBER_OF_GROUPS, arguments: {
                       'list-member': _controller.listMember,
                       'group-model': _controller.currentGroup,
@@ -88,8 +95,10 @@ class GroupSettingScreen extends StatelessWidget {
                           width: 50,
                         ),
                         Text(
-                          'Add people to group',
-                          style: FontUtils.mainTextStyle.copyWith(),
+                          'Thêm bạn bè của bạn vào nhóm !',
+                          style: FontUtils.mainTextStyle.copyWith(
+                            color: Colors.black
+                          ),
                         )
                       ],
                     ),
@@ -126,7 +135,7 @@ class GroupSettingScreen extends StatelessWidget {
                           width: 50,
                         ),
                         Text(
-                          'Leave group',
+                          'Rời nhóm',
                           style: FontUtils.mainTextStyle.copyWith(),
                         )
                       ],
@@ -151,7 +160,7 @@ class GroupSettingScreen extends StatelessWidget {
                           width: 50,
                         ),
                         Text(
-                          'Delete group',
+                          'Xóa nhóm',
                           style: FontUtils.mainTextStyle.copyWith(
                               color: Colors.red, fontWeight: FontWeight.bold),
                         )

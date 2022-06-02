@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:no_name_app/models/comment_model.dart';
 import 'package:no_name_app/models/expense_model.dart';
 import 'package:no_name_app/models/user_model.dart';
 
@@ -144,7 +145,7 @@ class ExpenseRepository {
           .collection('owners')
           .doc(userId)
           .get();
-      return - data.data()!['amount'];
+      return -data.data()!['amount'];
     }
 
     if (!payerData.docs.any((element) => element.id != userId)) {
@@ -158,5 +159,77 @@ class ExpenseRepository {
       return data.data()!['amount'];
     }
     return 0;
+  }
+
+  static Future<String> generateIdComment({
+    required String groupId,
+    required ExpenseModel currentExpense,
+  }) async {
+    return groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id)
+        .collection('comments')
+        .doc()
+        .id;
+  }
+
+  static Future<void> addComment(
+      {required String groupId,
+      required ExpenseModel currentExpense,
+      required CommentModel commentModel}) async {
+    groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id)
+        .collection('comments')
+        .doc(commentModel.id)
+        .set(commentModel.toMap());
+  }
+
+  static Future<List<CommentModel>> getComments(
+      {required String groupId, required ExpenseModel currentExpense}) async {
+    final commentsData = await groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id)
+        .collection('comments')
+        .orderBy('date')
+        .get();
+    List<CommentModel> res = [];
+    for (int i = 0; i < commentsData.docs.length; i++) {
+      final commentData = CommentModel(
+          id: commentsData.docs[i].id,
+          content: commentsData.docs[i].data()['content'],
+          dateTime: commentsData.docs[i].data()['date'].toDate(),
+          senderName: commentsData.docs[i].data()['sender']);
+      res.add(commentData);
+    }
+    return res;
+  }
+
+  static Future<List<String>> getStatusOfExpense(
+      {required String groupId, required ExpenseModel currentExpense}) async {
+    List<String> status = [];
+
+    final expenseCollection = groupCollection
+        .doc(groupId)
+        .collection('expenses')
+        .doc(currentExpense.id);
+    final payerData = await expenseCollection.collection('payers').get();
+    final ownerData = await expenseCollection.collection('owners').get();
+    for (int i = 0; i < payerData.docs.length; i++) {
+      final aPayerData = payerData.docs[i];
+      status.add(
+          aPayerData['name'] + " đang dư " + aPayerData['amount'].toString());
+      // print(aPayerData.data());
+    }
+    for (int i = 0; i < ownerData.docs.length; i++) {
+      final aOwnerData = ownerData.docs[i];
+      status.add(
+          aOwnerData['name'] + " đang mượn " + aOwnerData['amount'].toString());
+      // print(aPayerData.data());
+    }
+    return (status);
   }
 }
