@@ -24,20 +24,26 @@ class FriendRepository {
     final friendData =
         await userCollection.doc(userId).collection('friends').get();
     for (int i = 0; i < friendData.docs.length; i++) {
-      res.add(UserModel(
+      print(friendData.docs[i]['email']);
+      res.add(
+        UserModel(
           email: friendData.docs[i]['email'],
           id: friendData.docs[i]['id'],
-          name: friendData.docs[i]['name']));
+          name: friendData.docs[i]['name'],
+          avatarImage: friendData.docs[i]['avatar'])
+          );
+          
     }
     return res;
   }
 
   static Future<bool> alreadyIsFriend(
       {required String userId, required String friendId}) async {
-    await userCollection.doc(userId).collection('friends').get().then((value) {
-      int index = value.docs.indexWhere((element) => element.id == friendId);
-      if (index == -1) return true;
-    });
+    final friendData =
+        await userCollection.doc(userId).collection('friends').get();
+    int index = friendData.docs.indexWhere((element) => element.id == friendId);
+
+    if (index == -1) return true;
     return false;
   }
 }

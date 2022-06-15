@@ -7,6 +7,7 @@ import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
+import 'package:no_name_app/repo/user_repo.dart';
 
 class RecordPaymentController extends GetxController {
   late Map<String, dynamic> payer;
@@ -17,6 +18,10 @@ class RecordPaymentController extends GetxController {
   @override
   void onInit() {
     payer = Get.arguments['payer'];
+    UserRepository.getAvatarUserById(id: payer['id']).then((value) {
+      payer['avatar'] = value;
+      update();
+    });
     currentGroup = Get.arguments['group-model'];
     AuthController _authController = Get.find();
     owner = _authController.userModel!;
@@ -33,11 +38,13 @@ class RecordPaymentController extends GetxController {
     ExpenseRepository.getIdOfExpenseInGroup(groupId: currentGroup.id!)
         .then((value) {
       final newExpense = ExpenseModel(
+          note: '',
           id: value,
-          name: '${payer['name']} paid ${owner.name} ${valueController.text}',
+          name: '${payer['name']} đã đưa ${owner.name} ${valueController.text}',
           dateCreate: DateTime.now(),
           value: valueController.text,
-          members: []);
+          members: [],
+          type: 'record');
       final payerDataUser = UserModel(
         id: payer['id'],
         name: payer['name'],
@@ -94,10 +101,12 @@ class RecordPaymentController extends GetxController {
               {
                 'user': owner,
                 'amount': double.parse(valueController.text),
-                'payer': [{
-                  'user':payerDataUser,
-                  'amount': double.parse(valueController.text)
-                }]
+                'payer': [
+                  {
+                    'user': payerDataUser,
+                    'amount': double.parse(valueController.text)
+                  }
+                ]
               }
             ],
             isPayer: false);

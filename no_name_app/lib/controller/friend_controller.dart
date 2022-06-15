@@ -14,18 +14,18 @@ class FriendController extends GetxController {
   void onInit() async {
     AuthController authController = Get.find();
     userModel = authController.userModel!;
-    listFriends = (await StorageHelper.getFriends());
-    isLoadingFriend = false;
-    update();
+    // listFriends = (await StorageHelper.getFriends());
+    
     FriendRepository.getFriends(userId: userModel.id!).then((value) {
-      Function compare = const ListEquality().equals;
+      // Function compare = const ListEquality().equals;
 
-      if (!compare(value, listFriends)) {
+      // if (!compare(value, listFriends)) {
         listFriends = value;
+        // print(listFriends[0].avatarImage);
         StorageHelper.setFriends(value);
         isLoadingFriend = false;
         update();
-      }
+      // }
     });
 
     super.onInit();

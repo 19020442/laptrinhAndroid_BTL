@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 
 import 'package:toast/toast.dart';
 import 'package:get/get.dart';
@@ -17,28 +18,33 @@ class AddMemberScreen extends StatelessWidget {
         builder: (AddMemberController _controller) {
           return Scaffold(
             appBar: AppBar(
-              brightness: Brightness.light,
-              elevation: 5,
-              backgroundColor: Colors.white,
-              title: TextFormField(
-                cursorColor: Colors.black,
-                // keyboardType: inputType,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: "Nhập tên",
-                    hintStyle: FontUtils.mainTextStyle.copyWith()),
+              // brightness: Brightness.light,
+              elevation: 0,
+              backgroundColor: Colors.blue,
+              title: Text(
+                'Thêm bạn bè vào nhóm',
+                style: FontUtils.mainTextStyle
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
+              //  TextFormField(
+              //   cursorColor: Colors.black,
+              //   // keyboardType: inputType,
+              //   decoration: InputDecoration(
+              //       border: InputBorder.none,
+              //       focusedBorder: InputBorder.none,
+              //       enabledBorder: InputBorder.none,
+              //       errorBorder: InputBorder.none,
+              //       disabledBorder: InputBorder.none,
+              //       hintText: "Nhập tên",
+              //       hintStyle: FontUtils.mainTextStyle.copyWith()),
+              // ),
               leading: IconButton(
                 onPressed: () {
                   Get.back();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.navigate_before,
-                  color: Colors.blue,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -46,9 +52,12 @@ class AddMemberScreen extends StatelessWidget {
               onPressed: () {
                 _controller.onSave();
               },
-              child:  Text("HOÀN TẤT", style: FontUtils.mainTextStyle.copyWith(
-                fontWeight: FontWeight.bold
-              ),textAlign: TextAlign.center,),
+              child: Text(
+                "HOÀN TẤT",
+                style: FontUtils.mainTextStyle
+                    .copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -63,7 +72,14 @@ class AddMemberScreen extends StatelessWidget {
                               i++)
                             Column(
                               children: [
-                                CircleAvatar(),
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  child: CachedImageWidget(
+                                    url: _controller
+                                        .friendsAreChosen[i].avatarImage,
+                                  ),
+                                ),
                                 Text(
                                   _controller.friendsAreChosen[i].name!,
                                   style: FontUtils.mainTextStyle.copyWith(),
@@ -102,7 +118,13 @@ class AddMemberScreen extends StatelessWidget {
                                   : '',
                               style: FontUtils.mainTextStyle.copyWith(),
                             ),
-                            leading: CircleAvatar(),
+                            leading: Container(
+                              height: 50,
+                              width: 50,
+                              child: CachedImageWidget(
+                                url: _controller.yourFriends[i].avatarImage,
+                              ),
+                            ),
                             title: Text(
                               _controller.yourFriends[i].name!,
                               style: FontUtils.mainTextStyle.copyWith(),

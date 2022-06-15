@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:no_name_app/controller/my_group_controller.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 
 class SettleUpScreen extends StatelessWidget {
   const SettleUpScreen({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class SettleUpScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.white,
             title: Text(
-              'Select a balance to settle up',
+              'Chọn một bạn để thanh toán',
               style: FontUtils.mainTextStyle.copyWith(color: Colors.black),
             ),
             leading: IconButton(
@@ -36,25 +37,30 @@ class SettleUpScreen extends StatelessWidget {
               // for (int i = 0 ; i < _controller.sta)
               children: [
                 for (int i = 0; i < _controller.status.length; i++)
-                  ListTile(
-                    onTap: () {
-                      Get.toNamed(Routes.RECORD_PAYMENT_SCREEN, arguments: {
-                        'payer': _controller.status[i],
-                        'group-model': _controller.currentGroup,
-                      });
-                    },
-                    leading: CircleAvatar(),
-                    title: Text(
-                      _controller.status[i]['name'],
-                      style:
-                          FontUtils.mainTextStyle.copyWith(color: Colors.black),
-                    ),
-                    trailing: Text(
-                      _controller.status[i]['amount'].toString(),
-                      style:
-                          FontUtils.mainTextStyle.copyWith(color: Colors.black),
-                    ),
-                  )
+                  if (_controller.status[i]['amount'].toString() != '0.0')
+                    ListTile(
+                      onTap: () {
+                        Get.toNamed(Routes.RECORD_PAYMENT_SCREEN, arguments: {
+                          'payer': _controller.status[i],
+                          'group-model': _controller.currentGroup,
+                        });
+                      },
+                      leading: Container(
+                          height: 50,
+                          width: 50,
+                          child: CachedImageWidget(
+                              url: _controller.status[i]['avatar'])),
+                      title: Text(
+                        _controller.status[i]['name'],
+                        style: FontUtils.mainTextStyle
+                            .copyWith(color: Colors.black),
+                      ),
+                      trailing: Text(
+                        _controller.status[i]['amount'].toString(),
+                        style: FontUtils.mainTextStyle
+                            .copyWith(color: Colors.black),
+                      ),
+                    )
               ],
             )),
           ),

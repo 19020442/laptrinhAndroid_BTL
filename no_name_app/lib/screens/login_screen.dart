@@ -156,7 +156,7 @@ class AuthScreen extends StatelessWidget {
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                  image: AssetImage(_controller
+                                                  image: NetworkImage(_controller
                                                               .avatarSelected !=
                                                           ""
                                                       ? _controller

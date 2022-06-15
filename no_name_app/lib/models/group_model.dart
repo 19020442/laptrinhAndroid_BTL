@@ -9,9 +9,15 @@ class GroupModel {
   String? nameGroup;
   String? typeGroup;
   List<UserModel>? members;
+  String? note;
 
   GroupModel(
-      {this.id, this.nameGroup, this.imageGroup, this.typeGroup, this.members});
+      {this.id,
+      this.nameGroup,
+      this.imageGroup,
+      this.typeGroup,
+      this.members,
+       this.note});
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,7 +25,8 @@ class GroupModel {
       'Image': imageGroup,
       'Name': nameGroup,
       'Type': typeGroup,
-      'Members': members
+      'Members': members,
+      'Note': note
     };
   }
 
@@ -29,7 +36,8 @@ class GroupModel {
         imageGroup: map['Image'],
         nameGroup: map['Name'],
         typeGroup: map['Type'],
-        members: map['Members']);
+        members: [],
+        note: map['Note']);
   }
 
   String toJson() => json.encode(toMap());

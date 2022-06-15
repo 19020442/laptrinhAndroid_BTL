@@ -5,6 +5,7 @@ import 'package:no_name_app/controller/my_group_controller.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 
 class GroupSettingScreen extends StatelessWidget {
   const GroupSettingScreen({Key? key}) : super(key: key);
@@ -16,8 +17,9 @@ class GroupSettingScreen extends StatelessWidget {
       builder: (MyGroupController _controller) {
         return Scaffold(
           appBar: AppBar(
+            elevation: 0,
             title: Text(
-              'Group settings',
+              'Cài đặt nhóm',
               style:
                   FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.bold),
             ),
@@ -61,6 +63,9 @@ class GroupSettingScreen extends StatelessWidget {
                         style: FontUtils.mainTextStyle.copyWith(),
                       ),
                       GestureDetector(
+                        onTap: () {
+                          _controller.openEditGroup(context);
+                        },
                         child: SvgPicture.asset(IconUtils.icEdit),
                       )
                     ],
@@ -106,9 +111,8 @@ class GroupSettingScreen extends StatelessWidget {
                 ),
                 for (int i = 0; i < _controller.listMember.length; i++)
                   ListTile(
-                    leading: const CircleAvatar(
-                      radius: 20,
-                    ),
+                    leading:Container(height: 50,width: 50,
+                    child: CachedImageWidget(url: _controller.listMember[i].avatarImage),),
                     title: Text(
                       _controller.listMember[i].name!,
                       style: FontUtils.mainTextStyle

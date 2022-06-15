@@ -76,12 +76,13 @@ class AddFriendController extends GetxController {
                   TextButton(
                       onPressed: () {
                         FriendRepository.addFriend(
-                            user: userModel,
-                            newFriend: UserModel(
-                              email: value.email,
-                              name: value.name,
-                              id: value.id,
-                            )).then((value) {
+                                user: userModel,
+                                newFriend: UserModel(
+                                    email: value.email,
+                                    name: value.name,
+                                    id: value.id,
+                                    avatarImage: value.avatarImage))
+                            .then((value) {
                           FriendController friendController = Get.find();
                           friendController.onInit();
                           Get.back();

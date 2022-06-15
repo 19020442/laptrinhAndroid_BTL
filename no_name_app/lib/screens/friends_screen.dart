@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:no_name_app/controller/friend_controller.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 import 'package:no_name_app/widgets/new_group_button.dart';
 
 class FriendScreen extends StatelessWidget {
@@ -55,10 +56,12 @@ class FriendScreen extends StatelessWidget {
                     // if (_controller.loadingFriendsDone)
                     for (int i = 0; i < _controller.listFriends.length; i++)
                       ListTile(
-                        // leading: Text(
-                        //   '$i',
-                        //   style: FontUtils.mainTextStyle.copyWith(),
-                        // ),
+                        leading: Container(
+                            height: 50,
+                            width: 50,
+                            child: CachedImageWidget(
+                              url: _controller.listFriends[i].avatarImage,
+                            )),
                         title: Text(
                           _controller.listFriends[i].name!,
                           style: FontUtils.mainTextStyle.copyWith(),
@@ -73,7 +76,7 @@ class FriendScreen extends StatelessWidget {
                             Icons.person_add,
                             color: Colors.white,
                           ),
-                          title: 'Add more friends'),
+                          title: 'Thêm bạn mới'),
                     ),
                   ],
                 );

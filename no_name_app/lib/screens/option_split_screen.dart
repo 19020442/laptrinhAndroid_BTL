@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/add_expense_controller.dart';
+import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 
 class SplitOptionScreen extends StatelessWidget {
   const SplitOptionScreen({Key? key}) : super(key: key);
@@ -16,15 +18,21 @@ class SplitOptionScreen extends StatelessWidget {
               length: 2,
               child: Scaffold(
                 bottomSheet: _controller.isOnSplitUnequallyMode
-                    ? SizedBox(
+                    ? Container(
+                        color: _controller.totalPercentCurrently != 100.0
+                            ? Colors.red[100]
+                            : Colors.green[100],
                         height: 50,
                         width: double.infinity,
                         child: Column(
                           children: [
                             Text(
-                                '${_controller.totalPercentCurrently}% of 100%'),
+                                '${_controller.totalPercentCurrently}% trên 100%',
+                                style: FontUtils.mainTextStyle.copyWith()),
                             Text(
-                                '${(100 - _controller.totalPercentCurrently)}% left')
+                              '${(100 - _controller.totalPercentCurrently)}% còn lại',
+                              style: FontUtils.mainTextStyle.copyWith(),
+                            )
                           ],
                         ),
                       )
@@ -34,25 +42,30 @@ class SplitOptionScreen extends StatelessWidget {
                     IconButton(
                         onPressed: () {
                           _controller.formKeySplitPercent.currentState!.save();
-                          Get.back();
+                          if (_controller.isOnSplitUnequallyMode &&
+                              _controller.totalPercentCurrently == 100.0) {
+                            Get.back();
+                          } else if (!_controller.isOnSplitUnequallyMode) {
+                            Get.back();
+                          }
                         },
-                        icon: SvgPicture.asset(
-                          IconUtils.icSave,
-                          height: 15,
-                          width: 15,
-                        ))
+                        icon: const Icon(Icons.check))
                   ],
-                  title: Text('Adjust split'),
+                  title: Text(
+                    'Chia hóa đơn',
+                    style: FontUtils.mainTextStyle.copyWith(),
+                  ),
                   bottom: TabBar(
+                    labelStyle: FontUtils.mainTextStyle.copyWith(),
                     onTap: (index) {
                       _controller.swtichToUnequallyOption(index);
                     },
                     tabs: const [
                       Tab(
-                        text: "Equally",
+                        text: "Chia đều",
                       ),
                       Tab(
-                        text: "By percentages",
+                        text: "Theo phần trăm",
                       )
                     ],
                   ),
@@ -80,32 +93,52 @@ class SplitOptionScreen extends StatelessWidget {
                                           Flexible(
                                             flex: 4,
                                             child: ListTile(
-                                              leading: CircleAvatar(),
-                                              title: Text(_controller
-                                                  .membersOfExpense[i].name!),
-                                              subtitle: Text((double.parse(_controller
-                                                              .percentMemberController[
-                                                                  i]
-                                                              .text
-                                                              .isEmpty
-                                                          ? "0.0"
-                                                          : _controller
-                                                              .percentMemberController[
-                                                                  i]
-                                                              .text) *
-                                                      double.parse(_controller
-                                                          .valueController
-                                                          .text))
-                                                  .toString()),
+                                              leading: Container(
+                                                height: 50,
+                                                width: 50,
+                                                child: CachedImageWidget(
+                                                  url: _controller
+                                                      .membersOfExpense[i]
+                                                      .avatarImage,
+                                                ),
+                                              ),
+                                              title: Text(
+                                                _controller
+                                                    .membersOfExpense[i].name!,
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
+                                              ),
+                                              subtitle: Text(
+                                                (double.parse(_controller
+                                                                .percentMemberController[
+                                                                    i]
+                                                                .text
+                                                                .isEmpty
+                                                            ? "0.0"
+                                                            : _controller
+                                                                .percentMemberController[
+                                                                    i]
+                                                                .text) *
+                                                        double.parse(_controller
+                                                            .valueController
+                                                            .text) /
+                                                        100)
+                                                    .toString(),
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
+                                              ),
                                             ),
                                           ),
                                           Flexible(
                                             child: TextFormField(
+                                              style: FontUtils.mainTextStyle
+                                                  .copyWith(),
                                               // key: UniqueKey(),
                                               onSaved: (value) {
                                                 _controller
                                                     .getNeedToPayEachMember();
                                               },
+
                                               keyboardType:
                                                   TextInputType.number,
                                               controller: _controller

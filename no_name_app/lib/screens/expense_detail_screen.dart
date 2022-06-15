@@ -76,7 +76,7 @@ class ExpenseDetailScreen extends StatelessWidget {
                                   .copyWith(fontSize: 25),
                             ),
                             Text(
-                              '${_controller.expenseModel.value},00 đ',
+                              '${_controller.expenseModel.value} vnđ',
                               style: FontUtils.mainTextStyle.copyWith(
                                   fontSize: 25, fontWeight: FontWeight.bold),
                             )

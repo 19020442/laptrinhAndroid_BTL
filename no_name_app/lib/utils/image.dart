@@ -10,6 +10,10 @@ class ImageUtils {
       'assets/image/group_image_trip_default.jpg';
   static String deafaultGroupOtherImage =
       'assets/image/group_image_other_default.jpg';
+
+  static String recordImage = 'assets/image/record.png';
+
+  static String recordEx = 'assets/image/record_ic.png';
 }
 
 class IconUtils {
@@ -34,15 +38,25 @@ class IconUtils {
   static String icLogOut = "assets/svg/log_out_icon.svg";
   static String icPassCode = "assets/svg/passcode_icon.svg";
   static String icFilterList = "assets/svg/filter_list.svg";
+
+  static String icCommentActivity = "assets/svg/comment_activity_icon.svg";
 }
 
 class AvatarUtils {
-  static String avatar1 = 'assets/image/avatars/ava_1.png';
-  static String avatar2 = 'assets/image/avatars/ava_2.png';
-  static String avatar3 = 'assets/image/avatars/ava_3.png';
-  static String avatar4 = 'assets/image/avatars/ava_4.png';
-  static String avatar5 = 'assets/image/avatars/ava_5.png';
-  static String avatar6 = 'assets/image/avatars/ava_6.png';
-  static String avatar7 = 'assets/image/avatars/ava_7.png';
-  static String avatar8 = 'assets/image/avatars/ava_8.png';
+  static String avatar1 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_1.png?alt=media&token=37a066d0-de51-481e-af17-853ada1b3ccb';
+  static String avatar2 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_2.png?alt=media&token=add9ab6b-bb28-4c46-99f6-8cf33045acda';
+  static String avatar3 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_3.png?alt=media&token=8eb0cd01-ae87-4ec4-bebb-9452e758b797';
+  static String avatar4 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_4.png?alt=media&token=3508083c-0f8f-42a8-9eac-306de1ae07c8';
+  static String avatar5 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_6.png?alt=media&token=ffbc70e9-ad95-4891-a54f-bfca45bbae75';
+  static String avatar6 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_7.png?alt=media&token=c49fef22-4852-4934-ae69-d4de20d21813';
+  static String avatar7 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_8.png?alt=media&token=a7057e28-1d1a-45a2-bc3c-1685fa0f57bc';
+  static String avatar8 =
+      'https://firebasestorage.googleapis.com/v0/b/where-s-handyman.appspot.com/o/assets%2Favatar%2Fava_5.png?alt=media&token=a60ed8f1-d872-439d-b6be-2da1655e8217';
 }

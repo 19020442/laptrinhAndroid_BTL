@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/widgets/container.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
 import 'package:no_name_app/models/group_model.dart';
@@ -7,6 +8,7 @@ import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/storage_helper.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/routes/routes.dart';
+import 'package:no_name_app/screens/create_new_group_screen.dart';
 
 class GroupController extends GetxController {
   late UserModel userModel;
@@ -56,7 +58,12 @@ class GroupController extends GetxController {
   }
 
   void startCreateNewGroup() {
-    Get.toNamed(Routes.CREATE_NEW_GROUP);
+    Get.bottomSheet(
+       CreateNewGroupScreen(),
+    
+      // isScrollControlled: true
+    );
+    // Get.toNamed(Routes.CREATE_NEW_GROUP);
   }
 
   void openFilterTable() {

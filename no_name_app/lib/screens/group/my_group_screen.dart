@@ -113,7 +113,7 @@ class MyGroupScreen extends StatelessWidget {
                                                 width: 150,
                                                 child: Center(
                                                   child: Text(
-                                                    'Selt up',
+                                                    'Thanh toán',
                                                     style: FontUtils
                                                         .mainTextStyle
                                                         .copyWith(
@@ -132,16 +132,24 @@ class MyGroupScreen extends StatelessWidget {
                                                   BorderRadius.circular(15.0),
                                             ),
                                             elevation: 5,
-                                            child: Container(
-                                              // color: Colors.blue,
-                                              width: 150,
-                                              child: Center(
-                                                child: Text(
-                                                  'Balances',
-                                                  style: FontUtils.mainTextStyle
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _controller
+                                                    .openBalances(context);
+                                              },
+                                              child: Container(
+                                                // color: Colors.blue,
+                                                width: 150,
+                                                child: Center(
+                                                  child: Text(
+                                                    'Chi tiết',
+                                                    style: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -155,13 +163,22 @@ class MyGroupScreen extends StatelessWidget {
                                             child: Container(
                                               // color: Colors.blue,
                                               width: 150,
-                                              child: Center(
-                                                child: Text(
-                                                  'White board',
-                                                  style: FontUtils.mainTextStyle
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  _controller
+                                                      .openWhiteBoard(context);
+                                                },
+                                                child: Center(
+                                                  child: Text(
+                                                    'Ghi chú',
+                                                    style: FontUtils
+                                                        .mainTextStyle
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -170,25 +187,7 @@ class MyGroupScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Column(
-                                    children: [
-                                      for (int i = 0;
-                                          i < _controller.status.length;
-                                          i++)
-                                        if (_controller.status[i]['amount']
-                                                .toString() !=
-                                            "0.0")
-                                          Container(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Text(_controller.status[i]
-                                                    ['name'] +
-                                                " ownes you " +
-                                                _controller.status[i]['amount']
-                                                    .toString() +
-                                                " VND"),
-                                          )
-                                    ],
-                                  ),
+
                                   // const Text('Expenses'),
                                   _controller.isLoading
                                       ? const CircularProgressIndicator()
@@ -268,7 +267,7 @@ class MyGroupScreen extends StatelessWidget {
                         'user-model': _controller.userModel
                       });
                     },
-                    child: addWidget('Add Expense')),
+                    child: addWidget('Thêm hóa đơn')),
               ),
               Positioned(
                   top: deviceSize.height * 0.13,
@@ -310,43 +309,97 @@ class ExpenseWidget extends StatelessWidget {
   final String amount;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 55,
-      child: Row(
-        children: [
-          Flexible(
-            flex: 1,
-            child: Text('Th' +
-                expense.dateCreate.month.toString() +
-                '\n ${expense.dateCreate.day}'),
-          ),
-          Flexible(
-            flex: 12,
-            child: ListTile(
-              leading: SvgPicture.asset(IconUtils.icExpense),
-              title: Text(
-                expense.name,
-                style: FontUtils.mainTextStyle
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              trailing: amount[0] != '-'
-                  ? Text(
-                      'You lent \n' + amount + ' vnd',
-                      style:
-                          FontUtils.mainTextStyle.copyWith(color: Colors.blue),
-                      textAlign: TextAlign.end,
-                    )
-                  : Text(
-                      'You borrowed \n ${-double.parse(amount)} vnd',
-                      style:
-                          FontUtils.mainTextStyle.copyWith(color: Colors.red),
-                      textAlign: TextAlign.end,
+    return expense.type == 'new'
+        ? SizedBox(
+            height: 55,
+            child: Row(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    'Th' +
+                        expense.dateCreate.month.toString() +
+                        '\n ${expense.dateCreate.day}',
+                    style: FontUtils.mainTextStyle.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Flexible(
+                  flex: 12,
+                  child: ListTile(
+                    leading: Container(
+                      height: 50,
+                      width: 50,
+                      child: SvgPicture.asset(
+                        IconUtils.icExpense,
+                      ),
                     ),
-              subtitle: Text('Giá trị: ' + expense.value + ' đ'),
+                    title: Text(
+                      expense.name,
+                      style: FontUtils.mainTextStyle
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    trailing: amount[0] != '-'
+                        ? Text(
+                            'You lent \n' + amount + ' vnđ',
+                            style: FontUtils.mainTextStyle
+                                .copyWith(color: Colors.blue),
+                            textAlign: TextAlign.end,
+                          )
+                        : Text(
+                            'You borrowed \n ${-double.parse(amount)} vnđ',
+                            style: FontUtils.mainTextStyle
+                                .copyWith(color: Colors.red),
+                            textAlign: TextAlign.end,
+                          ),
+                    subtitle: Text(
+                      'Giá trị: ' + expense.value + ' đ',
+                      style: FontUtils.mainTextStyle.copyWith(),
+                    ),
+                  ),
+                )
+              ],
             ),
           )
-        ],
-      ),
-    );
+        : SizedBox(
+            height: 55,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    'Th' +
+                        expense.dateCreate.month.toString() +
+                        '\n ${expense.dateCreate.day}',
+                    style: FontUtils.mainTextStyle.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  flex: 1,
+                ),
+                Flexible(
+                    flex: 12,
+                    child: ListTile(
+                      leading: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          // color: Colors.black,
+                          image: DecorationImage(
+                            image: AssetImage(
+                              ImageUtils.recordEx,
+                            ),
+                            // fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        expense.name,
+                        style: FontUtils.mainTextStyle
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ))
+              ],
+            ),
+          );
   }
 }

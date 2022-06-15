@@ -18,7 +18,8 @@ class GroupRepository {
         imageGroup: groupData['Image'],
         nameGroup: groupData['Name'],
         typeGroup: groupData['Type'],
-        members: []);
+        members: [],
+        note: groupData['Note']);
   }
 
   static Future<void> setGroup(GroupModel groupModel) async {
@@ -41,8 +42,11 @@ class GroupRepository {
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
         final data = value.docs[i].data();
-        final member =
-            UserModel(id: data['id'], name: data['name'], email: data['email']);
+        final member = UserModel(
+            id: data['id'],
+            name: data['name'],
+            email: data['email'],
+            avatarImage: data['avatar']);
         res.add(member);
       }
     });
@@ -59,6 +63,7 @@ class GroupRepository {
           .doc(listMemberAdd[i].id)
           .set(listMemberAdd[i].toMap())
           .whenComplete(() {
+        print('+++' + listMemberAdd[i].id.toString());
         UserRepository.onCreateGroup(
             uid: listMemberAdd[i].id!, groupModel: group);
       });

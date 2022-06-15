@@ -60,7 +60,12 @@ class UserRepository {
 
   static Future<void> deleteGroup(
       {required String uid, required String gid}) async {
-        await userCollection.doc(uid).collection('groups').doc(gid).delete();
-        print('---- DELETED GROUP ' + gid + '');
-      }
+    await userCollection.doc(uid).collection('groups').doc(gid).delete();
+    print('---- DELETED GROUP ' + gid + '');
+  }
+
+  static Future<String> getAvatarUserById({required String id}) async {
+    final userData = await userCollection.doc(id).get();
+    return userData.get('avatar');
+  }
 }

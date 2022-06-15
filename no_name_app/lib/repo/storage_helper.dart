@@ -31,6 +31,7 @@ class StorageHelper {
           imageGroup: convert['Image'],
           nameGroup: convert['Name'],
           typeGroup: convert['Type'],
+          note: convert['Note']
         );
         List<UserModel> x = [];
         

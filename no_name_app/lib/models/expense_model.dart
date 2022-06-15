@@ -8,6 +8,8 @@ class ExpenseModel {
   DateTime dateCreate;
   String value;
   List<UserModel> members;
+  String note;
+  String type;
 
   ExpenseModel({
     required this.id,
@@ -15,10 +17,12 @@ class ExpenseModel {
     required this.dateCreate,
     required this.value,
     required this.members,
+    required this.note,
+    required this.type,
   });
 
   Map<String, dynamic> toMap() {
-    return {'Id': id, 'Name': name, 'Datetime': dateCreate, 'Value': value};
+    return {'Id': id, 'Name': name, 'Datetime': dateCreate, 'Value': value, 'Note': note, 'Type' : type};
   }
 
   factory ExpenseModel.fromMap(Map<String, dynamic> map) {
@@ -28,6 +32,8 @@ class ExpenseModel {
       dateCreate: map['Datetime'],
       value: map['Value'],
       members: map['Members'],
+      note: map['Note'],
+      type: map['Type']
     );
   }
 

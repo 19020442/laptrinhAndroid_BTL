@@ -166,7 +166,9 @@ class LoginController extends GetxController {
       userModel.id = user.uid;
       userModel.name = user.displayName;
       userModel.email = user.email;
+      userModel.avatarImage = user.photoURL;
       userModel.passCode = '';
+      
 
       UserRepository.setUser(userModel);
       Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
@@ -229,7 +231,7 @@ class LoginController extends GetxController {
                   // border: Border.all(color: Colors.black),
                   color: Colors.white,
                   image: DecorationImage(
-                      image: AssetImage(avatarSelect), fit: BoxFit.fill),
+                      image: NetworkImage(avatarSelect), fit: BoxFit.fill),
                 ),
               ),
               Expanded(
@@ -251,7 +253,7 @@ class LoginController extends GetxController {
                               // border: Border.all(color: Colors.black),
                               color: Colors.white,
                               image: DecorationImage(
-                                  image: AssetImage(listAvatar[i]),
+                                  image: NetworkImage(listAvatar[i]),
                                   fit: BoxFit.fill),
                             ),
                           ),

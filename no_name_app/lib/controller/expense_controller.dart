@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
+import 'package:no_name_app/models/activity_model.dart';
 import 'package:no_name_app/models/comment_model.dart';
 import 'package:no_name_app/models/expense_model.dart';
 import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
+import 'package:no_name_app/repo/activity_repository.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';
 
@@ -69,11 +71,25 @@ class ExpenseController extends GetxController {
                     id: cmtId,
                     senderName: userModel.name))
             .then((_) {
-          listComment.add(CommentModel(
+          final aComment = CommentModel(
               content: textCommentController.text,
               dateTime: DateTime.now(),
               id: cmtId,
-              senderName: userModel.name));
+              senderName: userModel.name);
+          listComment.add(aComment);
+
+          ActivityRepository.generateIdOfActivity(actor: userModel)
+              .then((actId) {
+            final anAct = ActivityModel(
+                actor: userModel,
+                id: actId,
+                timeCreate: DateTime.now(),
+                type: TypeOfActivity.CommentOnExpense,
+                useCase: aComment,
+                zone: expenseModel);
+            ActivityRepository.addAnActivity(
+                actor: userModel, activityModel: anAct);
+          });
           update();
           textCommentController.clear();
           Get.back();

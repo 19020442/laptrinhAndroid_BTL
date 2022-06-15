@@ -5,6 +5,7 @@ import 'package:no_name_app/controller/account_controller.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
+import 'package:no_name_app/widgets/cached_image.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -28,7 +29,11 @@ class AccountScreen extends StatelessWidget {
                       .copyWith(fontSize: 30, fontWeight: FontWeight.w700),
                 ),
                 ListTile(
-                  leading: const CircleAvatar(),
+                  leading: CachedImageWidget(
+                    height: 50,
+                    width: 50,
+                        url: _controller.userModel.avatarImage),
+                
                   title: Text(
                     _controller.userModel.name!,
                     style: FontUtils.mainTextStyle.copyWith(

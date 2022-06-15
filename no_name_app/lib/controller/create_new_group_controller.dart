@@ -4,13 +4,16 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
 import 'package:no_name_app/controller/group_controller.dart';
+import 'package:no_name_app/models/activity_model.dart';
 import 'package:no_name_app/models/group_model.dart';
+import 'package:no_name_app/repo/activity_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/upload_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/image.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';
+import 'package:no_name_app/widgets/type_of_group_widget.dart';
 
 class CreateNewGroupController extends GetxController {
   TextEditingController nameGroupController = TextEditingController();
@@ -21,6 +24,7 @@ class CreateNewGroupController extends GetxController {
     Icons.home,
     Icons.list_alt,
   ];
+  late int heightScreen = 400;
   List<String> titleEachGroup = [
     'Trip',
     'Home',
@@ -73,10 +77,11 @@ class CreateNewGroupController extends GetxController {
 
       GroupRepository.getIdGroup().then((value) {
         newGroup.id = value;
-        newGroup.imageGroup =imageGroup;
+        newGroup.imageGroup = imageGroup;
         newGroup.nameGroup = nameGroupController.text;
         newGroup.typeGroup = typeGroup == "" ? "Other" : typeGroup;
         newGroup.members = [];
+        newGroup.note = '';
         GroupRepository.setGroup(newGroup);
         AuthController authController = Get.find();
         GroupRepository.addMember(
@@ -84,15 +89,29 @@ class CreateNewGroupController extends GetxController {
 
         UserRepository.onCreateGroup(
                 uid: authController.userModel!.id!, groupModel: newGroup)
-            .then((value) {
-          update();
-          Get.back();
-          print(newGroup.toJson());
-          GroupController groupController = Get.find();
-          groupController.onInit();
-          Get.offAndToNamed(Routes.MY_GROUP_SCREEN, arguments: {
-            'group-model': newGroup,
-            'user-model': authController.userModel
+            .then((_) {
+          ActivityRepository.generateIdOfActivity(
+                  actor: authController.userModel!)
+              .then((idAct) {
+            ActivityRepository.addAnActivity(
+                    actor: authController.userModel!,
+                    activityModel: ActivityModel(
+                        id: idAct,
+                        actor: authController.userModel,
+                        timeCreate: DateTime.now(),
+                        type: TypeOfActivity.CreateNewGroup,
+                        useCase: newGroup,
+                        zone: null))
+                .then((value) {
+              update();
+              GroupController groupController = Get.find();
+              groupController.onInit();
+              Get.back();
+              Get.offAndToNamed(Routes.MY_GROUP_SCREEN, arguments: {
+                'group-model': newGroup,
+                'user-model': authController.userModel
+              });
+            });
           });
         });
       });
@@ -103,5 +122,10 @@ class CreateNewGroupController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white);
     }
+  }
+  expandScreen() {
+    // print('abcd');
+    // heightScreen = 900;
+    update();
   }
 }

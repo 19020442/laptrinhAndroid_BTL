@@ -79,11 +79,14 @@ class ExpenseRepository {
     await groupCollection
         .doc(groupId)
         .collection('expenses')
+        .orderBy('Datetime', descending: true)
         .get()
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
         final data = value.docs[i].data();
         final expense = ExpenseModel(
+            type: data['Type'],
+            note: data['Note'],
             id: data['Id'],
             name: data['Name'],
             dateCreate: data['Datetime'].toDate(),
@@ -220,14 +223,18 @@ class ExpenseRepository {
     final ownerData = await expenseCollection.collection('owners').get();
     for (int i = 0; i < payerData.docs.length; i++) {
       final aPayerData = payerData.docs[i];
-      status.add(
-          aPayerData['name'] + " đang dư " + aPayerData['amount'].toString());
+      status.add(aPayerData['name'] +
+          " đang dư " +
+          aPayerData['amount'].toString() +
+          " đ");
       // print(aPayerData.data());
     }
     for (int i = 0; i < ownerData.docs.length; i++) {
       final aOwnerData = ownerData.docs[i];
-      status.add(
-          aOwnerData['name'] + " đang mượn " + aOwnerData['amount'].toString());
+      status.add(aOwnerData['name'] +
+          " đang mượn " +
+          aOwnerData['amount'].toString() +
+          " đ");
       // print(aPayerData.data());
     }
     return (status);

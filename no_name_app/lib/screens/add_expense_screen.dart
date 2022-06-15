@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/add_expense_controller.dart';
 import 'package:no_name_app/routes/app_router.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
+import 'package:no_name_app/utils/image.dart';
 
 class AddExpenseScreen extends StatelessWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
@@ -15,78 +17,205 @@ class AddExpenseScreen extends StatelessWidget {
       builder: (AddExpenseController _controller) {
         return Scaffold(
           appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            title: Text(
+              'Thêm hóa đơn mới',
+              style: FontUtils.mainTextStyle.copyWith(color: Colors.black),
+            ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.navigate_before,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
             actions: [
               IconButton(
                   onPressed: () {
                     _controller.onSave();
                   },
-                  icon: const Icon(Icons.check))
+                  icon: const Icon(
+                    Icons.check,
+                    color: Colors.black,
+                  ))
             ],
           ),
           body: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
               children: [
                 Container(
-                  height: 50,
-                ),
-                Container(
-                    width: 200,
-                    child: TextFormField(
-                      controller: _controller.descriptionController,
-                      decoration:
-                          InputDecoration(hintText: 'Enter a description',hintStyle: FontUtils.mainTextStyle.copyWith()),
-                    )),
-                Container(
-                    width: 200,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _controller.valueController,
-                      decoration: InputDecoration(
-                          hintText: '0.00',
-                          hintStyle: FontUtils.mainTextStyle.copyWith()),
-                    )),
-                Container(
-                  width: 200,
-                  child: Row(
+                  height: MediaQuery.of(context).size.height,
+                  padding: const EdgeInsets.only(left: 30),
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Column(
                     children: [
-                      Text('Paid by',
-                          style: FontUtils.mainTextStyle.copyWith()),
-                      TextButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.CHOOSE_WHO_PAID);
-                          },
-                          child: Text('You',
-                              style: FontUtils.mainTextStyle.copyWith())),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: 200,
-                  child: Row(
-                    children: [
-                      Text(
-                        'Split',
-                        style: FontUtils.mainTextStyle.copyWith(),
+                      Container(
+                        height: 50,
                       ),
-                      TextButton(
-                          onPressed: () {
-                            if (_controller.valueController.text != "") {
-                              Get.toNamed(Routes.CHOOSE_OPTION_SPLIT);
-                            } else {
-                              Get.defaultDialog(
-                                  title: "",
-                                  middleText:
-                                      "You must have enter value of this expenses first");
-                            }
-                          },
-                          child: Text('equally',
-                              style: FontUtils.mainTextStyle.copyWith())),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 100,
+                              width: 100,
+                              child:
+                                  // _controller.avatarSelected == ""
+                                  //     ?
+                                  Card(
+                                color: Colors.grey[100],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                elevation: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: SvgPicture.asset(IconUtils.icExpense),
+                                ),
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: TextFormField(
+                                    focusNode: _controller.initFocus,
+                                    controller:
+                                        _controller.descriptionController,
+                                    decoration: InputDecoration(
+                                        hintText: 'Enter a description',
+                                        hintStyle:
+                                            FontUtils.mainTextStyle.copyWith()),
+                                  )),
+                              Container(
+                                  width: 200,
+                                  child: TextFormField(
+                                    style: FontUtils.mainTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 40,
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    controller: _controller.valueController,
+                                    decoration: InputDecoration(
+                                        hintText: '0.00',
+                                        hintStyle: FontUtils.mainTextStyle
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 40,
+                                                color: Colors.grey[500])),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: Row(
+                          children: [
+                            Text('Trả bởi',
+                                style: FontUtils.mainTextStyle.copyWith()),
+                            TextButton(
+                                onPressed: () {
+                                  if (_controller.valueController.text != "") {
+                                    _controller.openChoosePayer(context);
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctx) {
+                                          return Dialog(
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              height: 50,
+                                              child: Text(
+                                                "Bạn cần nhập giá trị hóa đơn trước",
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }
+                                  // Get.toNamed(Routes.CHOOSE_WHO_PAID);
+                                },
+                                child: Text('You',
+                                    style: FontUtils.mainTextStyle.copyWith())),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: Row(
+                          children: [
+                            Text(
+                              'Split',
+                              style: FontUtils.mainTextStyle.copyWith(),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  if (_controller.valueController.text != "") {
+                                    // Get.toNamed(Routes.CHOOSE_OPTION_SPLIT);
+                                    _controller.openAdjustSplit(context);
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctx) {
+                                          return Dialog(
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              height: 50,
+                                              child: Text(
+                                                "Bạn cần nhập giá trị hóa đơn trước",
+                                                style: FontUtils.mainTextStyle
+                                                    .copyWith(),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }
+                                },
+                                child: Text('equally',
+                                    style: FontUtils.mainTextStyle.copyWith())),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
+                ),
+                Positioned(
+                    bottom: 0,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(
+                        color: Colors.grey,
+                        width: 0.5,
+                      ))),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                _controller.openDatePicker(context);
+                              },
+                              icon: const Icon(Icons.calendar_today)),
+                          IconButton(
+                              onPressed: () {
+                                _controller.openNote(context);
+                              },
+                              icon: const Icon(Icons.note_alt_outlined))
+                        ],
+                      ),
+                      // width: double.infinity,
+                    ))
               ],
             ),
           ),

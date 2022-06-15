@@ -6,11 +6,17 @@ import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
+import 'package:no_name_app/screens/choose_who_paid_screen.dart';
+import 'package:no_name_app/screens/login_screen.dart';
+import 'package:no_name_app/screens/option_split_screen.dart';
+import 'package:no_name_app/utils/fonts.dart';
 
 class AddExpenseController extends GetxController {
+  FocusNode initFocus = FocusNode();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController valueController = TextEditingController();
   TextEditingController amountPaidController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   late UserModel currentUser;
   GroupModel? groupModel;
   MyGroupController groupController = Get.find();
@@ -23,6 +29,8 @@ class AddExpenseController extends GetxController {
   List<Map<String, dynamic>> temp = [];
   late UserModel memberTapped;
   final formKey = GlobalKey<FormState>();
+
+  DateTime pickedDate = DateTime.now();
 
   // slpit unqually var
   bool isOnSplitUnequallyMode = false;
@@ -46,6 +54,7 @@ class AddExpenseController extends GetxController {
       member.add({'user': membersOfExpense[i], 'amount': 0});
       percentMemberController.add(TextEditingController());
     }
+    initFocus.requestFocus();
 
     update();
     super.onInit();
@@ -96,17 +105,19 @@ class AddExpenseController extends GetxController {
   getNeedToPayEachMember() {
     if (isOnSplitUnequallyMode) {
       if (totalPercentCurrently != 100.0) {
-        Get.dialog(AlertDialog(
-          title: const Text('ERROR'),
-          content: const Text('Total percent must be 100'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: const Text('OK'))
-          ],
-        ));
+        // Get.dialog(AlertDialog(
+        //   title: const Text('ERROR'),
+        //   content: const Text('Total percent must be 100'),
+        //   actions: [
+        //     TextButton(
+        //         onPressed: () {
+        //           Get.back();
+        //         },
+        //         child: const Text('OK'))
+        //   ],
+        // )
+        // );
+        // print('Total percent must be 100');
       } else {
         for (int i = 0; i < member.length; i++) {
           member[i]['amountToPaid'] = double.parse(valueController.text) *
@@ -216,9 +227,11 @@ class AddExpenseController extends GetxController {
         final newExpense = ExpenseModel(
             id: value,
             name: descriptionController.text,
-            dateCreate: DateTime.now(),
+            dateCreate: pickedDate,
             value: valueController.text,
-            members: membersOfExpense);
+            members: membersOfExpense,
+            note: noteController.text,
+            type: 'new');
         ExpenseRepository.setExpenseOnGroupCollection(
                 groupId: groupModel!.id!, expenseModel: newExpense)
             .whenComplete(() async {
@@ -262,6 +275,110 @@ class AddExpenseController extends GetxController {
     isOnSplitUnequallyMode = (index == 1);
 
     update();
+  }
+
+  openNote(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 400,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, top: 5, right: 5),
+                    width: double.infinity,
+                    height: 50,
+                    color: Colors.blue,
+                    child: Text(
+                      'Thêm ghi chú',
+                      style: FontUtils.mainTextStyle.copyWith(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                      child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: TextField(
+                        controller: noteController,
+                        style: FontUtils.mainTextStyle.copyWith(),
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Thêm ghi chú",
+                            hintStyle: FontUtils.mainTextStyle.copyWith()),
+                        maxLines: 20,
+                      ),
+                    ),
+                  )),
+                  TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 75,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.blue),
+                        child: Center(
+                          child: Text(
+                            'OK',
+                            style: FontUtils.mainTextStyle.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<void> openDatePicker(BuildContext context) async {
+    pickedDate = (await showDatePicker(
+      context: context,
+      initialDate: pickedDate,
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2023),
+      confirmText: 'Chọn',
+      cancelText: 'Quay lại',
+    ))!;
+  }
+
+  openChoosePayer(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(child: ChooseWhoPaidScreen());
+        });
+  }
+
+  openAdjustSplit(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return Dialog(
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+              height: 400,
+              child: SplitOptionScreen()
+            ),
+          );
+        });
   }
 
   @override
