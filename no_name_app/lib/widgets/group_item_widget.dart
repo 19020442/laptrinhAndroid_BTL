@@ -4,8 +4,10 @@ import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
 
 class GroupItemWidget extends StatelessWidget {
-  const GroupItemWidget({Key? key, required this.itemData}) : super(key: key);
+  const GroupItemWidget({Key? key, required this.itemData, required this.ovr})
+      : super(key: key);
   final GroupModel itemData;
+  final double ovr;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,18 +35,40 @@ class GroupItemWidget extends StatelessWidget {
                 width: 100,
               )),
           Flexible(
+              flex: 2,
               child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Text(
-                  itemData.nameGroup!,
-                  style: FontUtils.mainTextStyle
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 24),
-                )
-              ],
-            ),
-          ))
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      itemData.nameGroup!,
+                      style: FontUtils.mainTextStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          // color: itemData.typeGroup == 'Other'
+                          //     ? const Color(0xffd27979)
+                          //     : itemData.typeGroup == 'Trip'
+                          //         ? Colors.blue[300]
+                          //         : itemData.typeGroup == 'Home'
+                          //             ? Colors.red[300]
+                          //             : Colors.blue
+                                      ),
+                    ),
+                    if (ovr != 0)
+                      Text(
+                        ovr > 0
+                            ? 'Bạn đang cho mượn ${ovr.toInt()} vnđ'
+                            : 'Bạn đang mượn ${(ovr * -1).toInt()} vnđ',
+                        textAlign: TextAlign.start,
+                        style: FontUtils.mainTextStyle.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: ovr > 0 ? Colors.blue : Colors.red[300]),
+                      )
+                  ],
+                ),
+              ))
         ],
       ),
     );

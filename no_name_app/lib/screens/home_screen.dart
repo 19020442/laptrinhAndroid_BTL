@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
         init: HomeController(),
         builder: (HomeController _controller) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: _controller.listPages[_controller.currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
@@ -37,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 0
                               ? Colors.blue
-                              : Colors.black,
+                              : Colors.grey,
                           fontWeight: _controller.currentIndex == 0
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -51,8 +52,8 @@ class HomeScreen extends StatelessWidget {
                       'Bạn bè',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 1
-                              ? Colors.blue
-                              : Colors.black,
+                              ? Color(0xffED834E)
+                              : Colors.grey,
                           fontWeight: _controller.currentIndex == 1
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -69,8 +70,8 @@ class HomeScreen extends StatelessWidget {
                       'Hoạt động',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 2
-                              ? Colors.blue
-                              : Colors.black,
+                              ? Color(0xff59ba85)
+                              : Colors.grey,
                           fontWeight: _controller.currentIndex == 2
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -87,8 +88,8 @@ class HomeScreen extends StatelessWidget {
                       'Tài khoản',
                       style: FontUtils.mainTextStyle.copyWith(
                           color: _controller.currentIndex == 3
-                              ? Colors.blue
-                              : Colors.black,
+                              ?Color(0xff95a86a)
+                              : Colors.grey,
                           fontWeight: _controller.currentIndex == 3
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -117,7 +118,7 @@ Widget bottomSheetItem({
 }) {
   return GestureDetector(
     onTap: onTap,
-    behavior: HitTestBehavior.opaque,
+    // behavior: HitTestBehavior.,
     child: SizedBox(
       height: 50,
       child: Column(

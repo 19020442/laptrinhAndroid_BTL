@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/auth_controller.dart';
+import 'package:no_name_app/controller/group_controller.dart';
 import 'package:no_name_app/controller/my_group_controller.dart';
 import 'package:no_name_app/models/expense_model.dart';
 import 'package:no_name_app/models/group_model.dart';
@@ -13,7 +14,7 @@ class RecordPaymentController extends GetxController {
   late Map<String, dynamic> payer;
   late GroupModel currentGroup;
   late UserModel owner;
-  TextEditingController valueController = new TextEditingController();
+  TextEditingController valueController =  TextEditingController();
   late FocusNode valueFocus;
   @override
   void onInit() {
@@ -27,7 +28,7 @@ class RecordPaymentController extends GetxController {
     owner = _authController.userModel!;
     valueFocus = FocusNode();
     valueFocus.requestFocus();
-    valueController.text = '${payer['amount']}';
+    valueController.text = '${payer['amount'].toInt()}';
 
     // owner = Get.arguments['owner'];
     super.onInit();
@@ -38,13 +39,16 @@ class RecordPaymentController extends GetxController {
     ExpenseRepository.getIdOfExpenseInGroup(groupId: currentGroup.id!)
         .then((value) {
       final newExpense = ExpenseModel(
-          note: '',
-          id: value,
-          name: '${payer['name']} đã đưa ${owner.name} ${valueController.text}',
-          dateCreate: DateTime.now(),
-          value: valueController.text,
-          members: [],
-          type: 'record');
+        note: '',
+        id: value,
+        name:
+            '${payer['name']} đã đưa ${owner.name} ${valueController.text} vnđ',
+        dateCreate: DateTime.now(),
+        value: valueController.text,
+        members: [],
+        type: 'record',
+        category: ''
+      );
       final payerDataUser = UserModel(
         id: payer['id'],
         name: payer['name'],
@@ -71,11 +75,11 @@ class RecordPaymentController extends GetxController {
             ownersData: [
               {
                 'user': owner,
-                'amount': double.parse(valueController.text),
+                'amount': int.parse(valueController.text),
                 'payer': [
                   {
                     'user': payerDataUser,
-                    'amount': double.parse(valueController.text),
+                    'amount': int.parse(valueController.text),
                   }
                 ]
               }
@@ -85,11 +89,11 @@ class RecordPaymentController extends GetxController {
             data: [
               {
                 'user': payerDataUser,
-                'amount': double.parse(valueController.text),
+                'amount': int.parse(valueController.text),
                 'owner': [
                   {
                     'user': owner,
-                    'amount': double.parse(valueController.text),
+                    'amount': int.parse(valueController.text),
                   }
                 ],
               }
@@ -100,18 +104,18 @@ class RecordPaymentController extends GetxController {
             data: [
               {
                 'user': owner,
-                'amount': double.parse(valueController.text),
+                'amount': int.parse(valueController.text),
                 'payer': [
                   {
                     'user': payerDataUser,
-                    'amount': double.parse(valueController.text)
+                    'amount': int.parse(valueController.text)
                   }
                 ]
               }
             ],
             isPayer: false);
-        // MyGroupController groupController = Get.find();
-        // groupController.onInit();
+        GroupController groupsController = Get.find();
+        groupsController.onInit();
         Get.back();
         Get.back();
       });

@@ -45,7 +45,8 @@ class ExpenseRepository {
         });
       }
     }
-    for (int i = 0; i < payersData.length; i++) {
+
+    for (int i = 0; i < ownersData.length; i++) {
       DocumentReference ownerData = groupCollection
           .doc(groupId)
           .collection('expenses')
@@ -91,7 +92,8 @@ class ExpenseRepository {
             name: data['Name'],
             dateCreate: data['Datetime'].toDate(),
             value: data['Value'],
-            members: []);
+            members: [],
+            category: data['Category']);
         res.add(expense);
       }
     });
@@ -127,6 +129,8 @@ class ExpenseRepository {
       {required String groupId,
       required ExpenseModel currentExpense,
       required String userId}) async {
+    var isOnPayer = false;
+    var isOnOwner = false;
     final ownerData = await groupCollection
         .doc(groupId)
         .collection('expenses')
@@ -139,8 +143,17 @@ class ExpenseRepository {
         .doc(currentExpense.id)
         .collection('payers')
         .get();
-
-    if (!ownerData.docs.any((element) => element.id != userId)) {
+    ownerData.docs.forEach((e) {
+      if (e.id == userId) {
+        isOnOwner = true;
+      }
+    });
+    payerData.docs.forEach((e) {
+      if (e.id == userId) {
+        isOnPayer = true;
+      }
+    });
+    if (isOnOwner) {
       final data = await groupCollection
           .doc(groupId)
           .collection('expenses')
@@ -148,10 +161,11 @@ class ExpenseRepository {
           .collection('owners')
           .doc(userId)
           .get();
-      return -data.data()!['amount'];
+      // print('---- ' + (data.data()!['amount'] * -1).toString());
+      return data.data()!['amount'] * -1;
     }
 
-    if (!payerData.docs.any((element) => element.id != userId)) {
+    if (isOnPayer) {
       final data = await groupCollection
           .doc(groupId)
           .collection('expenses')

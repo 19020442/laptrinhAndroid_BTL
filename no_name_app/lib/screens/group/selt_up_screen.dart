@@ -15,6 +15,7 @@ class SettleUpScreen extends StatelessWidget {
       builder: (MyGroupController _controller) {
         return Scaffold(
           appBar: AppBar(
+            elevation: 0,
             backgroundColor: Colors.white,
             title: Text(
               'Chọn một bạn để thanh toán',
@@ -37,7 +38,7 @@ class SettleUpScreen extends StatelessWidget {
               // for (int i = 0 ; i < _controller.sta)
               children: [
                 for (int i = 0; i < _controller.status.length; i++)
-                  if (_controller.status[i]['amount'].toString() != '0.0')
+                  if (_controller.status[i]['amount'] > 0)
                     ListTile(
                       onTap: () {
                         Get.toNamed(Routes.RECORD_PAYMENT_SCREEN, arguments: {
@@ -56,7 +57,7 @@ class SettleUpScreen extends StatelessWidget {
                             .copyWith(color: Colors.black),
                       ),
                       trailing: Text(
-                        _controller.status[i]['amount'].toString(),
+                        _controller.status[i]['amount'].toInt().toString() + " vnđ",
                         style: FontUtils.mainTextStyle
                             .copyWith(color: Colors.black),
                       ),

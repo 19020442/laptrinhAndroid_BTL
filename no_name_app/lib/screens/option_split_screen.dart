@@ -75,7 +75,22 @@ class SplitOptionScreen extends StatelessWidget {
                     TabBarView(
                       physics: const BouncingScrollPhysics(),
                       children: [
-                        const Center(child: Text('Split Equally')),
+                        Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              IconUtils.icChecked,
+                              height: 50,
+                              width: 50,
+                            ),
+                            const SizedBox(height:10),
+                            Text(
+                              'Đang áp dụng chia đều',
+                              style: FontUtils.mainTextStyle.copyWith(),
+                            ),
+                          ],
+                        )),
                         Stack(
                           children: [
                             Form(
@@ -85,7 +100,7 @@ class SplitOptionScreen extends StatelessWidget {
                                   for (int i = 0;
                                       i < _controller.membersOfExpense.length;
                                       i++)
-                                    Container(
+                                    SizedBox(
                                       height: 50,
                                       width: double.infinity,
                                       child: Row(

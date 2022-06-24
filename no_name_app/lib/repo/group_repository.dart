@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
+import 'package:no_name_app/repo/friend_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 
 class GroupRepository {
@@ -100,6 +101,7 @@ class GroupRepository {
           if (isPayer) {
             path.update(
                 {'amount': data[i]['amount'] + value.data()!['amount']});
+            // FriendRepository.updateStatus(userId: data[i]['user'].id, friendId: friendId, isOnGroup: isOnGroup, data: data)
           } else {
             path.update(
                 {'amount': value.data()!['amount'] - data[i]['amount']});
@@ -126,19 +128,53 @@ class GroupRepository {
                 'name': data[i][collect][j]['user'].name,
                 'amount': data[i][collect][j]['amount']
               });
+              // FriendRepository.updateStatus(
+              //     userId: data[i]['user'].id,
+              //     friendId: data[i][collect][j]['user'].id,
+              //     isOnGroup: true,
+              //     gid: groupId,
+              //     data: {'amount': data[i][collect][j]['amount']});
             } else {
               path1.set({
                 'name': data[i][collect][j]['user'].name,
                 'amount': -data[i][collect][j]['amount']
               });
+              // FriendRepository.updateStatus(
+              //     userId: data[i]['user'].id,
+              //     friendId: data[i][collect][j]['user'].id,
+              //     isOnGroup: true,
+              //     gid: groupId,
+              //     data: {'amount': -data[i][collect][j]['amount']});
             }
           } else {
             if (isPayer) {
-              path1.update(
-                  {'amount': data[i]['amount'] + value.data()!['amount']});
+              path1.update({
+                'amount':
+                    data[i][collect][j]['amount'] + value.data()!['amount']
+              });
+              // FriendRepository.updateStatus(
+              //     userId: data[i]['user'].id,
+              //     friendId: data[i][collect][j]['user'].id,
+              //     isOnGroup: true,
+              //     gid: groupId,
+              //     data: {
+              //       'amount':
+              //           data[i][collect][j]['amount'] + value.data()!['amount']
+              //     });
             } else {
-              path1.update(
-                  {'amount': value.data()!['amount'] - data[i]['amount']});
+              path1.update({
+                'amount':
+                    value.data()!['amount'] - data[i][collect][j]['amount']
+              });
+              // FriendRepository.updateStatus(
+              //     userId: data[i]['user'].id,
+              //     friendId: data[i][collect][j]['user'].id,
+              //     isOnGroup: true,
+              //     gid: groupId,
+              //     data: {
+              //       'amount':
+              //           value.data()!['amount'] - data[i][collect][j]['amount']
+              //     });
             }
           }
         });
@@ -183,7 +219,28 @@ class GroupRepository {
       }
       statusFinal.add(status[i]);
     }
+    for (int i = 0; i < statusFinal.length; i++) {
+      FriendRepository.updateStatus(
+          userId: userId,
+          friendId: statusFinal[i]['id'],
+          isOnGroup: true,
+          data: {
+            'amount': statusFinal[i]['amount'],
+          },
+          gid: groupId);
+    }
 
     return statusFinal;
+  }
+
+  static Future<double> getOverralStatusOfGroup(
+      {required String gid, required String uid}) async {
+    final data =
+        await groupCollection.doc(gid).collection('state').doc(uid).get();
+    if (data.data() == null) {
+      return 0;
+    } else {
+      return data.data()!['amount'];
+    }
   }
 }

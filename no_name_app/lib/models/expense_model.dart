@@ -10,6 +10,7 @@ class ExpenseModel {
   List<UserModel> members;
   String note;
   String type;
+  String category;
 
   ExpenseModel({
     required this.id,
@@ -19,10 +20,11 @@ class ExpenseModel {
     required this.members,
     required this.note,
     required this.type,
+    required this.category,
   });
 
   Map<String, dynamic> toMap() {
-    return {'Id': id, 'Name': name, 'Datetime': dateCreate, 'Value': value, 'Note': note, 'Type' : type};
+    return {'Id': id, 'Name': name, 'Datetime': dateCreate, 'Value': value, 'Note': note, 'Type' : type,'Category' :category};
   }
 
   factory ExpenseModel.fromMap(Map<String, dynamic> map) {
@@ -33,7 +35,8 @@ class ExpenseModel {
       value: map['Value'],
       members: map['Members'],
       note: map['Note'],
-      type: map['Type']
+      type: map['Type'],
+      category: map['Category']
     );
   }
 

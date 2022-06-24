@@ -91,19 +91,18 @@ class GroupSettingScreen extends StatelessWidget {
                     height: 50,
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.group_add_rounded,
-                          color: Colors.black,
-                          size: 30,
+                        SvgPicture.asset(
+                          IconUtils.icAddMember,
+                          height: 40,
+                          width: 40,
                         ),
                         const SizedBox(
-                          width: 50,
+                          width: 20,
                         ),
                         Text(
                           'Thêm bạn bè của bạn vào nhóm !',
-                          style: FontUtils.mainTextStyle.copyWith(
-                            color: Colors.black
-                          ),
+                          style: FontUtils.mainTextStyle
+                              .copyWith(color: Colors.black),
                         )
                       ],
                     ),
@@ -111,8 +110,12 @@ class GroupSettingScreen extends StatelessWidget {
                 ),
                 for (int i = 0; i < _controller.listMember.length; i++)
                   ListTile(
-                    leading:Container(height: 50,width: 50,
-                    child: CachedImageWidget(url: _controller.listMember[i].avatarImage),),
+                    leading: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: CachedImageWidget(
+                          url: _controller.listMember[i].avatarImage),
+                    ),
                     title: Text(
                       _controller.listMember[i].name!,
                       style: FontUtils.mainTextStyle
@@ -130,10 +133,10 @@ class GroupSettingScreen extends StatelessWidget {
                     height: 50,
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.logout,
-                          color: Colors.black,
-                          size: 30,
+                        SvgPicture.asset(
+                          IconUtils.icLogOut,
+                          height: 30,
+                          width: 30,
                         ),
                         const SizedBox(
                           width: 50,

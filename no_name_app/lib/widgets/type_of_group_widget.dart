@@ -16,20 +16,20 @@ class TypeOfGroup extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: isChoosen ? Colors.blue : Colors.white,
+          color: isChoosen ? Color(0xff66b6d9) : Colors.white,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.blue)),
+          border: Border.all(color: Color(0xff66b6d9),)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Icon(
             icon,
-            color: isChoosen ? Colors.white : Colors.blue,
+            color: isChoosen ? Colors.white : Color(0xff66b6d9),
           ),
           Text(
             title,
             style: FontUtils.mainTextStyle
-                .copyWith(color: isChoosen ? Colors.white : Colors.blue),
+                .copyWith(color: isChoosen ? Colors.white : Color(0xff66b6d9),),
           ),
         ],
       ),

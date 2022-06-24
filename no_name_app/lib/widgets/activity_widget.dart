@@ -47,23 +47,25 @@ class ActivityWiget extends StatelessWidget {
                     width: 40,
                     child: activityModel.type == TypeOfActivity.CommentOnExpense
                         ? SvgPicture.asset(IconUtils.icCommentActivity)
-                        : activityModel.useCase['Image'] == ""
-                            ? (activityModel.useCase['Type'] == "Home"
-                                ? Image(
-                                    image: AssetImage(
-                                        ImageUtils.deafaultGroupHomeImage),
-                                  )
-                                : activityModel.useCase['Type'] == "Trip"
+                        : activityModel.type == TypeOfActivity.AddNewFriend
+                            ? SvgPicture.asset(IconUtils.icAddFriendActivity)
+                            : activityModel.useCase['Image'] == ""
+                                ? (activityModel.useCase['Type'] == "Home"
                                     ? Image(
                                         image: AssetImage(
-                                            ImageUtils.deafaultGroupTripImage),
+                                            ImageUtils.deafaultGroupHomeImage),
                                       )
-                                    : Image(
-                                        image: AssetImage(
-                                            ImageUtils.deafaultGroupOtherImage),
-                                      ))
-                            : CachedImageWidget(
-                                url: activityModel.useCase['Image'])),
+                                    : activityModel.useCase['Type'] == "Trip"
+                                        ? Image(
+                                            image: AssetImage(ImageUtils
+                                                .deafaultGroupTripImage),
+                                          )
+                                        : Image(
+                                            image: AssetImage(ImageUtils
+                                                .deafaultGroupOtherImage),
+                                          ))
+                                : CachedImageWidget(
+                                    url: activityModel.useCase['Image'])),
                 Positioned(
                     bottom: 0,
                     right: 0,
@@ -99,6 +101,11 @@ class ActivityWiget extends StatelessWidget {
               if (activityModel.type == TypeOfActivity.CommentOnExpense)
                 Text(
                   '${activityModel.actor!.name} đã bình luận trong "${activityModel.zone['Name']}"',
+                  style: FontUtils.mainTextStyle.copyWith(color: Colors.black),
+                ),
+              if (activityModel.type == TypeOfActivity.AddNewFriend)
+                Text(
+                  '${activityModel.actor!.name} vừa thêm bạn mới',
                   style: FontUtils.mainTextStyle.copyWith(color: Colors.black),
                 ),
               Text(

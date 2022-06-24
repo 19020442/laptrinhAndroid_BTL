@@ -34,7 +34,7 @@ class CreateNewGroupScreen extends StatelessWidget {
                         style: FontUtils.mainTextStyle.copyWith(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue),
+                            color: Color(0xffde838a)),
                       ),
                     ),
                     SizedBox(
@@ -53,7 +53,7 @@ class CreateNewGroupScreen extends StatelessWidget {
                                         height: 50,
                                         width: 50,
                                         url: _controller.imageGroup)
-                                    : Icon(Icons.add_a_photo),
+                                    : Icon(Icons.add_a_photo, color: Color(0xff66b6d9),),
                               ),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
@@ -80,7 +80,7 @@ class CreateNewGroupScreen extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      'Type',
+                      'Kiểu',
                       style: FontUtils.mainTextStyle.copyWith(),
                     ),
                     const SizedBox(
@@ -129,11 +129,12 @@ class CreateNewGroupScreen extends StatelessWidget {
                         child: Container(
                           width: 150,
                           child: ButtonWidget(
+                            fontColor: Colors.white,
                               title: 'Tạo',
                               onTap: () {
                                 _controller.onSave();
                               },
-                              color: Colors.blue),
+                              color: Color(0xffde838a)),
                         ),
                       ),
                     ),

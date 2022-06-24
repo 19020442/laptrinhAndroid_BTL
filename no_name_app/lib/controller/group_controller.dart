@@ -12,25 +12,28 @@ import 'package:no_name_app/screens/create_new_group_screen.dart';
 
 class GroupController extends GetxController {
   late UserModel userModel;
-  List<GroupModel> listGroups = [];
+  List<Map<GroupModel, double>> listGroups = [];
   bool isShowFilterTable = false;
   Map<String, bool> filterTable = {
     'all': true,
     'own': false,
     'owned': false,
   };
+  String yourOverral = '';
 
   bool isLoadingGroup = true;
+
+  double totalOvrOnGroup = 0;
   @override
   void onInit() async {
+    totalOvrOnGroup = 0;
     AuthController _authController = Get.find();
     userModel = _authController.userModel!;
-    listGroups = (await StorageHelper.getGroups());
+    // listGroups = (await StorageHelper.getGroups());
 
-    update();
+    // update();
     UserRepository.getGroups(uid: userModel.id!).then((value) async {
-      List<GroupModel> temp = [];
-      Function compare = const ListEquality().equals;
+      List<Map<GroupModel, double>> temp = [];
 
       if (value == null) {
         listGroups = [];
@@ -38,19 +41,17 @@ class GroupController extends GetxController {
         update();
       } else {
         for (int i = 0; i < value.length; i++) {
+          GroupRepository.getStatusGroupByUserId(groupId: value[i], userId: userModel.id!);
           final groupData =
               await GroupRepository.getGroupbyId(idGroup: value[i]);
-          temp.add(groupData);
+          final groupOvr = await GroupRepository.getOverralStatusOfGroup(
+              gid: value[i], uid: userModel.id!);
+          totalOvrOnGroup += groupOvr;
+          temp.add({groupData: groupOvr});
         }
-
-        if (!compare(listGroups, temp)) {
-          // print('GROUP DATA HAS CHANGED');
-          listGroups = temp;
-
-          StorageHelper.setGroup(temp);
-          isLoadingGroup = false;
-          update();
-        }
+        listGroups = temp;
+        isLoadingGroup = false;
+        update();
       }
     });
 
@@ -59,8 +60,8 @@ class GroupController extends GetxController {
 
   void startCreateNewGroup() {
     Get.bottomSheet(
-       CreateNewGroupScreen(),
-    
+      CreateNewGroupScreen(),
+
       // isScrollControlled: true
     );
     // Get.toNamed(Routes.CREATE_NEW_GROUP);

@@ -26,14 +26,14 @@ class AccountScreen extends StatelessWidget {
                 Text(
                   'Tài khoản',
                   style: FontUtils.mainTextStyle
-                      .copyWith(fontSize: 30, fontWeight: FontWeight.w700),
+                      .copyWith(fontSize: 30, fontWeight: FontWeight.w700,color: Color(0xff95a86a)),
                 ),
                 ListTile(
                   leading: CachedImageWidget(
-                    height: 50,
-                    width: 50,
-                        url: _controller.userModel.avatarImage),
-                
+                      height: 50,
+                      width: 50,
+                      url: _controller.userModel.avatarImage),
+
                   title: Text(
                     _controller.userModel.name!,
                     style: FontUtils.mainTextStyle.copyWith(
@@ -46,10 +46,10 @@ class AccountScreen extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {},
-                  ),
+                  // trailing: IconButton(
+                  //   icon: Icon(Icons.edit),
+                  //   onPressed: () {},
+                  // ),
                 ),
                 const Divider(
                   thickness: 1,
@@ -65,12 +65,12 @@ class AccountScreen extends StatelessWidget {
                             padding: EdgeInsets.all(20),
                             child: Container(
                               // height: 100,
-                              height: 150,
+                              height: 200,
                               color: Colors.white,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                // mainAxisAlignment:
+                                // MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
                                     'Cài đặt mã bảo mật',
@@ -78,25 +78,57 @@ class AccountScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25),
                                   ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   TextButton(
                                       onPressed: () {
                                         Get.back();
                                         Get.toNamed(Routes.PASSCODE_SCREEN,
                                             arguments: {'mode': 'change-pass'});
                                       },
-                                      child: Text('Thay đổi mã khóa',
-                                          style: FontUtils.mainTextStyle
-                                              .copyWith())),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            IconUtils.icChangePassCode,
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text('Thay đổi mã khóa',
+                                              style: FontUtils.mainTextStyle
+                                                  .copyWith( fontSize: 20)),
+                                        ],
+                                      )),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   TextButton(
                                       onPressed: () {
                                         Get.back();
                                         Get.toNamed(Routes.PASSCODE_SCREEN,
                                             arguments: {'mode': 'delete-pass'});
                                       },
-                                      child: Text(
-                                        'Xóa mã khóa',
-                                        style:
-                                            FontUtils.mainTextStyle.copyWith(),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            IconUtils.icDeletePassCode,
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Xóa mã khóa',
+                                            style: FontUtils.mainTextStyle
+                                                .copyWith(
+                                                  fontSize: 20
+                                                ),
+                                          ),
+                                        ],
                                       )),
                                 ],
                               ),
@@ -141,7 +173,7 @@ class AccountSettingItem extends StatelessWidget {
             width: 25,
           ),
           const SizedBox(
-            width: 50,
+            width: 30,
           ),
           Text(
             title,

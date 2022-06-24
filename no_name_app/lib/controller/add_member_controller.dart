@@ -35,17 +35,16 @@ class AddMemberController extends GetxController {
   }
 
   bool isJoined(UserModel fr) {
-    return listMember.indexWhere((e) => e.id == yourFriends[0].id) != -1;
+    return listMember.indexWhere((e) => e.id == fr.id) != -1;
   }
 
   @override
   void onInit() async {
-    AuthController _authController = Get.find();
+    AuthController _authController = Get.find();  
     userModel = _authController.userModel!;
     currentGroup = Get.arguments['group-model'];
     yourFriends = await StorageHelper.getFriends();
     listMember = Get.arguments['list-member'];
-
     update();
     super.onInit();
   }

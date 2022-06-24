@@ -13,6 +13,9 @@ class ActivityRepository {
     if (a.contains('LeaveGroup')) {
       return TypeOfActivity.LeaveGroup;
     }
+    if (a.contains('AddNewFriend')) {
+      return TypeOfActivity.AddNewFriend;
+    }
 
     return TypeOfActivity.CreateNewGroup;
   }

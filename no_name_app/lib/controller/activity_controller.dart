@@ -13,6 +13,7 @@ class ActivityController extends GetxController {
     userModel = _authController.userModel!;
     ActivityRepository.getActivities(actor: userModel).then((value) {
       listActivity = value;
+      // print(listActivity.elementAt(0));
       update();
     });
     super.onInit();

@@ -4,24 +4,28 @@ import 'package:no_name_app/utils/fonts.dart';
 class AddButton extends StatelessWidget {
   final String title;
   final Icon icon;
-  AddButton({Key? key, required this.icon, required this.title})
+  final Color color;
+  final Color fontColor;
+  const AddButton({Key? key, required this.icon, required this.title,  required this.color, required this.fontColor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [icon, Text(title, style: FontUtils.mainTextStyle.copyWith(
-          color: Colors.white,
-          fontSize: 18,
+          color: fontColor,
+          fontSize: 15,
           fontWeight: FontWeight.bold
         ),)],
       ),
-      height: 50,
-      width: 200,
+      height: 45,
+      width: 160,
       decoration: BoxDecoration(
-          color: Colors.blue,
+        border: Border.all(color: fontColor),
+          color: color,
           borderRadius: BorderRadius.circular(5)),
     );
   }

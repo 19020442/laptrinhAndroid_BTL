@@ -145,7 +145,7 @@ class ChooseWhoPaidScreen extends StatelessWidget {
                               : Colors.white),
                       child: Center(
                         child: Text(
-                          'Multi choice',
+                          'Chọn nhiều',
                           style: FontUtils.mainTextStyle.copyWith(
                               color: _controller.isMultiChoiceMode
                                   ? Colors.white

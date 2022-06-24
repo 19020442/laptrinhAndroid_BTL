@@ -62,18 +62,27 @@ class AddExpenseScreen extends StatelessWidget {
                           Container(
                               height: 100,
                               width: 100,
-                              child:
-                                  // _controller.avatarSelected == ""
-                                  //     ?
-                                  Card(
-                                color: Colors.grey[100],
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                elevation: 5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: SvgPicture.asset(IconUtils.icExpense),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.CHOOSE_CATEGORY_SCREEN);
+                                },
+                                child: Card(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  elevation: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Center(
+                                        child: SvgPicture.asset(
+                                            // IconUtils.icExpense
+                                            IconUtils
+                                                .icExpenseList[_controller
+                                                    .cateIndexSelected]
+                                                .values
+                                                .elementAt(0))),
+                                  ),
                                 ),
                               )),
                           SizedBox(
@@ -84,11 +93,12 @@ class AddExpenseScreen extends StatelessWidget {
                               Container(
                                   width: 200,
                                   child: TextFormField(
+                                    style: FontUtils.mainTextStyle.copyWith(),
                                     focusNode: _controller.initFocus,
                                     controller:
                                         _controller.descriptionController,
                                     decoration: InputDecoration(
-                                        hintText: 'Enter a description',
+                                        hintText: 'Nhập tên hóa đơn',
                                         hintStyle:
                                             FontUtils.mainTextStyle.copyWith()),
                                   )),
@@ -117,7 +127,7 @@ class AddExpenseScreen extends StatelessWidget {
                         width: 200,
                         child: Row(
                           children: [
-                            Text('Trả bởi',
+                            Text('Người thanh toán',
                                 style: FontUtils.mainTextStyle.copyWith()),
                             TextButton(
                                 onPressed: () {
@@ -142,7 +152,7 @@ class AddExpenseScreen extends StatelessWidget {
                                   }
                                   // Get.toNamed(Routes.CHOOSE_WHO_PAID);
                                 },
-                                child: Text('You',
+                                child: Text('Bạn',
                                     style: FontUtils.mainTextStyle.copyWith())),
                           ],
                         ),
@@ -152,7 +162,7 @@ class AddExpenseScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'Split',
+                              'Chia',
                               style: FontUtils.mainTextStyle.copyWith(),
                             ),
                             TextButton(
@@ -178,7 +188,7 @@ class AddExpenseScreen extends StatelessWidget {
                                         });
                                   }
                                 },
-                                child: Text('equally',
+                                child: Text('Đều',
                                     style: FontUtils.mainTextStyle.copyWith())),
                           ],
                         ),

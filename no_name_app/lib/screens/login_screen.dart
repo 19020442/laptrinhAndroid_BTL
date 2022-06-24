@@ -16,6 +16,7 @@ class AuthScreen extends StatelessWidget {
         init: LoginController(),
         builder: (LoginController _controller) {
           return Scaffold(
+              backgroundColor: Colors.white,
               body: _controller.currentMode == AuthMode.StartPageMode
                   ? Padding(
                       padding: const EdgeInsets.all(15),
@@ -55,6 +56,7 @@ class AuthScreen extends StatelessWidget {
                                 Flexible(
                                   flex: 3,
                                   child: LoginOptionItem(
+                                      colorFont: Colors.white,
                                       color: Colors.blue,
                                       title: 'Đăng ký',
                                       image: '',
@@ -69,6 +71,7 @@ class AuthScreen extends StatelessWidget {
                                 Flexible(
                                     flex: 3,
                                     child: LoginOptionItem(
+                                        colorFont: Colors.black,
                                         color: Colors.white,
                                         title: 'Đăng nhập',
                                         image: '',
@@ -86,6 +89,7 @@ class AuthScreen extends StatelessWidget {
                                 Flexible(
                                     flex: 3,
                                     child: LoginOptionItem(
+                                        colorFont: Colors.black,
                                         color: Colors.white,
                                         title: 'Đăng nhập bằng Google',
                                         image: IconUtils.icGoogle,
@@ -201,6 +205,7 @@ class AuthScreen extends StatelessWidget {
                                                         .copyWith()),
                                               ),
                                               TextFormField(
+                                                obscureText: true,
                                                 style: FontUtils.mainTextStyle
                                                     .copyWith(),
                                                 controller: _controller
@@ -229,6 +234,7 @@ class AuthScreen extends StatelessWidget {
                                       Flexible(
                                         flex: 4,
                                         child: ButtonWidget(
+                                          fontColor: Colors.black,
                                             color: Colors.white,
                                             title: 'Quay lại',
                                             // image: '',
@@ -243,6 +249,7 @@ class AuthScreen extends StatelessWidget {
                                       Flexible(
                                         flex: 4,
                                         child: ButtonWidget(
+                                          fontColor: Colors.white,
                                             color: const Color(0xff876967),
                                             title: 'Xong',
                                             // image: '',
@@ -265,69 +272,75 @@ class AuthScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 50,
-                                ),
-                                Text(
-                                  'Chào mừng quay trở lại',
-                                  style: FontUtils.mainTextStyle.copyWith(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 50,
-                                ),
-                                Text(
-                                  'Địa chỉ email',
-                                  style: FontUtils.mainTextStyle
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                TextFormField(
-                                  style: FontUtils.mainTextStyle.copyWith(),
-                                  controller: _controller.emailController,
-                                  decoration: InputDecoration(
-                                    labelStyle:
-                                        FontUtils.mainTextStyle.copyWith(),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 50,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  'Mật khẩu',
-                                  style: FontUtils.mainTextStyle
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                TextFormField(
-                                  style: FontUtils.mainTextStyle.copyWith(),
-                                  controller: _controller.passwordController,
-                                  decoration: InputDecoration(
-                                    labelStyle:
-                                        FontUtils.mainTextStyle.copyWith(),
+                                  Text(
+                                    'Chào mừng quay trở lại',
+                                    style: FontUtils.mainTextStyle.copyWith(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                ButtonWidget(
-                                    title: 'Đăng nhập',
-                                    onTap: () {
-                                      _controller.loginByEmailAndPassword();
-                                    },
-                                    color: Colors.green),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                ButtonWidget(
-                                    title: 'Quay lại',
-                                    onTap: () {
-                                      _controller.backToStartPage();
-                                    },
-                                    color: Colors.white),
-                              ],
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                  Text(
+                                    'Địa chỉ email',
+                                    style: FontUtils.mainTextStyle
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextFormField(
+                                    style: FontUtils.mainTextStyle.copyWith(),
+                                    controller: _controller.emailController,
+                                    decoration: InputDecoration(
+                                      labelStyle:
+                                          FontUtils.mainTextStyle.copyWith(),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    'Mật khẩu',
+                                    style: FontUtils.mainTextStyle
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextFormField(
+                                    obscureText: true,
+                                    style: FontUtils.mainTextStyle.copyWith(),
+                                    controller: _controller.passwordController,
+                                    decoration: InputDecoration(
+                                      
+                                      labelStyle:
+                                          FontUtils.mainTextStyle.copyWith(),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  ButtonWidget(
+                                    fontColor: Colors.white,
+                                      title: 'Đăng nhập',
+                                      onTap: () {
+                                        _controller.loginByEmailAndPassword();
+                                      },
+                                      color: Colors.green),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  ButtonWidget(
+                                    fontColor: Colors.black,
+                                      title: 'Quay lại',
+                                      onTap: () {
+                                        _controller.backToStartPage();
+                                      },
+                                      color: Colors.white),
+                                ],
+                              ),
                             ),
                           )
                         ]));
@@ -342,49 +355,55 @@ class LoginOptionItem extends StatelessWidget {
     required this.image,
     required this.onTap,
     required this.color,
+    required this.colorFont,
   }) : super(key: key);
 
   final String title;
   final String image;
   final Function() onTap;
   final Color color;
+  final Color colorFont;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        // padding: const EdgeInsets.only(left: 10, right: 10),
-        height: 50,
-        width: 250,
-        decoration: BoxDecoration(
-          color: color,
-          // borderRadius: BorderRadius.circular(5),
-          border: const Border(
-            bottom: BorderSide(width: 4, color: Colors.grey),
-            left: BorderSide(width: 1, color: Colors.grey),
-            top: BorderSide(width: 1, color: Colors.grey),
-            right: BorderSide(width: 1, color: Colors.grey),
+    return Card(
+      elevation: 5,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          // padding: const EdgeInsets.only(left: 10, right: 10),
+          height: 50,
+          width: 250,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(5),
+            // border:  Border.all(),
+            // border: const Border(
+            //   bottom: BorderSide(width: 4, color: Colors.grey),
+            //   left: BorderSide(width: 1, color: Colors.grey),
+            //   top: BorderSide(width: 1, color: Colors.grey),
+            //   right: BorderSide(width: 1, color: Colors.grey),
+            // ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (image != "")
-              SvgPicture.asset(
-                image,
-                height: 30,
-                width: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (image != "")
+                SvgPicture.asset(
+                  image,
+                  height: 30,
+                  width: 30,
+                ),
+              const SizedBox(
+                width: 10,
               ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              title,
-              style:
-                  FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700),
-            )
-          ],
+              Text(
+                title,
+                style: FontUtils.mainTextStyle
+                    .copyWith(fontWeight: FontWeight.w700, color: colorFont),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -398,49 +417,54 @@ class ButtonWidget extends StatelessWidget {
     // required this.image,
     required this.onTap,
     required this.color,
+    required this.fontColor,
   }) : super(key: key);
 
   final String title;
   // final String image;
   final Function() onTap;
   final Color color;
+  final Color fontColor;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        // padding: const EdgeInsets.only(left: 10, right: 10),
-        height: 50,
-        // width: 250,
-        decoration: BoxDecoration(
-          color: color,
-          // borderRadius: BorderRadius.circular(5),
-          border: const Border(
-            bottom: BorderSide(width: 4, color: Colors.grey),
-            left: BorderSide(width: 1, color: Colors.grey),
-            top: BorderSide(width: 1, color: Colors.grey),
-            right: BorderSide(width: 1, color: Colors.grey),
+    return Card(
+      elevation: 5,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          // padding: const EdgeInsets.only(left: 10, right: 10),
+          height: 50,
+          // width: 250,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(5),
+            // border: const Border(
+            //   bottom: BorderSide(width: 4, color: Colors.grey),
+            //   left: BorderSide(width: 1, color: Colors.grey),
+            //   top: BorderSide(width: 1, color: Colors.grey),
+            //   right: BorderSide(width: 1, color: Colors.grey),
+            // ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // if (image != "")
-            //   SvgPicture.asset(
-            //     image,
-            //     height: 30,
-            //     width: 30,
-            //   ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              title,
-              style:
-                  FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700),
-            )
-          ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // if (image != "")
+              //   SvgPicture.asset(
+              //     image,
+              //     height: 30,
+              //     width: 30,
+              //   ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                title,
+                style:
+                    FontUtils.mainTextStyle.copyWith(fontWeight: FontWeight.w700, color: fontColor),
+              )
+            ],
+          ),
         ),
       ),
     );

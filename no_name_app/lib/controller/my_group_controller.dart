@@ -65,47 +65,47 @@ class MyGroupController extends GetxController {
         .then((value) {
       status = value;
 
-      for (int i = 0 ; i < status.length; i ++) {
+      for (int i = 0; i < status.length; i++) {
         UserRepository.getAvatarUserById(id: status[i]['id']).then((ava) {
-            status[i]['avatar'] = ava;
-            update();
+          status[i]['avatar'] = ava;
+          update();
         });
       }
       update();
     });
-    
 
     super.onInit();
   }
 
   deleteGroup() {
     Get.dialog(const LoadingWidget());
+    for (int i = 0; i < listMember.length; i++) {
+      GroupRepository.leaveGroup(uid: listMember[i].id!, gid: currentGroup.id!)
+          .then((value) =>
+              GroupRepository.removeGroup(gid: currentGroup.id!).then((value) {
+                ActivityRepository.generateIdOfActivity(actor: userModel)
+                    .then((idAct) {
+                  final anAct = ActivityModel(
+                    id: idAct,
+                    actor: userModel,
+                    timeCreate: DateTime.now(),
+                    type: TypeOfActivity.DeleteGroup,
+                    useCase: currentGroup,
+                    zone: null,
+                  );
+                  ActivityRepository.addAnActivity(
+                          actor: userModel, activityModel: anAct)
+                      .then((value) {
+                    Get.back();
+                    GroupController groupController = Get.find();
+                    groupController.onInit();
 
-    GroupRepository.leaveGroup(uid: userModel.id!, gid: currentGroup.id!).then(
-        (value) =>
-            GroupRepository.removeGroup(gid: currentGroup.id!).then((value) {
-              ActivityRepository.generateIdOfActivity(actor: userModel)
-                  .then((idAct) {
-                final anAct = ActivityModel(
-                  id: idAct,
-                  actor: userModel,
-                  timeCreate: DateTime.now(),
-                  type: TypeOfActivity.DeleteGroup,
-                  useCase: currentGroup,
-                  zone: null,
-                );
-                ActivityRepository.addAnActivity(
-                        actor: userModel, activityModel: anAct)
-                    .then((value) {
-                  Get.back();
-                  GroupController groupController = Get.find();
-                  groupController.onInit();
-
-                  Get.back();
-                  Get.back();
+                    Get.back();
+                    Get.back();
+                  });
                 });
-              });
-            }));
+              }));
+    }
   }
 
   leaveGroup() {
@@ -320,10 +320,12 @@ class MyGroupController extends GetxController {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
-                                  status[i]['name'] +
-                                      " mượn bạn " +
-                                      status[i]['amount'].toString() +
-                                      " vnđ",
+                                  status[i]['amount'] < 0
+                                      ? 'Bạn mượn ${status[i]['name']} ${status[i]['amount'] * -1} vnđ'
+                                      : status[i]['name'] +
+                                          " mượn bạn " +
+                                          status[i]['amount'].toString() +
+                                          " vnđ",
                                   style: FontUtils.mainTextStyle.copyWith(),
                                 ),
                               )

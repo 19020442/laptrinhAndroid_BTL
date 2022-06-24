@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:no_name_app/models/user_model.dart';
 
-enum TypeOfActivity { CreateNewGroup, CommentOnExpense, DeleteGroup, LeaveGroup }
+enum TypeOfActivity { CreateNewGroup, CommentOnExpense, DeleteGroup, LeaveGroup, AddNewFriend }
 
 class ActivityModel {
   String? id;
@@ -18,7 +18,7 @@ class ActivityModel {
       'time': timeCreate,
       'type': type.toString(),
       'actor': actor?.toMap(),
-      'case': useCase.toMap(),
+      'case':useCase == null ? '' :useCase.toMap(),
       'zone': zone == null ? '': zone.toMap()
     };
   }

@@ -26,9 +26,9 @@ class CreateNewGroupController extends GetxController {
   ];
   late int heightScreen = 400;
   List<String> titleEachGroup = [
-    'Trip',
-    'Home',
-    'Other',
+    'Du lịch',
+    'Nhà',
+    'Khác',
   ];
   int typeOfGroupIndexChoosen = 2;
 

@@ -23,8 +23,7 @@ class LoginController extends GetxController {
     AvatarUtils.avatar4,
     AvatarUtils.avatar5,
     AvatarUtils.avatar6,
-    AvatarUtils.avatar7,
-    AvatarUtils.avatar8,
+
   ];
   var avatarSelect = "";
   var avatarSelected = "";
@@ -56,7 +55,7 @@ class LoginController extends GetxController {
         title: Text(
           'Thiếu thông tin',
           style: FontUtils.mainTextStyle.copyWith(
-            color: Colors.red,
+            color: Colors.red[300],
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -125,7 +124,7 @@ class LoginController extends GetxController {
         title: Text(
           'Đăng nhập không thành công',
           style: FontUtils.mainTextStyle.copyWith(
-            color: Colors.red,
+            color: Colors.red[300],
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -263,6 +262,7 @@ class LoginController extends GetxController {
                 ),
               ),
               ButtonWidget(
+                fontColor: Colors.white,
                 title: 'Xác nhận',
                 onTap: () {
                   Get.back();

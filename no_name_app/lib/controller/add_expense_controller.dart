@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:no_name_app/controller/group_controller.dart';
 import 'package:no_name_app/controller/my_group_controller.dart';
 import 'package:no_name_app/models/expense_model.dart';
 import 'package:no_name_app/models/group_model.dart';
@@ -7,9 +8,10 @@ import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/screens/choose_who_paid_screen.dart';
-import 'package:no_name_app/screens/login_screen.dart';
 import 'package:no_name_app/screens/option_split_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
+import 'package:no_name_app/utils/image.dart';
+import 'package:no_name_app/widgets/loading_widget.dart';
 
 class AddExpenseController extends GetxController {
   FocusNode initFocus = FocusNode();
@@ -20,6 +22,8 @@ class AddExpenseController extends GetxController {
   late UserModel currentUser;
   GroupModel? groupModel;
   MyGroupController groupController = Get.find();
+  GroupController groupsController = Get.find();
+
   List<UserModel> membersOfExpense = [];
   bool isMultiChoiceMode = false;
   List<Map<String, dynamic>> member = [];
@@ -38,6 +42,8 @@ class AddExpenseController extends GetxController {
   List<Map<String, dynamic>> percentOfExpense = [];
   double totalPercentCurrently = 0;
   final formKeySplitPercent = GlobalKey<FormState>();
+
+  late int cateIndexSelected = 0;
   @override
   void onInit() {
     groupModel = Get.arguments['group-model'];
@@ -63,10 +69,10 @@ class AddExpenseController extends GetxController {
   List<String> saveExpenseError() {
     List<String> errors = [];
     if (descriptionController.text == "") {
-      errors.add('You must enter a description');
+      errors.add('Thiếu tên hóa đơn');
     }
     if (valueController.text == "") {
-      errors.add('You must enter an amount');
+      errors.add('Cần phải có giá trị của hóa đơn');
     }
 
     return errors;
@@ -105,30 +111,17 @@ class AddExpenseController extends GetxController {
   getNeedToPayEachMember() {
     if (isOnSplitUnequallyMode) {
       if (totalPercentCurrently != 100.0) {
-        // Get.dialog(AlertDialog(
-        //   title: const Text('ERROR'),
-        //   content: const Text('Total percent must be 100'),
-        //   actions: [
-        //     TextButton(
-        //         onPressed: () {
-        //           Get.back();
-        //         },
-        //         child: const Text('OK'))
-        //   ],
-        // )
-        // );
-        // print('Total percent must be 100');
       } else {
         for (int i = 0; i < member.length; i++) {
-          member[i]['amountToPaid'] = double.parse(valueController.text) *
-              double.parse(percentMemberController[i].text) /
+          member[i]['amountToPaid'] = int.parse(valueController.text) *
+              double.parse(percentMemberController[i].text) ~/
               100;
         }
       }
     } else {
       for (int i = 0; i < member.length; i++) {
         member[i]['amountToPaid'] =
-            double.parse(valueController.text) / member.length;
+            int.parse(valueController.text) / member.length;
       }
     }
 
@@ -141,7 +134,7 @@ class AddExpenseController extends GetxController {
       // member[0]['amount'] = double.parse(valueController.text);
       member[member
               .indexWhere((element) => element['user'].id == currentUser.id)]
-          ['amount'] = double.parse(valueController.text);
+          ['amount'] = int.parse(valueController.text);
     }
 
     for (var element in member) {
@@ -185,8 +178,6 @@ class AddExpenseController extends GetxController {
               .add({'user': payer[i]['user'], 'amount': owner[j]['amount']});
 
           amount -= owner[j]['amount'];
-
-          // owner[j]['amount'] = 0;
         } else {
           payer[i]['owner'].add({
             'user': owner[j]['user'],
@@ -206,11 +197,8 @@ class AddExpenseController extends GetxController {
   }
 
   onSave() {
-    // print(valueController.text == "");
-
-    // print('---- PAYERS' + payer.toString());
-    // print('---- OWNERS' + owner.toString());
-
+    // print(valu eController.text == "");
+    Get.dialog(LoadingWidget());
     if (saveExpenseError().isNotEmpty) {
       Get.defaultDialog(
           title: 'Cannot save expense',
@@ -221,7 +209,6 @@ class AddExpenseController extends GetxController {
       lastStateOfExpense();
       setRelationBetweenMembers();
 
-      // else {
       ExpenseRepository.getIdOfExpenseInGroup(groupId: groupModel!.id!)
           .then((value) {
         final newExpense = ExpenseModel(
@@ -231,7 +218,9 @@ class AddExpenseController extends GetxController {
             value: valueController.text,
             members: membersOfExpense,
             note: noteController.text,
-            type: 'new');
+            type: 'new',
+            category:
+                IconUtils.icExpenseList[cateIndexSelected].keys.elementAt(0));
         ExpenseRepository.setExpenseOnGroupCollection(
                 groupId: groupModel!.id!, expenseModel: newExpense)
             .whenComplete(() async {
@@ -245,7 +234,10 @@ class AddExpenseController extends GetxController {
           await GroupRepository.setStatusGroup(
               groupId: groupModel!.id!, data: owner, isPayer: false);
 
-          groupController.onInit();
+          // groupController.onInit();
+          groupsController.onInit();
+          update();
+          Get.back();
           Get.back();
         });
       });
@@ -373,12 +365,17 @@ class AddExpenseController extends GetxController {
         builder: (BuildContext ctx) {
           return Dialog(
             child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              height: 400,
-              child: SplitOptionScreen()
-            ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                height: 400,
+                child: SplitOptionScreen()),
           );
         });
+  }
+
+  onSelectCategory(int index) {
+    cateIndexSelected = index;
+    update();
   }
 
   @override

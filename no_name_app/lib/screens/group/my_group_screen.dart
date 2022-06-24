@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -77,156 +78,168 @@ class MyGroupScreen extends StatelessWidget {
                       Flexible(
                           flex: 9,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 60),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _controller.currentGroup.nameGroup!,
-                                    style: FontUtils.mainTextStyle.copyWith(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  SizedBox(
-                                    height: 50,
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          Card(
-                                            color: Colors.blue,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                            elevation: 5,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed(
-                                                    Routes.SETTLE_UP_SCREEN);
-                                              },
-                                              child: Container(
-                                                // color: Colors.blue,
-                                                width: 150,
-                                                child: Center(
-                                                  child: Text(
-                                                    'Thanh toán',
-                                                    style: FontUtils
-                                                        .mainTextStyle
-                                                        .copyWith(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                            padding: const EdgeInsets.only(
+                                left: 10,right: 10, top: 60),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _controller.currentGroup.nameGroup!,
+                                  style: FontUtils.mainTextStyle.copyWith(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  width: double.infinity,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Card(
+                                          color: Colors.blue,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
                                           ),
-                                          Card(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                            elevation: 5,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                _controller
-                                                    .openBalances(context);
-                                              },
-                                              child: Container(
-                                                // color: Colors.blue,
-                                                width: 150,
-                                                child: Center(
-                                                  child: Text(
-                                                    'Chi tiết',
-                                                    style: FontUtils
-                                                        .mainTextStyle
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Card(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                            elevation: 5,
+                                          elevation: 5,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes.SETTLE_UP_SCREEN);
+                                            },
                                             child: Container(
                                               // color: Colors.blue,
                                               width: 150,
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  _controller
-                                                      .openWhiteBoard(context);
-                                                },
-                                                child: Center(
-                                                  child: Text(
-                                                    'Ghi chú',
-                                                    style: FontUtils
-                                                        .mainTextStyle
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.black),
-                                                  ),
+                                              child: Center(
+                                                child: Text(
+                                                  'Thanh toán',
+                                                  style: FontUtils.mainTextStyle
+                                                      .copyWith(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          elevation: 5,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _controller.openBalances(context);
+                                            },
+                                            child: Container(
+                                              // color: Colors.blue,
+                                              width: 150,
+                                              child: Center(
+                                                child: Text(
+                                                  'Chi tiết',
+                                                  style: FontUtils.mainTextStyle
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          elevation: 5,
+                                          child: Container(
+                                            // color: Colors.blue,
+                                            width: 150,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                _controller
+                                                    .openWhiteBoard(context);
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  'Ghi chú',
+                                                  style: FontUtils.mainTextStyle
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                ),
 
-                                  // const Text('Expenses'),
-                                  _controller.isLoading
-                                      ? const CircularProgressIndicator()
-                                      : Padding(
+                                // const Text('Expenses'),
+                                _controller.isLoading
+                                    ? SpinKitThreeBounce(
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Container(
+                                            padding: EdgeInsets.all(5),
+                                            height: 20,
+                                            width: 20,
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: index.isEven
+                                                    ? Colors.blue
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Expanded(
+                                        child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 12),
-                                          child: Column(
-                                            children: [
-                                              for (int i = 0;
-                                                  i <
-                                                      _controller
-                                                          .listExpenses.length;
-                                                  i++)
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Get.toNamed(
-                                                        Routes.EXPENSE_SCREEN,
-                                                        arguments: {
-                                                          'expense-model':
-                                                              _controller
-                                                                  .listExpenses[i],
-                                                          'group-model':
-                                                              _controller
-                                                                  .currentGroup
-                                                        });
-                                                  },
-                                                  child: ExpenseWidget(
-                                                    expense: _controller
-                                                        .listExpenses[i],
-                                                    amount: _controller
-                                                        .listState[i]
-                                                        .toString(),
-                                                  ),
-                                                )
-                                            ],
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                for (int i = 0;
+                                                    i <
+                                                        _controller.listExpenses
+                                                            .length;
+                                                    i++)
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Get.toNamed(
+                                                          Routes.EXPENSE_SCREEN,
+                                                          arguments: {
+                                                            'expense-model':
+                                                                _controller
+                                                                    .listExpenses[i],
+                                                            'group-model':
+                                                                _controller
+                                                                    .currentGroup
+                                                          });
+                                                    },
+                                                    child: ExpenseWidget(
+                                                      expense: _controller
+                                                          .listExpenses[i],
+                                                      amount: _controller
+                                                          .listState[i].toInt()
+                                                          .toString(),
+                                                    ),
+                                                  )
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                ],
-                              ),
+                                        ),
+                                      )
+                              ],
                             ),
                           ))
                     ],
@@ -331,7 +344,11 @@ class ExpenseWidget extends StatelessWidget {
                       height: 50,
                       width: 50,
                       child: SvgPicture.asset(
-                        IconUtils.icExpense,
+                        IconUtils.icExpenseList
+                            .firstWhere((element) =>
+                                element.keys.elementAt(0) == expense.category)
+                            .values
+                            .elementAt(0),
                       ),
                     ),
                     title: Text(
@@ -341,19 +358,19 @@ class ExpenseWidget extends StatelessWidget {
                     ),
                     trailing: amount[0] != '-'
                         ? Text(
-                            'You lent \n' + amount + ' vnđ',
+                            'Bạn dư \n' + amount + ' vnđ',
                             style: FontUtils.mainTextStyle
                                 .copyWith(color: Colors.blue),
                             textAlign: TextAlign.end,
                           )
                         : Text(
-                            'You borrowed \n ${-double.parse(amount)} vnđ',
+                            'Bạn thiếu \n ${(-int.parse(amount)).toInt()} vnđ',
                             style: FontUtils.mainTextStyle
-                                .copyWith(color: Colors.red),
+                                .copyWith(color: Colors.red[300]),
                             textAlign: TextAlign.end,
                           ),
                     subtitle: Text(
-                      'Giá trị: ' + expense.value + ' đ',
+                      'Giá trị: ' + expense.value + ' vnđ',
                       style: FontUtils.mainTextStyle.copyWith(),
                     ),
                   ),

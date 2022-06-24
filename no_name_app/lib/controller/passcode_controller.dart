@@ -161,7 +161,7 @@ class PassCodeController extends GetxController {
           title: Text(
             'Sai mã bảo mật',
             style: FontUtils.mainTextStyle
-                .copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                .copyWith(color: Colors.red[300], fontWeight: FontWeight.bold),
           ),
           content: Text(
             'Mã xác nhận sai',
@@ -198,7 +198,7 @@ class PassCodeController extends GetxController {
           title: Text(
             'Sai mã bảo mật',
             style: FontUtils.mainTextStyle
-                .copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                .copyWith(color: Colors.red[300], fontWeight: FontWeight.bold),
           ),
           content: Text(
             'Mã xác nhận sai',
@@ -229,7 +229,7 @@ class PassCodeController extends GetxController {
         title: Text(
           'Cài đặt mã thất bại',
           style: FontUtils.mainTextStyle
-              .copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+              .copyWith(color: Colors.red[300], fontWeight: FontWeight.bold),
         ),
         content: Text(
           'Mã xác nhận không khớp',

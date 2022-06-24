@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:no_name_app/controller/friend_controller.dart';
+import 'package:no_name_app/models/activity_model.dart';
 
 import 'package:no_name_app/models/user_model.dart';
+import 'package:no_name_app/repo/activity_repository.dart';
 import 'package:no_name_app/repo/friend_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/utils/fonts.dart';
@@ -37,7 +39,7 @@ class AddFriendController extends GetxController {
       Get.dialog(AlertDialog(
         title: const Text('ERROR'),
         content: const Text(
-            'You did not enter a valid email address or phone number. Check carefully and try again!'),
+            'Email không hợp lệ, vui lòng thử lại'),
         actions: [
           TextButton(
               onPressed: () {
@@ -85,8 +87,22 @@ class AddFriendController extends GetxController {
                             .then((value) {
                           FriendController friendController = Get.find();
                           friendController.onInit();
-                          Get.back();
-                          Get.back();
+                          ActivityRepository.generateIdOfActivity(
+                                  actor: userModel)
+                              .then((actId) {
+                            ActivityRepository.addAnActivity(
+                                actor: userModel,
+                                activityModel: ActivityModel(
+                                  id: actId,
+                                  actor: userModel,
+                                  timeCreate: DateTime.now(),
+                                  type: TypeOfActivity.AddNewFriend,
+                                  
+                                )).then((value) {
+                              Get.back();
+                              Get.back();
+                            });
+                          });
                         });
 
                         // Get.back();

@@ -5,6 +5,7 @@ import 'package:no_name_app/screens/add_member_screen.dart';
 import 'package:no_name_app/screens/choose_who_paid_screen.dart';
 import 'package:no_name_app/screens/create_new_group_screen.dart';
 import 'package:no_name_app/screens/expense_detail_screen.dart';
+import 'package:no_name_app/screens/friend_detail_screen.dart';
 import 'package:no_name_app/screens/group/group_setting_screen.dart';
 import 'package:no_name_app/screens/group/selt_up_screen.dart';
 import 'package:no_name_app/screens/login_screen.dart';
@@ -15,6 +16,7 @@ import 'package:no_name_app/screens/option_split_screen.dart';
 import 'package:no_name_app/screens/passcode_screen.dart';
 import 'package:no_name_app/screens/record_payment_screen.dart';
 import 'package:no_name_app/screens/register_screen.dart';
+import 'package:no_name_app/screens/select_category_screen.dart';
 
 class Pages {
   static final pages = [
@@ -41,8 +43,13 @@ class Pages {
         name: Routes.RECORD_PAYMENT_SCREEN,
         page: () => const RecordPaymentScreen()),
     GetPage(name: Routes.PASSCODE_SCREEN, page: () => const PassCodeScreen()),
-
-
-    GetPage(name: Routes.EXPENSE_SCREEN, page: ()=> const ExpenseDetailScreen())
+    GetPage(
+        name: Routes.EXPENSE_SCREEN, page: () => const ExpenseDetailScreen()),
+    GetPage(
+        name: Routes.FRIEND_DETAIL_SCREEN,
+        page: () => const FriendDetailScreen()),
+    GetPage(
+        name: Routes.CHOOSE_CATEGORY_SCREEN,
+        page: () => const SelectCategoryScreen())
   ];
 }

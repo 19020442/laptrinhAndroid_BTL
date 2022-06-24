@@ -17,4 +17,8 @@ class Routes {
   static const String PASSCODE_SCREEN = '/passcode';
 
   static const String EXPENSE_SCREEN = '/expense_detail';
+
+  static const String FRIEND_DETAIL_SCREEN = '/friend_detail';
+
+  static const String CHOOSE_CATEGORY_SCREEN ='/choose_category';
 }

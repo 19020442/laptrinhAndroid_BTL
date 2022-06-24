@@ -41,11 +41,11 @@ class ExpenseDetailScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     // height: 100,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     child: Row(
                       children: [
                         Container(
-                          height: 50,
+                          height: 75,
                           width: 75,
                           decoration: const BoxDecoration(
                             // borderRadius: BorderRadius.circular(15),
@@ -59,28 +59,42 @@ class ExpenseDetailScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SvgPicture.asset(IconUtils.icExpense),
-                              const Icon(Icons.expand_more_sharp)
+                              Container(
+                                width: 50,
+                                height: 50,
+                                child: SvgPicture.asset(
+                                   _controller.expenseModel.category != "" ?
+                                  IconUtils.icExpenseList
+                                      .firstWhere((element) =>
+                                          element.keys.elementAt(0) ==
+                                          _controller.expenseModel.category)
+                                      .values
+                                      .elementAt(0) : IconUtils.icExpense,
+                                ),
+                              ),
+                              // const Icon(Icons.expand_more_sharp)
                             ],
                           ),
                         ),
                         SizedBox(
                           width: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _controller.expenseModel.name,
-                              style: FontUtils.mainTextStyle
-                                  .copyWith(fontSize: 25),
-                            ),
-                            Text(
-                              '${_controller.expenseModel.value} vnđ',
-                              style: FontUtils.mainTextStyle.copyWith(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
-                            )
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _controller.expenseModel.name,
+                                style: FontUtils.mainTextStyle
+                                    .copyWith(fontSize: 25),
+                              ),
+                              Text(
+                                '${_controller.expenseModel.value} vnđ',
+                                style: FontUtils.mainTextStyle.copyWith(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
