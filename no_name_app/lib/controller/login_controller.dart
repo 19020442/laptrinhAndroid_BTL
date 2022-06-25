@@ -9,7 +9,7 @@ import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/screens/login_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
-import 'package:toast/toast.dart';
+import 'package:no_name_app/widgets/loading_widget.dart';
 
 enum AuthMode { LoginMode, SignUpMode, StartPageMode }
 
@@ -23,7 +23,6 @@ class LoginController extends GetxController {
     AvatarUtils.avatar4,
     AvatarUtils.avatar5,
     AvatarUtils.avatar6,
-
   ];
   var avatarSelect = "";
   var avatarSelected = "";
@@ -148,15 +147,17 @@ class LoginController extends GetxController {
   }
 
   loginWithGoogle() async {
+    // Get.dialog(LoadingWidget());
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth!.accessToken, idToken: googleAuth.idToken);
-
+    print(credential);
     User? user = (await _auth.signInWithCredential(credential)).user;
-
+    print(user);
     UserModel? tempUser =
         await UserRepository.getUserByEmail(email: user!.email!);
 
@@ -167,15 +168,16 @@ class LoginController extends GetxController {
       userModel.email = user.email;
       userModel.avatarImage = user.photoURL;
       userModel.passCode = '';
-      
 
       UserRepository.setUser(userModel);
+      Get.back();
       Get.toNamed(Routes.HOME_SCREEN, arguments: {'user_model': userModel});
       AuthController _authController = Get.find();
       _authController.setUser(userModel);
     } else {
       AuthController _authController = Get.find();
       _authController.setUser(tempUser);
+      // Get.back();
       if (tempUser.passCode == '') {
         Get.offAndToNamed(Routes.HOME_SCREEN,
             arguments: {'user_model': tempUser});

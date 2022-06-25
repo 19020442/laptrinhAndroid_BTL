@@ -44,6 +44,7 @@ class MyGroupScreen extends StatelessWidget {
       init: MyGroupController(),
       builder: (MyGroupController _controller) {
         return Scaffold(
+          backgroundColor: Colors.white,
           body: Stack(
             children: [
               SizedBox(
@@ -64,7 +65,11 @@ class MyGroupScreen extends StatelessWidget {
                                                       .currentGroup.typeGroup ==
                                                   'Home'
                                               ? ImageUtils
-                                                  .deafaultGroupHomeImage
+                                                  .deafaultGroupHomeImage: _controller
+                                                      .currentGroup.typeGroup ==
+                                                  'Study'
+                                              ? ImageUtils
+                                                  .deafaultGroupStudyImage
                                               : ImageUtils
                                                   .deafaultGroupOtherImage,
                                       fit: BoxFit.fitWidth,
@@ -79,7 +84,7 @@ class MyGroupScreen extends StatelessWidget {
                           flex: 9,
                           child: Container(
                             padding: const EdgeInsets.only(
-                                left: 10,right: 10, top: 60),
+                                left: 10, right: 10, top: 60),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -205,38 +210,79 @@ class MyGroupScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 12),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                for (int i = 0;
-                                                    i <
-                                                        _controller.listExpenses
-                                                            .length;
-                                                    i++)
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Get.toNamed(
-                                                          Routes.EXPENSE_SCREEN,
-                                                          arguments: {
-                                                            'expense-model':
-                                                                _controller
-                                                                    .listExpenses[i],
-                                                            'group-model':
-                                                                _controller
-                                                                    .currentGroup
-                                                          });
-                                                    },
-                                                    child: ExpenseWidget(
-                                                      expense: _controller
-                                                          .listExpenses[i],
-                                                      amount: _controller
-                                                          .listState[i].toInt()
-                                                          .toString(),
-                                                    ),
-                                                  )
-                                              ],
-                                            ),
-                                          ),
+                                          child: _controller
+                                                  .listExpenses.isEmpty
+                                              ? Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        height: 150,
+                                                        width: 150,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          // border: Border.all(color: Colors.black),
+                                                          color: Colors.white,
+                                                          image: DecorationImage(
+                                                              opacity: 0.5,
+                                                              image: AssetImage(
+                                                                  ImageUtils
+                                                                      .noExpenseImage),
+                                                              fit: BoxFit
+                                                                  .contain),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 200,
+                                                        child: Text(
+                                                          'Hãy bắt đầu thêm một hóa đơn đầu tiên của nhóm',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: FontUtils
+                                                              .mainTextStyle
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      400]),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              : SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      for (int i = 0;
+                                                          i <
+                                                              _controller
+                                                                  .listExpenses
+                                                                  .length;
+                                                          i++)
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Get.toNamed(
+                                                                Routes
+                                                                    .EXPENSE_SCREEN,
+                                                                arguments: {
+                                                                  'expense-model':
+                                                                      _controller
+                                                                          .listExpenses[i],
+                                                                  'group-model':
+                                                                      _controller
+                                                                          .currentGroup
+                                                                });
+                                                          },
+                                                          child: ExpenseWidget(
+                                                            expense: _controller
+                                                                .listExpenses[i],
+                                                            amount: _controller
+                                                                .listState[i]
+                                                                .toInt()
+                                                                .toString(),
+                                                          ),
+                                                        )
+                                                    ],
+                                                  ),
+                                                ),
                                         ),
                                       )
                               ],
@@ -275,10 +321,32 @@ class MyGroupScreen extends StatelessWidget {
                 bottom: 25,
                 child: GestureDetector(
                     onTap: () {
-                      Get.toNamed(Routes.ADD_EXPENSE_SCREEN, arguments: {
-                        'group-model': _controller.currentGroup,
-                        'user-model': _controller.userModel
-                      });
+                      // print(_controller.listMember);
+                      if (_controller.listMember.length == 1) {
+                        Get.toNamed(Routes.GROUP_SETTING);
+                        Get.dialog(AlertDialog(
+                          title: Text(
+                            'Thêm những người bạn đầu tiên vào nhóm!',
+                            style: FontUtils.mainTextStyle.copyWith(),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text(
+                                'OK',
+                                style: FontUtils.mainTextStyle.copyWith(),
+                              ),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ));
+                      } else {
+                        Get.toNamed(Routes.ADD_EXPENSE_SCREEN, arguments: {
+                          'group-model': _controller.currentGroup,
+                          'user-model': _controller.userModel
+                        });
+                      }
                     },
                     child: addWidget('Thêm hóa đơn')),
               ),
@@ -300,7 +368,10 @@ class MyGroupScreen extends StatelessWidget {
                                   ? ImageUtils.deafaultGroupTripImage
                                   : _controller.currentGroup.typeGroup == 'Home'
                                       ? ImageUtils.deafaultGroupHomeImage
-                                      : ImageUtils.deafaultGroupOtherImage))
+                                      : _controller.currentGroup.typeGroup ==
+                                              'Study'
+                                          ? ImageUtils.deafaultGroupStudyImage
+                                          : ImageUtils.deafaultGroupOtherImage))
                           : DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(

@@ -22,15 +22,26 @@ class CreateNewGroupController extends GetxController {
   List<IconData> listIconTypeOfGroup = [
     Icons.airplanemode_active,
     Icons.home,
+    Icons.book,
     Icons.list_alt,
+    
   ];
   late int heightScreen = 400;
   List<String> titleEachGroup = [
+    'Trip',
+    'Home',
+    'Study',
+    'Other',
+    
+  ];
+   List<String> titleEachGroupTemp = [
     'Du lịch',
     'Nhà',
+    'Học Tập',
     'Khác',
+    
   ];
-  int typeOfGroupIndexChoosen = 2;
+  int typeOfGroupIndexChoosen = 3;
 
   pickImage() async {
     Get.dialog(const LoadingWidget());
@@ -85,7 +96,9 @@ class CreateNewGroupController extends GetxController {
         GroupRepository.setGroup(newGroup);
         AuthController authController = Get.find();
         GroupRepository.addMember(
-            group: newGroup, listMemberAdd: [authController.userModel!]);
+            group: newGroup,
+            listMemberAdd: [authController.userModel!],
+            host: null);
 
         UserRepository.onCreateGroup(
                 uid: authController.userModel!.id!, groupModel: newGroup)
@@ -123,6 +136,7 @@ class CreateNewGroupController extends GetxController {
           colorText: Colors.white);
     }
   }
+
   expandScreen() {
     // print('abcd');
     // heightScreen = 900;

@@ -233,7 +233,7 @@ class AddExpenseController extends GetxController {
               groupId: groupModel!.id!, data: payer, isPayer: true);
           await GroupRepository.setStatusGroup(
               groupId: groupModel!.id!, data: owner, isPayer: false);
-
+          
           // groupController.onInit();
           groupsController.onInit();
           update();

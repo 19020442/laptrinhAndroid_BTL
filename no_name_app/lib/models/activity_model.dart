@@ -2,24 +2,39 @@ import 'dart:convert';
 
 import 'package:no_name_app/models/user_model.dart';
 
-enum TypeOfActivity { CreateNewGroup, CommentOnExpense, DeleteGroup, LeaveGroup, AddNewFriend }
+enum TypeOfActivity {
+  CreateNewGroup,
+  CommentOnExpense,
+  DeleteGroup,
+  LeaveGroup,
+  AddNewFriend,
+  UpdateNote,
+  AddIntoGroup,
+  AddNewExpense,
+}
 
 class ActivityModel {
   String? id;
   DateTime? timeCreate;
   TypeOfActivity? type;
-  UserModel? actor;
-  dynamic useCase;
-  dynamic zone;
-  ActivityModel({this.id, this.timeCreate, this.type, this.actor, this.useCase, this.zone});
+  UserModel? actor; // người dùng thực hiện
+  dynamic useCase; // là đối tượng tác động, thêm hóa đơn -> use case hóa đơn
+  dynamic zone; // xảy ra trong môi trường nào? thêm hóa đơn thì trong zone group nào
+  ActivityModel(
+      {this.id,
+      this.timeCreate,
+      this.type,
+      this.actor,
+      this.useCase,
+      this.zone});
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'time': timeCreate,
       'type': type.toString(),
       'actor': actor?.toMap(),
-      'case':useCase == null ? '' :useCase.toMap(),
-      'zone': zone == null ? '': zone.toMap()
+      'case': useCase == null ? '' : useCase.toMap(),
+      'zone': zone == null ? '' : zone.toMap()
     };
   }
 
@@ -30,8 +45,7 @@ class ActivityModel {
         type: map['type'],
         actor: map['actor'],
         useCase: map['case'],
-        zone: map['zone']
-        );
+        zone: map['zone']);
   }
 
   String toJson() => json.encode(toMap());

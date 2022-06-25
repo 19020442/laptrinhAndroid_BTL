@@ -25,8 +25,8 @@ class AddMemberController extends GetxController {
 
   onSave() async {
     Get.dialog(const LoadingWidget());
-    await GroupRepository.addMember(
-        group: currentGroup, listMemberAdd: friendsAreChosen);
+    await GroupRepository.addMember(host: userModel,
+        group: currentGroup, listMemberAdd: friendsAreChosen, );
     MyGroupController myGroupController = Get.find();
     myGroupController.addMember(friendsAreChosen);
 

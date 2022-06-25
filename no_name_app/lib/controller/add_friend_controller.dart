@@ -59,10 +59,10 @@ class AddFriendController extends GetxController {
                   onPressed: () {
                     Get.back();
                   },
-                  child: const Text('Oh, let me check again'))
+                  child: const Text('Xem lại'))
             ],
             content: const Text(
-                'Your friend\'s email or phone number is not exsist'),
+                'Email bạn nhập không tồn tại trong hệ thống'),
           ));
         } else {
           FriendRepository.alreadyIsFriend(
@@ -71,7 +71,7 @@ class AddFriendController extends GetxController {
             if (value1) {
               Get.dialog(AlertDialog(
                 content: Text(
-                  'Add friend successfully!',
+                  'Thêm bạn mới thành công',
                   style: FontUtils.mainTextStyle.copyWith(),
                 ),
                 actions: [
@@ -109,7 +109,7 @@ class AddFriendController extends GetxController {
                         // Get.back(canPop: false);
                       },
                       child: Text(
-                        'Ok, back to my friends screen',
+                        'Ok, quay về danh sách bạn bè',
                         style: FontUtils.mainTextStyle.copyWith(),
                       )),
                   TextButton(
@@ -119,7 +119,7 @@ class AddFriendController extends GetxController {
                         Get.back();
                       },
                       child: Text(
-                        'Ok, I want add more!',
+                        'Ok, Tiếp tục thêm bạn mới',
                         style: FontUtils.mainTextStyle.copyWith(),
                       ))
                 ],

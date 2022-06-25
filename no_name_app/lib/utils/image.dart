@@ -10,7 +10,7 @@ class ImageUtils {
       'assets/image/group_image_trip_default.jpg';
   static String deafaultGroupOtherImage =
       'assets/image/group_image_other_default.jpg';
-
+  static String deafaultGroupStudyImage = "assets/image/group_image_study_default.jpg";
   static String recordImage = 'assets/image/record.png';
 
   static String recordEx = 'assets/image/record_ic.png';
@@ -18,6 +18,8 @@ class ImageUtils {
   static String noFriendImage = "assets/image/empty_friend_image.jpg";
 
   static String noActImage = "assets/image/no_activity_image.jpg";
+
+  static String noExpenseImage = "assets/image/no_expense_image.jpg";
 }
 
 class IconUtils {

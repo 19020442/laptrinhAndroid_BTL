@@ -97,7 +97,7 @@ class CreateNewGroupScreen extends StatelessWidget {
                               },
                               child: TypeOfGroup(
                                 icon: _controller.listIconTypeOfGroup[index],
-                                title: _controller.titleEachGroup[index],
+                                title: _controller.titleEachGroupTemp[index],
                                 isChoosen:
                                     _controller.typeOfGroupIndexChoosen == index,
                               ),
@@ -110,19 +110,11 @@ class CreateNewGroupScreen extends StatelessWidget {
                           },
                           itemCount: _controller.listIconTypeOfGroup.length),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
 
-                    // Container(
-                    //   width: 150,
-                    //   child: ButtonWidget(
-                    //       title: 'Quay lại',
-                    //       onTap: () {
-                    //         Get.back();
-                    //       },
-                    //       color: Colors.white),
-                    // ),
+                
                     SizedBox(
                       width: double.infinity,
                       child: Center(
@@ -134,7 +126,7 @@ class CreateNewGroupScreen extends StatelessWidget {
                               onTap: () {
                                 _controller.onSave();
                               },
-                              color: Color(0xffde838a)),
+                              color: const Color(0xffde838a)),
                         ),
                       ),
                     ),

@@ -59,7 +59,6 @@ class ActivityScreen extends StatelessWidget {
                                 child: Text(
                                   'Các hoạt động của bạn sẽ được ghi lại tại đây!',
                                   textAlign: TextAlign.center,
-                                
                                   style: FontUtils.mainTextStyle
                                       .copyWith(color: Colors.grey[500]),
                                 ),
@@ -91,8 +90,8 @@ class ActivityScreen extends StatelessWidget {
                                       }
                                     },
                                     child: ActivityWiget(
-                                        activityModel: _controller.listActivity
-                                            .elementAt(i)))
+                                        activityModel:
+                                            _controller.listActivity[i]))
                             ],
                           ),
                         ))

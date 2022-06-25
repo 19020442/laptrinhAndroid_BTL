@@ -24,7 +24,8 @@ class GroupItemWidget extends StatelessWidget {
                             image: ExactAssetImage(itemData.typeGroup == 'Trip'
                                 ? ImageUtils.deafaultGroupTripImage
                                 : itemData.typeGroup == 'Home'
-                                    ? ImageUtils.deafaultGroupHomeImage
+                                    ? ImageUtils.deafaultGroupHomeImage : itemData.typeGroup == 'Study'
+                                    ? ImageUtils.deafaultGroupStudyImage
                                     : ImageUtils.deafaultGroupOtherImage))
                         : DecorationImage(
                             fit: BoxFit.cover,

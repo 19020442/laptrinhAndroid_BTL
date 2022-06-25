@@ -71,102 +71,120 @@ class GroupScreen extends StatelessWidget {
                         //     ],
                         //   ),
                         // ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (_controller.totalOvrOnGroup == 0.0 &&
-                                  _controller.listGroups.length > 0)
-                                Container(
-                                  child: Text(
-                                    'Bạn đã hết nợ :)) ',
-                                    style: FontUtils.mainTextStyle.copyWith(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green),
-                                  ),
-                                ),
-                              if (_controller.totalOvrOnGroup != 0.0)
-                                Container(
-                                  height: 50,
-                                  child: Text(
-                                    _controller.totalOvrOnGroup < 0
-                                        ? 'Hêy ,Bạn còn nợ ${(_controller.totalOvrOnGroup * -1).toInt()} vnđ'
-                                        : 'Ồ, Bạn đang cho mượn ${_controller.totalOvrOnGroup.toInt()} vnđ',
-                                    style: FontUtils.mainTextStyle.copyWith(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: _controller.totalOvrOnGroup < 0
-                                            ? Colors.red[300]
-                                            : Colors.green),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
 
-                        if (_controller.listGroups.isEmpty)
-                          Column(
+                        Expanded(
+                            child: SingleChildScrollView(
+                          child: Column(
                             children: [
-                              // SizedBox(
-                              //   height: 50,
-                              // ),
                               Container(
-                                height: 200,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  // border: Border.all(color: Colors.black),
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage(ImageUtils.noGroupImage),
-                                      fit: BoxFit.contain),
+                                padding: const EdgeInsets.only(left: 20),
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (_controller.totalOvrOnGroup == 0.0 &&
+                                        _controller.listGroups.length > 0)
+                                      Container(
+                                        child: Text(
+                                          'Bạn đã hết nợ :)) ',
+                                          style: FontUtils.mainTextStyle
+                                              .copyWith(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green),
+                                        ),
+                                      ),
+                                    if (_controller.totalOvrOnGroup != 0.0)
+                                      Container(
+                                        height: 50,
+                                        child: Text(
+                                          _controller.totalOvrOnGroup < 0
+                                              ? 'Hêy ,Bạn còn nợ ${(_controller.totalOvrOnGroup * -1).toInt()} vnđ'
+                                              : 'Ồ, Bạn đang cho mượn ${_controller.totalOvrOnGroup.toInt()} vnđ',
+                                          style: FontUtils.mainTextStyle
+                                              .copyWith(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: _controller
+                                                              .totalOvrOnGroup <
+                                                          0
+                                                      ? Colors.red[300]
+                                                      : Colors.green),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Text(
-                                'Bạn chưa có nhóm',
-                                style: FontUtils.mainTextStyle.copyWith(),
-                              ),
-                              SizedBox(
-                                height: 50,
-                              )
+                              if (_controller.listGroups.isEmpty)
+                                Column(
+                                  children: [
+                                    // SizedBox(
+                                    //   height: 50,
+                                    // ),
+                                    Container(
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        // border: Border.all(color: Colors.black),
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                ImageUtils.noGroupImage),
+                                            fit: BoxFit.contain),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+                                    Text(
+                                      'Bạn chưa có nhóm',
+                                      style: FontUtils.mainTextStyle.copyWith(),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                    )
+                                  ],
+                                ),
+                              for (int i = 0;
+                                  i < _controller.listGroups.length;
+                                  i++)
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.MY_GROUP_SCREEN,
+                                        arguments: {
+                                          'group-model': _controller
+                                              .listGroups[i].keys
+                                              .elementAt(0),
+                                          'user-model': _controller.userModel
+                                        });
+                                  },
+                                  child: GroupItemWidget(
+                                      itemData: _controller.listGroups[i].keys
+                                          .elementAt(0),
+                                      ovr: _controller.listGroups[i].values
+                                          .elementAt(0)),
+                                ),
+                              GestureDetector(
+                                  onTap: _controller.startCreateNewGroup,
+                                  child: AddButton(
+                                    color: _controller.listGroups.length == 0
+                                        ? Colors.white
+                                        : Colors.blue,
+                                    fontColor:
+                                        _controller.listGroups.length == 0
+                                            ? Colors.black
+                                            : Colors.white,
+                                    icon: Icon(
+                                      Icons.group_add,
+                                      color: _controller.listGroups.length == 0
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
+                                    title: 'Tạo nhóm mới',
+                                  ))
                             ],
                           ),
-                        for (int i = 0; i < _controller.listGroups.length; i++)
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(Routes.MY_GROUP_SCREEN, arguments: {
-                                'group-model':
-                                    _controller.listGroups[i].keys.elementAt(0),
-                                'user-model': _controller.userModel
-                              });
-                            },
-                            child: GroupItemWidget(
-                                itemData:
-                                    _controller.listGroups[i].keys.elementAt(0),
-                                ovr: _controller.listGroups[i].values
-                                    .elementAt(0)),
-                          ),
-                        GestureDetector(
-                            onTap: _controller.startCreateNewGroup,
-                            child: AddButton(
-                              color: _controller.listGroups.length == 0
-                                  ? Colors.white
-                                  : Colors.blue,
-                              fontColor: _controller.listGroups.length == 0
-                                  ? Colors.black
-                                  : Colors.white,
-                              icon: const Icon(
-                                Icons.group_add,
-                                color: Colors.black,
-                              ),
-                              title: 'Tạo nhóm mới',
-                            ))
+                        )),
                       ],
                     ),
             ),

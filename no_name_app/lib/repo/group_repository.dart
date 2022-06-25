@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:no_name_app/models/activity_model.dart';
 import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
+import 'package:no_name_app/repo/activity_repository.dart';
 import 'package:no_name_app/repo/friend_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 
@@ -55,8 +57,10 @@ class GroupRepository {
   }
 
   static Future<void> addMember(
-      {required GroupModel group,
+      {UserModel? host,
+      required GroupModel group,
       required List<UserModel> listMemberAdd}) async {
+
     for (int i = 0; i < listMemberAdd.length; i++) {
       await groupCollection
           .doc(group.id)
@@ -64,7 +68,22 @@ class GroupRepository {
           .doc(listMemberAdd[i].id)
           .set(listMemberAdd[i].toMap())
           .whenComplete(() {
-        print('+++' + listMemberAdd[i].id.toString());
+        if (host != null) {
+          ActivityRepository.generateIdOfActivity(actor: listMemberAdd[i])
+              .then((actId) {
+            final anActivity = ActivityModel(
+                actor: host,
+                id: actId,
+                timeCreate: DateTime.now(),
+                type: TypeOfActivity.AddIntoGroup,
+                useCase: listMemberAdd.elementAt(i),
+                zone: group);
+            ActivityRepository.addAnActivity(
+                actor: listMemberAdd[i], activityModel: anActivity);
+          });
+        }
+
+        // print('+++' + listMemberAdd[i].id.toString());
         UserRepository.onCreateGroup(
             uid: listMemberAdd[i].id!, groupModel: group);
       });
@@ -242,5 +261,6 @@ class GroupRepository {
     } else {
       return data.data()!['amount'];
     }
+    // return 0;
   }
 }

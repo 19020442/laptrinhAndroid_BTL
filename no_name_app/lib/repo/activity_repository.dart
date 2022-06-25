@@ -16,6 +16,12 @@ class ActivityRepository {
     if (a.contains('AddNewFriend')) {
       return TypeOfActivity.AddNewFriend;
     }
+    if (a.contains('AddIntoGroup')) {
+      return TypeOfActivity.AddIntoGroup;
+    }
+    if (a.contains('UpdateNote')) {
+      return TypeOfActivity.UpdateNote;
+    }
 
     return TypeOfActivity.CreateNewGroup;
   }
@@ -47,7 +53,7 @@ class ActivityRepository {
     List<ActivityModel> res = [];
     for (int i = 0; i < activityData.docs.length; i++) {
       final anActivityData = activityData.docs[i];
-
+    // print(anActivityData.data()['zone'],);
       final activity = ActivityModel(
           id: anActivityData.data()['id'],
           actor: UserModel.fromMap(anActivityData.data()['actor']),
@@ -55,6 +61,7 @@ class ActivityRepository {
           type: convertStringToTypeOfActivity(anActivityData.data()['type']),
           useCase: anActivityData.data()['case'],
           zone: anActivityData.data()['zone']);
+          // print('---' + activity.toMap().toString());
       // final activity = ActivityModel.fromMap(anActivityData);
       res.add(activity);
     }

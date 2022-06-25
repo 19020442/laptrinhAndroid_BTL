@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/group_controller.dart';
-import 'package:no_name_app/controller/home_controller.dart';
 import 'package:no_name_app/models/activity_model.dart';
 import 'package:no_name_app/models/expense_model.dart';
 import 'package:no_name_app/models/group_model.dart';
@@ -11,9 +10,7 @@ import 'package:no_name_app/repo/activity_repository.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/user_repo.dart';
-import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
-import 'package:no_name_app/widgets/cached_image.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';
 
 class MyGroupController extends GetxController {
@@ -28,53 +25,78 @@ class MyGroupController extends GetxController {
   TextEditingController noteController = TextEditingController();
   final formKeyEditName = GlobalKey<FormState>();
 
+  late Stream groupExpenseListener;
+  late Stream groupMemberListener;
+  late Stream groupStatusListener;
   @override
   void onInit() {
     currentGroup = Get.arguments['group-model'];
     // print( currentGroup.note == null);
-
+    groupExpenseListener = FirebaseFirestore.instance
+        .collection('groups')
+        .doc(currentGroup.id!)
+        .collection('expenses')
+        .snapshots();
+    groupMemberListener = FirebaseFirestore.instance
+        .collection('groups')
+        .doc(currentGroup.id!)
+        .collection('members')
+        .snapshots();
+    groupStatusListener = FirebaseFirestore.instance
+        .collection('groups')
+        .doc(currentGroup.id!)
+        .collection('state')
+        .snapshots();
     userModel = Get.arguments['user-model'];
-    ExpenseRepository.getExpenses(groupId: currentGroup.id!).then((value) {
-      listExpenses = value;
-      for (int i = 0; i < listExpenses.length; i++) {
-        listState.add(0);
-      }
-      update();
-    }).then((_) {
-      for (int i = 0; i < listExpenses.length; i++) {
-        ExpenseRepository.getYourStatusOnExpense(
-                currentExpense: listExpenses[i],
-                groupId: currentGroup.id!,
-                userId: userModel.id!)
-            .then((value) {
-          listState[i] = value;
-          update();
-        });
-      }
-      isLoading = false;
-      update();
-    });
-
+    listenOnGroup();
     GroupRepository.getMemebers(groupId: currentGroup.id!).then((value) {
       listMember = value;
 
       update();
     });
-    GroupRepository.getStatusGroupByUserId(
-            groupId: currentGroup.id!, userId: userModel.id!)
-        .then((value) {
-      status = value;
-
-      for (int i = 0; i < status.length; i++) {
-        UserRepository.getAvatarUserById(id: status[i]['id']).then((ava) {
-          status[i]['avatar'] = ava;
-          update();
-        });
-      }
-      update();
-    });
 
     super.onInit();
+  }
+
+  listenOnGroup() async {
+    groupExpenseListener.listen((event) {
+      ExpenseRepository.getExpenses(groupId: currentGroup.id!).then((value) {
+        listExpenses = value;
+        for (int i = 0; i < listExpenses.length; i++) {
+          listState.add(0);
+        }
+        update();
+      }).then((_) {
+        for (int i = 0; i < listExpenses.length; i++) {
+          ExpenseRepository.getYourStatusOnExpense(
+                  currentExpense: listExpenses[i],
+                  groupId: currentGroup.id!,
+                  userId: userModel.id!)
+              .then((value) {
+            listState[i] = value;
+            update();
+          });
+        }
+        isLoading = false;
+        update();
+      });
+      // update();
+    });
+    groupStatusListener.listen((event) {
+      GroupRepository.getStatusGroupByUserId(
+              groupId: currentGroup.id!, userId: userModel.id!)
+          .then((value) {
+        status = value;
+
+        for (int i = 0; i < status.length; i++) {
+          UserRepository.getAvatarUserById(id: status[i]['id']).then((ava) {
+            status[i]['avatar'] = ava;
+            update();
+          });
+        }
+        update();
+      });
+    });
   }
 
   deleteGroup() {
@@ -203,6 +225,37 @@ class MyGroupController extends GetxController {
                                   gid: currentGroup.id!,
                                   arguments: {'Note': currentGroup.note})
                               .then((value) {
+                            for (int i = 0; i < listMember.length; i++) {
+                              ActivityRepository.generateIdOfActivity(
+                                      actor: listMember[i])
+                                  .then((value) {
+                                final anAct = ActivityModel(
+                                    actor: userModel,
+                                    id: value,
+                                    timeCreate: DateTime.now(),
+                                    type: TypeOfActivity.UpdateNote,
+                                    useCase: currentGroup,
+                                    zone: null);
+                                ActivityRepository.addAnActivity(
+                                    actor: listMember[i], activityModel: anAct);
+                              });
+                            }
+                            ActivityRepository.generateIdOfActivity(
+                                    actor: userModel)
+                                .then((value) {
+                              final anAct = ActivityModel(
+                                  actor: userModel,
+                                  id: value,
+                                  timeCreate: DateTime.now(),
+                                  type: TypeOfActivity.UpdateNote,
+                                  useCase: currentGroup,
+                                  zone: null);
+                              ActivityRepository.addAnActivity(
+                                  actor: userModel, activityModel: anAct);
+                            });
+
+                            GroupController groupController = Get.find();
+                            groupController.onInit();
                             Get.back();
                             Get.back();
                           });

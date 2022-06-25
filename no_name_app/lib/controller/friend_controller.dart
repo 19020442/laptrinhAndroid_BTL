@@ -11,27 +11,39 @@ class FriendController extends GetxController {
   late UserModel userModel = UserModel();
   late List<Map<UserModel, dynamic>> listFriends = [];
   bool isLoadingFriend = true;
+
+  late Stream friendListener;
   @override
   void onInit() async {
     AuthController authController = Get.find();
     userModel = authController.userModel!;
-    
-    FriendRepository.getFriends(userId: userModel.id!).then((value) async {
-      // Function compare = const ListEquality().equals;
-      for (int i = 0; i < value.length; i++) {
-        final sts = await FriendRepository.getYourStatusOnFriend(
-            userId: userModel.id!, friendId: value[i].id!);
-        listFriends.add({value[i]: sts});
-      }
-      StorageHelper.setFriends(value);
-      // update();
-    }).then((_) {
-      isLoadingFriend = false;
-      
-      update();
-    });
+    friendListener = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel.id!)
+        .collection('friends')
+        .snapshots();
 
+    listenOnFriend();
     super.onInit();
+  }
+
+  listenOnFriend() async {
+    friendListener.listen((event) {
+      FriendRepository.getFriends(userId: userModel.id!).then((value) async {
+        // Function compare = const ListEquality().equals;
+        for (int i = 0; i < value.length; i++) {
+          final sts = await FriendRepository.getYourStatusOnFriend(
+              userId: userModel.id!, friendId: value[i].id!);
+          listFriends.add({value[i]: sts});
+        }
+        StorageHelper.setFriends(value);
+        // update();
+      }).then((_) {
+        isLoadingFriend = false;
+
+        update();
+      });
+    });
   }
 
   startAddNewFriend() {
