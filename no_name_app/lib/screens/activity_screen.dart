@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:no_name_app/controller/activity_controller.dart';
 import 'package:no_name_app/models/activity_model.dart';
 import 'package:no_name_app/models/group_model.dart';
+import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
@@ -76,14 +77,33 @@ class ActivityScreen extends StatelessWidget {
                                   i < _controller.listActivity.length;
                                   i++)
                                 TextButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_controller.listActivity[i].type ==
-                                          TypeOfActivity.CreateNewGroup) {
+                                              TypeOfActivity.CreateNewGroup ||
+                                          _controller.listActivity[i].type ==
+                                              TypeOfActivity.UpdateNote) {
                                         Get.toNamed(Routes.MY_GROUP_SCREEN,
                                             arguments: {
-                                              'group-model': GroupModel.fromMap(
-                                                  _controller
-                                                      .listActivity[i].useCase),
+                                              'group-model':
+                                                  await GroupRepository
+                                                      .getGroupbyId(
+                                                          idGroup: _controller
+                                                              .listActivity[i]
+                                                              .useCase['Id']),
+                                              'user-model':
+                                                  _controller.userModel
+                                            });
+                                      }
+                                      if (_controller.listActivity[i].type ==
+                                          TypeOfActivity.AddIntoGroup || _controller.listActivity[i].type == TypeOfActivity.CommentOnExpense) {
+                                        Get.toNamed(Routes.MY_GROUP_SCREEN,
+                                            arguments: {
+                                              'group-model':
+                                                  await GroupRepository
+                                                      .getGroupbyId(
+                                                          idGroup: _controller
+                                                              .listActivity[i]
+                                                              .zone['Id']),
                                               'user-model':
                                                   _controller.userModel
                                             });

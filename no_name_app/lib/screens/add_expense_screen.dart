@@ -152,7 +152,7 @@ class AddExpenseScreen extends StatelessWidget {
                                   }
                                   // Get.toNamed(Routes.CHOOSE_WHO_PAID);
                                 },
-                                child: Text('Bạn',
+                                child: Text(_controller.payers,
                                     style: FontUtils.mainTextStyle.copyWith())),
                           ],
                         ),
@@ -188,7 +188,7 @@ class AddExpenseScreen extends StatelessWidget {
                                         });
                                   }
                                 },
-                                child: Text('Đều',
+                                child: Text(_controller.splitText,
                                     style: FontUtils.mainTextStyle.copyWith())),
                           ],
                         ),

@@ -149,7 +149,7 @@ class ExpenseDetailScreen extends StatelessWidget {
                   )),
                   Container(
                     width: double.infinity,
-                    height: 60,
+                    height: 50,
                     color: Colors.grey[200],
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -159,6 +159,7 @@ class ExpenseDetailScreen extends StatelessWidget {
                         Flexible(
                             flex: 6,
                             child: TextFormField(
+                              style: FontUtils.mainTextStyle.copyWith(),
                               controller: _controller.textCommentController,
                               textAlignVertical: TextAlignVertical.center,
                               decoration: InputDecoration(

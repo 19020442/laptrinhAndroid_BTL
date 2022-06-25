@@ -24,38 +24,49 @@ class GroupController extends GetxController {
   bool isLoadingGroup = true;
 
   double totalOvrOnGroup = 0;
+
+  late Stream groupsListener;
   @override
   void onInit() async {
     totalOvrOnGroup = 0;
+    groupsListener =
+        FirebaseFirestore.instance.collection('groups').snapshots();
     AuthController _authController = Get.find();
     userModel = _authController.userModel!;
     // listGroups = (await StorageHelper.getGroups());
 
     // update();
-    UserRepository.getGroups(uid: userModel.id!).then((value) async {
-      List<Map<GroupModel, double>> temp = [];
-
-      if (value == null) {
-        listGroups = [];
-        isLoadingGroup = false;
-        update();
-      } else {
-        for (int i = 0; i < value.length; i++) {
-          GroupRepository.getStatusGroupByUserId(groupId: value[i], userId: userModel.id!);
-          final groupData =
-              await GroupRepository.getGroupbyId(idGroup: value[i]);
-          final groupOvr = await GroupRepository.getOverralStatusOfGroup(
-              gid: value[i], uid: userModel.id!);
-          totalOvrOnGroup += groupOvr;
-          temp.add({groupData: groupOvr});
-        }
-        listGroups = temp;
-        isLoadingGroup = false;
-        update();
-      }
-    });
+    listen();
 
     super.onInit();
+  }
+
+  listen() {
+    groupsListener.listen((event) {
+      UserRepository.getGroups(uid: userModel.id!).then((value) async {
+        List<Map<GroupModel, double>> temp = [];
+
+        if (value == null) {
+          listGroups = [];
+          isLoadingGroup = false;
+          update();
+        } else {
+          for (int i = 0; i < value.length; i++) {
+            GroupRepository.getStatusGroupByUserId(
+                groupId: value[i], userId: userModel.id!);
+            final groupData =
+                await GroupRepository.getGroupbyId(idGroup: value[i]);
+            final groupOvr = await GroupRepository.getOverralStatusOfGroup(
+                gid: value[i], uid: userModel.id!);
+            totalOvrOnGroup += groupOvr;
+            temp.add({groupData: groupOvr});
+          }
+          listGroups = temp;
+          isLoadingGroup = false;
+          update();
+        }
+      });
+    });
   }
 
   void startCreateNewGroup() {

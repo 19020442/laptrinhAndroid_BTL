@@ -22,7 +22,7 @@ class AddExpenseController extends GetxController {
   late UserModel currentUser;
   GroupModel? groupModel;
   MyGroupController groupController = Get.find();
-  GroupController groupsController = Get.find();
+  // GroupController groupsController = Get.find();
 
   List<UserModel> membersOfExpense = [];
   bool isMultiChoiceMode = false;
@@ -44,6 +44,9 @@ class AddExpenseController extends GetxController {
   final formKeySplitPercent = GlobalKey<FormState>();
 
   late int cateIndexSelected = 0;
+
+  late String splitText = "Đều";
+  late String payers = "Bạn";
   @override
   void onInit() {
     groupModel = Get.arguments['group-model'];
@@ -233,9 +236,9 @@ class AddExpenseController extends GetxController {
               groupId: groupModel!.id!, data: payer, isPayer: true);
           await GroupRepository.setStatusGroup(
               groupId: groupModel!.id!, data: owner, isPayer: false);
-          
+
           // groupController.onInit();
-          groupsController.onInit();
+          // groupsController.onInit();
           update();
           Get.back();
           Get.back();
@@ -249,6 +252,10 @@ class AddExpenseController extends GetxController {
       member[index]['user'] = memberTapped1;
       member[index]['amount'] = double.parse(valueController.text);
       memberTapped = memberTapped1;
+      payers = memberTapped1.name!;
+      if (memberTapped1.id == currentUser.id) {
+        payers = "Bạn";
+      }
     }
 
     update();
@@ -260,12 +267,23 @@ class AddExpenseController extends GetxController {
 
   switchMultiChoiceMode() {
     isMultiChoiceMode = !isMultiChoiceMode;
+    if (isMultiChoiceMode) {
+payers = "Tất cả";
+    }
+    else {
+      payers = memberTapped.name!;
+    }
+    
     update();
   }
 
   swtichToUnequallyOption(int index) {
     isOnSplitUnequallyMode = (index == 1);
-
+    if (isOnSplitUnequallyMode) {
+      splitText = "Theo phần trăm";
+    } else {
+      splitText = "Đều";
+    }
     update();
   }
 
