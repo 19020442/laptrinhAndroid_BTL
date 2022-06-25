@@ -16,7 +16,9 @@ class GroupSettingScreen extends StatelessWidget {
       init: MyGroupController(),
       builder: (MyGroupController _controller) {
         return Scaffold(
+         
           appBar: AppBar(
+             backgroundColor: Colors.blue[300], 
             elevation: 0,
             title: Text(
               'Cài đặt nhóm',
@@ -49,7 +51,9 @@ class GroupSettingScreen extends StatelessWidget {
                                         ? ImageUtils.deafaultGroupTripImage
                                         : _controller.currentGroup.typeGroup ==
                                                 "Other"
-                                            ? ImageUtils.deafaultGroupOtherImage
+                                            ? ImageUtils.deafaultGroupOtherImage: _controller.currentGroup.typeGroup ==
+                                                "Study"
+                                            ? ImageUtils.deafaultGroupStudyImage
                                             : ImageUtils
                                                 .deafaultGroupHomeImage)))
                                 : DecorationImage(
