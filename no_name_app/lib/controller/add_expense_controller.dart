@@ -7,8 +7,10 @@ import 'package:no_name_app/models/group_model.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/expense_repository.dart';
 import 'package:no_name_app/repo/group_repository.dart';
-import 'package:no_name_app/screens/choose_who_paid_screen.dart';
-import 'package:no_name_app/screens/option_split_screen.dart';
+import 'package:no_name_app/screens/group/choose_who_paid_screen.dart';
+import 'package:no_name_app/screens/group/option_split_screen.dart';
+// import 'package:no_name_app/screens/choose_who_paid_screen.dart';
+// import 'package:no_name_app/screens/option_split_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';
@@ -22,7 +24,7 @@ class AddExpenseController extends GetxController {
   late UserModel currentUser;
   GroupModel? groupModel;
   MyGroupController groupController = Get.find();
-  // GroupController groupsController = Get.find();
+  GroupController groupsController = Get.find();
 
   List<UserModel> membersOfExpense = [];
   bool isMultiChoiceMode = false;
@@ -116,7 +118,7 @@ class AddExpenseController extends GetxController {
       if (totalPercentCurrently != 100.0) {
       } else {
         for (int i = 0; i < member.length; i++) {
-          member[i]['amountToPaid'] = int.parse(valueController.text) *
+          member[i]['amountToPaid'] = double.parse(valueController.text) *
               double.parse(percentMemberController[i].text) ~/
               100;
         }
@@ -124,7 +126,7 @@ class AddExpenseController extends GetxController {
     } else {
       for (int i = 0; i < member.length; i++) {
         member[i]['amountToPaid'] =
-            int.parse(valueController.text) / member.length;
+            double.parse(valueController.text) / member.length;
       }
     }
 
@@ -137,7 +139,7 @@ class AddExpenseController extends GetxController {
       // member[0]['amount'] = double.parse(valueController.text);
       member[member
               .indexWhere((element) => element['user'].id == currentUser.id)]
-          ['amount'] = int.parse(valueController.text);
+          ['amount'] = double.parse(valueController.text);
     }
 
     for (var element in member) {
@@ -238,7 +240,7 @@ class AddExpenseController extends GetxController {
               groupId: groupModel!.id!, data: owner, isPayer: false);
 
           // groupController.onInit();
-          // groupsController.onInit();
+          groupsController.onInit();
           update();
           Get.back();
           Get.back();

@@ -15,20 +15,16 @@ class FriendController extends GetxController {
   late Stream friendListener;
   @override
   void onInit() async {
+    listFriends=[];
     AuthController authController = Get.find();
     userModel = authController.userModel!;
-    friendListener = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userModel.id!)
-        .collection('friends')
-        .snapshots();
+    // friendListener = FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(userModel.id!)
+    //     .collection('friends')
+    //     .snapshots();
 
-    listenOnFriend();
-    super.onInit();
-  }
-
-  listenOnFriend() async {
-    friendListener.listen((event) {
+    //  friendListener.listen((event) {
       FriendRepository.getFriends(userId: userModel.id!).then((value) async {
         // Function compare = const ListEquality().equals;
         for (int i = 0; i < value.length; i++) {
@@ -43,7 +39,12 @@ class FriendController extends GetxController {
 
         update();
       });
-    });
+    // });
+    super.onInit();
+  }
+
+  listenOnFriend() async {
+   
   }
 
   startAddNewFriend() {

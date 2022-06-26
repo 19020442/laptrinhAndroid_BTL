@@ -6,7 +6,7 @@ import 'package:no_name_app/controller/auth_controller.dart';
 import 'package:no_name_app/models/user_model.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/routes/routes.dart';
-import 'package:no_name_app/screens/login_screen.dart';
+import 'package:no_name_app/screens/authentication/login_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/utils/image.dart';
 import 'package:no_name_app/widgets/loading_widget.dart';

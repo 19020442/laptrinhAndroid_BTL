@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:no_name_app/controller/passcode_controller.dart';
-import 'package:no_name_app/screens/login_screen.dart';
+import 'package:no_name_app/screens/authentication/login_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/widgets/number_keyboard.dart';
 

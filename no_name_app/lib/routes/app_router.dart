@@ -1,22 +1,29 @@
 import 'package:get/get.dart';
-import 'package:no_name_app/screens/add_expense_screen.dart';
-import 'package:no_name_app/screens/add_friend_screen.dart';
-import 'package:no_name_app/screens/add_member_screen.dart';
-import 'package:no_name_app/screens/choose_who_paid_screen.dart';
-import 'package:no_name_app/screens/create_new_group_screen.dart';
-import 'package:no_name_app/screens/expense_detail_screen.dart';
-import 'package:no_name_app/screens/friend_detail_screen.dart';
+// import 'package:no_name_app/screens/add_expense_screen.dart';
+import 'package:no_name_app/screens/friend/add_friend_screen.dart';
+import 'package:no_name_app/screens/friend/friend_detail_screen.dart';
+// import 'package:no_name_app/screens/add_member_screen.dart';
+// import 'package:no_name_app/screens/choose_who_paid_screen.dart';
+import 'package:no_name_app/screens/group/add_expense_screen.dart';
+import 'package:no_name_app/screens/group/add_member_screen.dart';
+import 'package:no_name_app/screens/group/choose_who_paid_screen.dart';
+import 'package:no_name_app/screens/group/create_new_group_screen.dart';
+import 'package:no_name_app/screens/group/expense/expense_detail_screen.dart';
+// import 'package:no_name_app/screens/friend_detail_screen.dart';
 import 'package:no_name_app/screens/group/group_setting_screen.dart';
+import 'package:no_name_app/screens/group/option_split_screen.dart';
+import 'package:no_name_app/screens/group/record_payment_screen.dart';
+import 'package:no_name_app/screens/group/select_category_screen.dart';
 import 'package:no_name_app/screens/group/selt_up_screen.dart';
-import 'package:no_name_app/screens/login_screen.dart';
+import 'package:no_name_app/screens/authentication/login_screen.dart';
 import 'package:no_name_app/screens/home_screen.dart';
 import 'package:no_name_app/routes/routes.dart';
 import 'package:no_name_app/screens/group/my_group_screen.dart';
-import 'package:no_name_app/screens/option_split_screen.dart';
-import 'package:no_name_app/screens/passcode_screen.dart';
-import 'package:no_name_app/screens/record_payment_screen.dart';
+// import 'package:no_name_app/screens/option_split_screen.dart';
+import 'package:no_name_app/screens/account/passcode_screen.dart';
+// import 'package:no_name_app/screens/record_payment_screen.dart';
 import 'package:no_name_app/screens/register_screen.dart';
-import 'package:no_name_app/screens/select_category_screen.dart';
+// import 'package:no_name_app/screens/select_category_screen.dart';
 
 class Pages {
   static final pages = [

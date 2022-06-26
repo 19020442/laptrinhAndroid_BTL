@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:no_name_app/controller/create_new_group_controller.dart';
-import 'package:no_name_app/screens/login_screen.dart';
+import 'package:no_name_app/screens/authentication/login_screen.dart';
 import 'package:no_name_app/utils/fonts.dart';
 import 'package:no_name_app/widgets/cached_image.dart';
 import 'package:no_name_app/widgets/type_of_group_widget.dart';

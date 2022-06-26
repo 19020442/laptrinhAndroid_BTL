@@ -8,7 +8,7 @@ import 'package:no_name_app/repo/group_repository.dart';
 import 'package:no_name_app/repo/storage_helper.dart';
 import 'package:no_name_app/repo/user_repo.dart';
 import 'package:no_name_app/routes/routes.dart';
-import 'package:no_name_app/screens/create_new_group_screen.dart';
+import 'package:no_name_app/screens/group/create_new_group_screen.dart';
 
 class GroupController extends GetxController {
   late UserModel userModel;
@@ -36,38 +36,59 @@ class GroupController extends GetxController {
     // listGroups = (await StorageHelper.getGroups());
 
     // update();
-    listen();
+    UserRepository.getGroups(uid: userModel.id!).then((value) async {
+      List<Map<GroupModel, double>> temp = [];
 
+      if (value == null) {
+        listGroups = [];
+        isLoadingGroup = false;
+        update();
+      } else {
+        for (int i = 0; i < value.length; i++) {
+          GroupRepository.getStatusGroupByUserId(
+              groupId: value[i], userId: userModel.id!);
+          final groupData =
+              await GroupRepository.getGroupbyId(idGroup: value[i]);
+          final groupOvr = await GroupRepository.getOverralStatusOfGroup(
+              gid: value[i], uid: userModel.id!);
+          totalOvrOnGroup += groupOvr;
+          temp.add({groupData: groupOvr});
+        }
+        listGroups = temp;
+        isLoadingGroup = false;
+        update();
+      }
+    });
     super.onInit();
   }
 
-  listen() {
-    groupsListener.listen((event) {
-      UserRepository.getGroups(uid: userModel.id!).then((value) async {
-        List<Map<GroupModel, double>> temp = [];
+  // listen() {
+  //   groupsListener.listen((event) {
+  //     UserRepository.getGroups(uid: userModel.id!).then((value) async {
+  //       List<Map<GroupModel, double>> temp = [];
 
-        if (value == null) {
-          listGroups = [];
-          isLoadingGroup = false;
-          update();
-        } else {
-          for (int i = 0; i < value.length; i++) {
-            GroupRepository.getStatusGroupByUserId(
-                groupId: value[i], userId: userModel.id!);
-            final groupData =
-                await GroupRepository.getGroupbyId(idGroup: value[i]);
-            final groupOvr = await GroupRepository.getOverralStatusOfGroup(
-                gid: value[i], uid: userModel.id!);
-            totalOvrOnGroup += groupOvr;
-            temp.add({groupData: groupOvr});
-          }
-          listGroups = temp;
-          isLoadingGroup = false;
-          update();
-        }
-      });
-    });
-  }
+  //       if (value == null) {
+  //         listGroups = [];
+  //         isLoadingGroup = false;
+  //         update();
+  //       } else {
+  //         for (int i = 0; i < value.length; i++) {
+  //           GroupRepository.getStatusGroupByUserId(
+  //               groupId: value[i], userId: userModel.id!);
+  //           final groupData =
+  //               await GroupRepository.getGroupbyId(idGroup: value[i]);
+  //           final groupOvr = await GroupRepository.getOverralStatusOfGroup(
+  //               gid: value[i], uid: userModel.id!);
+  //           totalOvrOnGroup += groupOvr;
+  //           temp.add({groupData: groupOvr});
+  //         }
+  //         listGroups = temp;
+  //         isLoadingGroup = false;
+  //         update();
+  //       }
+  //     });
+  //   });
+  // }
 
   void startCreateNewGroup() {
     Get.bottomSheet(
